@@ -72,8 +72,8 @@ const Login = () => {
   setWindowClass('hold-transition login-page');
 
   return (
-    <div className='d-flex w-100 px-5'>
-      <div className='col-6' >
+    <div className='d-lg-flex w-100 px-lg-5'>
+      <div className='d-none d-md-block col-6' >
         <div style={{ width: '50%', margin: "auto" }}>
           <Image
             src={"./img/logo1.png"}
@@ -84,8 +84,8 @@ const Login = () => {
           />
         </div>
       </div>
-      <div className='w-100'>
-        <div className="w-75">
+      <div className='w-100 h-100'>
+        <div className="login-box mx-auto ">
           <div className="card card-outline card-warning">
             <div className="card-header text-center">
 
