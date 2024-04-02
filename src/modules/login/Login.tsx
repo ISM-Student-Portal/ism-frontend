@@ -38,12 +38,9 @@ const Login = () => {
       // dispatch(loginUser(token));
       if (response.profile.is_admin === 1) {
         console.log('here')
-        navigate('/admin/profile');
+        navigate('/admin');
       } else {
-        console.log('here34343')
-
-        // navigate('/');
-
+        navigate('/');
       }
     } catch (error: any) {
       setAuthLoading(false);

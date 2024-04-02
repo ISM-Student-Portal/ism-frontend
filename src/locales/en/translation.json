@@ -77,7 +77,8 @@
     "label": {
       "dashboard": "Dashboard",
       "profile": "Profile",
-      "blank": "Blank",
+      "students": "Students",
+      "notifications": "Notifications",
       "mainMenu": "Main Menu",
       "subMenu": "Sub Menu"
     }

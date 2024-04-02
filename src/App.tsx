@@ -30,6 +30,7 @@ import { Spinner } from './styles/common';
 import { setProfile } from './store/reducers/profile';
 import LoginTest from './modules/login/LoginTest';
 import AdminRoute from './routes/AdminRoute';
+import Students from './pages/Students';
 
 const { VITE_NODE_ENV } = import.meta.env;
 
@@ -118,7 +119,7 @@ const App = () => {
           <Route path="/admin" element={<Main />}>
             <Route path="admin/sub-menu-2" element={<Blank />} />
             <Route path="admin/sub-menu-1" element={<SubMenu />} />
-            <Route path="admin/blank" element={<Blank />} />
+            <Route path="/admin/students" element={<Students />} />
             <Route path="admin/profile" element={<Profile />} />
             <Route path="/admin/" element={<Dashboard />} />
           </Route>

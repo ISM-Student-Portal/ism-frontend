@@ -17,12 +17,18 @@ export const MENU: IMenuItem[] = [
   {
     name: i18n.t('menusidebar.label.dashboard'),
     icon: 'fas fa-tachometer-alt nav-icon',
-    path: '/',
+    path: '/admin',
   },
   {
-    name: i18n.t('menusidebar.label.blank'),
-    icon: 'fas fa-wrench nav-icon',
-    path: '/blank',
+    name: i18n.t('menusidebar.label.students'),
+    icon: 'fas fa-users nav-icon',
+    path: '/admin/students',
+  },
+
+  {
+    name: i18n.t('menusidebar.label.notifications'),
+    icon: 'fas fa-envelope-square nav-icon',
+    path: '/Notifications',
   },
   {
     name: i18n.t('menusidebar.label.mainMenu'),
@@ -95,15 +101,10 @@ const MenuSidebar = () => {
           </div>
         </div>
 
-        <div className="form-inline">
-          <SidebarSearch />
-        </div>
-
         <nav className="mt-2" style={{ overflowY: 'hidden' }}>
           <ul
-            className={`nav nav-pills nav-sidebar flex-column${
-              menuItemFlat ? ' nav-flat' : ''
-            }${menuChildIndent ? ' nav-child-indent' : ''}`}
+            className={`nav nav-pills nav-sidebar flex-column${menuItemFlat ? ' nav-flat' : ''
+              }${menuChildIndent ? ' nav-child-indent' : ''}`}
             role="menu"
           >
             {MENU.map((menuItem: IMenuItem) => (
