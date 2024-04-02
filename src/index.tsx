@@ -15,6 +15,7 @@ if (VITE_NODE_ENV === 'production' && VITE_GA_ID) {
   ReactGA.initialize(VITE_GA_ID);
 }
 
+
 const container: any = document.getElementById('root');
 const root = createRoot(container);
 root.render(

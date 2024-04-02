@@ -40,6 +40,8 @@
     "@fortawesome/react-fontawesome": "0.2.0",
     "@profabric/react-components": "0.2.4",
     "@reduxjs/toolkit": "2.2.1",
+    "axios": "^1.6.8",
+    "dotenv": "^16.4.5",
     "formik": "2.4.5",
     "i18next": "23.8.2",
     "i18next-browser-languagedetector": "7.2.0",

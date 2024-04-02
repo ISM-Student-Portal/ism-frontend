@@ -24,7 +24,12 @@ import {
   GoogleProvider,
   getAuthStatus,
   getFacebookLoginStatus,
+  getProfileStatus,
 } from './utils/oidc-providers';
+import { Spinner } from './styles/common';
+import { setProfile } from './store/reducers/profile';
+import LoginTest from './modules/login/LoginTest';
+import AdminRoute from './routes/AdminRoute';
 
 const { VITE_NODE_ENV } = import.meta.env;
 
@@ -43,11 +48,14 @@ const App = () => {
         GoogleProvider.getUser(),
         getAuthStatus(),
       ]);
+      let profile:any = await getProfileStatus();
+      console.log(profile, 'entry')
 
       responses = responses.filter((r: any) => Boolean(r));
 
       if (responses && responses.length > 0) {
         dispatch(setAuthentication(responses[0]));
+        dispatch(setProfile(profile));
       }
     } catch (error: any) {
       console.log('error', error);
@@ -76,7 +84,9 @@ const App = () => {
   }, [location]);
 
   if (isAppLoading) {
-    return <p>Loading</p>;
+    return <div className='w-100'>
+      <p className='mx-auto my-auto '><h6>Loading <Spinner type='grow'/></h6></p>
+    </div>;
   }
 
   return (
@@ -103,6 +113,18 @@ const App = () => {
             <Route path="/" element={<Dashboard />} />
           </Route>
         </Route>
+
+        <Route path="/admin" element={<AdminRoute />}>
+          <Route path="/admin" element={<Main />}>
+            <Route path="admin/sub-menu-2" element={<Blank />} />
+            <Route path="admin/sub-menu-1" element={<SubMenu />} />
+            <Route path="admin/blank" element={<Blank />} />
+            <Route path="admin/profile" element={<Profile />} />
+            <Route path="/admin/" element={<Dashboard />} />
+          </Route>
+        </Route>
+
+        
       </Routes>
       <ToastContainer
         autoClose={3000}

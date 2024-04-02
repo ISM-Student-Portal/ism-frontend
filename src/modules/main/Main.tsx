@@ -70,8 +70,8 @@ const Main = () => {
         <div className="preloader flex-column justify-content-center align-items-center">
           <Image
             className="animation__shake"
-            src="/img/logo.png"
-            alt="AdminLTELogo"
+            src="/img/logo1.png"
+            alt="ISM_logo"
             height={60}
             width={60}
           />
@@ -90,7 +90,7 @@ const Main = () => {
             <Outlet />
           </section>
         </div>
-        <Footer />
+        {/* <Footer /> */}
         <ControlSidebar />
         <div
           id="sidebar-overlay"
