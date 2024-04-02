@@ -4,11 +4,13 @@ import DataTable from '../components/data-table/DataTableBase'
 
 const Students = () => {
   const columns = [
-    {name: 'Name', selector: (row:any) => row.name},
+    {name: 'First Name', selector: (row:any) => row.first_name},
+    {name: 'Last Name', selector: (row:any) => row.last_name},
   ];
   const data = [
     {
-      name: "Ommodamola"
+      first_name: "Ommodamola",
+      last_name: "Oladeji"
     },
     {
       name: "Gbemisola"
