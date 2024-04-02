@@ -4,7 +4,7 @@ import path from 'path';
 
 // eslint-disable-next-line import/no-anonymous-default-export
 export default ({ mode }) => {
-  process.env = { ...process.env, ...loadEnv(mode, process.cwd()) };
+  const env = loadEnv(mode, process.cwd(), '');
 
   return defineConfig({
     mode: 'development',
@@ -18,5 +18,8 @@ export default ({ mode }) => {
         '@pages': path.resolve(__dirname, './src/pages'),
       },
     },
+    define: {
+      'process.env': env
+    }
   });
 };

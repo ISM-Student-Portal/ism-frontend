@@ -5,12 +5,18 @@ import {
   Button as RawButton,
   Checkbox as RawCheckbox,
   Select as RawSelect,
+  Spinner as RawSpinner
 } from '@profabric/react-components';
 
 export const Button = styled(RawButton)`
   --pf-display: block;
-  --pf-width: 100%;
+  --pf-width: 100%;  
+
 `;
+
+export const Spinner = styled(RawSpinner)`
+
+`
 
 export const Select = styled(RawSelect)`
   --pf-width: 100%;
