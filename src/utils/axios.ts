@@ -1,6 +1,11 @@
 import axios from 'axios';
+import { useSelector } from 'react-redux';
 import { Link, useNavigate } from 'react-router-dom';
 
+
+const instance = axios.create({
+    baseURL: process.env.REACT_APP_API_URL
+})
 
 const authentication = localStorage.getItem('authentication');
 let token: any = null;
@@ -8,9 +13,10 @@ if(authentication){
     token = JSON.parse(authentication).plainTextToken;
 }
 
-axios.defaults.baseURL = process.env.REACT_APP_API_URL;
 
-axios.interceptors.request.use(
+// axios.defaults.baseURL = process.env.REACT_APP_API_URL;
+
+instance.interceptors.request.use(
     config => {
         config.headers['Authorization'] = 'Bearer ' + token
         return config;},
@@ -20,7 +26,7 @@ axios.interceptors.request.use(
         }
 );
 
-axios.interceptors.response.use(
+instance.interceptors.response.use(
     response => {
         return response;
     },
@@ -33,4 +39,4 @@ axios.interceptors.response.use(
         }
     }
 )
-export default axios;
+export default instance;
