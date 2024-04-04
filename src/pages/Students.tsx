@@ -88,7 +88,6 @@ const Students = () => {
     pb: 3,
   };
   const columns = [
-    { name: 'id', selector: (row: any) => row.id },
 
     { name: 'First Name', selector: (row: any) => row.profile.first_name },
     { name: 'Last Name', selector: (row: any) => row.profile.last_name },
@@ -98,15 +97,7 @@ const Students = () => {
 
     { name: 'Gender', selector: (row: any) => row.profile.gender },
   ];
-  const data = [
-    {
-      first_name: "Ommodamola",
-      last_name: "Oladeji"
-    },
-    {
-      name: "Gbemisola"
-    }
-  ];
+  
 
   useEffect(() => {
     getStudents();

@@ -18,7 +18,9 @@ if(authentication){
 
 instance.interceptors.request.use(
     config => {
-        config.headers['Authorization'] = 'Bearer ' + token
+        if(token){
+            config.headers['Authorization'] = 'Bearer ' + token;
+        }
         return config;},
 
         error => {
@@ -32,7 +34,12 @@ instance.interceptors.response.use(
     },
     function (error) {
         if(error.response.status === 401){
-            localStorage.removeItem("authentication");
+            // localStorage.removeItem("authentication");
+            // localStorage.removeItem("profile");
+
+        }
+        else if(error.response.status === 404){
+            
         }
         return Promise.reject(error)
 
