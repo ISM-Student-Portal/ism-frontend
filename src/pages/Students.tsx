@@ -59,7 +59,7 @@ const Students = () => {
     }
     const student = await createStudent(data);
     console.log(student);
-    toast.success('Login is Successful!');
+    toast.success('Student is Successful!');
     handleCloseAdd();
     getStudents();
 
@@ -88,6 +88,8 @@ const Students = () => {
     pb: 3,
   };
   const columns = [
+    { name: 'id', selector: (row: any) => row.id },
+
     { name: 'First Name', selector: (row: any) => row.profile.first_name },
     { name: 'Last Name', selector: (row: any) => row.profile.last_name },
     { name: 'Email', selector: (row: any) => row.email },

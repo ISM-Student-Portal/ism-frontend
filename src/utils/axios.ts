@@ -31,12 +31,11 @@ instance.interceptors.response.use(
         return response;
     },
     function (error) {
-        const navigate = useNavigate();
-
         if(error.response.status === 401){
-            navigate('/login');
-            return Promise.reject(error)
+            localStorage.removeItem("authentication");
         }
+        return Promise.reject(error)
+
     }
 )
 export default instance;
