@@ -11,7 +11,7 @@ import UploadFileIcon from "@mui/icons-material/UploadFile";
 import AddIcon from '@mui/icons-material/Add'
 import UploadIcon from '@mui/icons-material/Upload'
 import { toast } from 'react-toastify';
-
+import axios from '../utils/axios';
 
 import { ChangeEvent, useState } from "react";
 import { fetchAllStudents, createStudent } from '@app/services/admin/studentServices';
@@ -23,6 +23,7 @@ const Students = () => {
   const [pending, setpending] = React.useState(true);
   const [openAdd, setOpenAdd] = React.useState(false);
   const [filename, setFilename] = React.useState("");
+  const [file, setFile] = React.useState(null);
   const [email, setEmail] = React.useState('');
   const [firstName, setFirstName] = React.useState('');
   const [lastName, setLastName] = React.useState('');
@@ -59,21 +60,40 @@ const Students = () => {
     }
     const student = await createStudent(data);
     console.log(student);
-    toast.success('Student is Successful!');
+    toast.success('Student Created Successfully!');
     handleCloseAdd();
     getStudents();
 
 
   }
 
-  const handleFileUpload = (e: ChangeEvent<HTMLInputElement>) => {
+  const handleFileUpload = async(e: ChangeEvent<HTMLInputElement>) => {
     if (!e.target.files) {
       return;
     }
-    const file = e.target.files[0];
+    const file:any = e.target.files[0];
+    setFilename(file);
     const { name } = file;
+    
     setFilename(name);
   };
+
+  const submitBatchStudents = async()=> {
+    let formData = new FormData();
+    //@ts-ignore
+    formData.append("file",file);
+    let res = await axios.post('/batch-create', formData, {
+      headers: {
+        'Content-Type': 'multipart/form-data'
+      }
+    });
+    if(res){
+      toast.success('Upload done');
+    }
+    handleClose();
+    
+
+  }
   const style = {
     position: 'absolute' as 'absolute',
     top: '50%',
@@ -145,7 +165,7 @@ const Students = () => {
             <Button variant='outlined' size='small' sx={{
               marginRight: ".2rem"
             }} onClick={handleClose}>Cancel</Button>
-            <Button variant='contained' size='small'>Submit</Button>
+            <Button variant='contained' size='small' onClick={submitBatchStudents}>Submit</Button>
           </div>
         </Box>
       </Modal>
