@@ -13,7 +13,7 @@ const Dashboard = () => {
                 <div className="inner">
                   <h3>150</h3>
 
-                  <p>New Orders</p>
+                  <p>Students</p>
                 </div>
                 <div className="icon">
                   <i className="ion ion-bag" />
@@ -30,7 +30,7 @@ const Dashboard = () => {
                     53<sup style={{ fontSize: '20px' }}>%</sup>
                   </h3>
 
-                  <p>Bounce Rate</p>
+                  <p>Courses</p>
                 </div>
                 <div className="icon">
                   <i className="ion ion-stats-bars" />
@@ -45,7 +45,7 @@ const Dashboard = () => {
                 <div className="inner">
                   <h3>44</h3>
 
-                  <p>User Registrations</p>
+                  <p>Basic Subscription</p>
                 </div>
                 <div className="icon">
                   <i className="ion ion-person-add" />
@@ -60,7 +60,7 @@ const Dashboard = () => {
                 <div className="inner">
                   <h3>65</h3>
 
-                  <p>Unique Visitors</p>
+                  <p>Premium</p>
                 </div>
                 <div className="icon">
                   <i className="ion ion-pie-graph" />
