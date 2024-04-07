@@ -71,8 +71,9 @@ const Students = () => {
     if (!e.target.files) {
       return;
     }
+    
     const file:any = e.target.files[0];
-    setFilename(file);
+    setFile(file);
     const { name } = file;
     
     setFilename(name);
@@ -109,13 +110,13 @@ const Students = () => {
   };
   const columns = [
 
-    { name: 'First Name', selector: (row: any) => row.profile.first_name },
-    { name: 'Last Name', selector: (row: any) => row.profile.last_name },
+    { name: 'First Name', selector: (row: any) => row.profile?.first_name },
+    { name: 'Last Name', selector: (row: any) => row.profile?.last_name },
     { name: 'Email', selector: (row: any) => row.email },
-    { name: 'Phone', selector: (row: any) => row.profile.phone },
-    { name: 'Subscription', selector: (row: any) => row.profile.subscription },
+    { name: 'Phone', selector: (row: any) => row.profile?.phone },
+    { name: 'Subscription', selector: (row: any) => row.profile?.subscription },
 
-    { name: 'Gender', selector: (row: any) => row.profile.gender },
+    { name: 'Gender', selector: (row: any) => row.profile?.gender },
   ];
   
 
