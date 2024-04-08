@@ -11,6 +11,8 @@ import { calculateWindowSize } from '@app/utils/helpers';
 import { useDispatch, useSelector } from 'react-redux';
 import { setWindowSize } from '@app/store/reducers/ui';
 import ReactGA from 'react-ga4';
+import { LocalizationProvider } from '@mui/x-date-pickers';
+import { AdapterMoment } from '@mui/x-date-pickers/AdapterMoment'
 
 import Dashboard from '@pages/Dashboard';
 import Blank from '@pages/Blank';
@@ -31,6 +33,7 @@ import { setProfile } from './store/reducers/profile';
 import LoginTest from './modules/login/LoginTest';
 import AdminRoute from './routes/AdminRoute';
 import Students from './pages/Students';
+import Classroom from './pages/Classroom';
 
 const { VITE_NODE_ENV } = import.meta.env;
 
@@ -49,7 +52,7 @@ const App = () => {
         GoogleProvider.getUser(),
         getAuthStatus(),
       ]);
-      let profile:any = await getProfileStatus();
+      let profile: any = await getProfileStatus();
       console.log(profile, 'entry')
 
       responses = responses.filter((r: any) => Boolean(r));
@@ -86,57 +89,60 @@ const App = () => {
 
   if (isAppLoading) {
     return <div className='w-100'>
-      <p className='mx-auto my-auto '><h6>Loading <Spinner type='grow'/></h6></p>
+      <p className='mx-auto my-auto '><h6>Loading <Spinner type='grow' /></h6></p>
     </div>;
   }
 
   return (
     <>
-      <Routes>
-        <Route path="/login" element={<PublicRoute />}>
-          <Route path="/login" element={<Login />} />
-        </Route>
-        <Route path="/register" element={<PublicRoute />}>
-          <Route path="/register" element={<Register />} />
-        </Route>
-        <Route path="/forgot-password" element={<PublicRoute />}>
-          <Route path="/forgot-password" element={<ForgetPassword />} />
-        </Route>
-        <Route path="/recover-password" element={<PublicRoute />}>
-          <Route path="/recover-password" element={<RecoverPassword />} />
-        </Route>
-        <Route path="/" element={<PrivateRoute />}>
-          <Route path="/" element={<Main />}>
-            <Route path="/sub-menu-2" element={<Blank />} />
-            <Route path="/sub-menu-1" element={<SubMenu />} />
-            <Route path="/blank" element={<Blank />} />
-            <Route path="/profile" element={<Profile />} />
-            <Route path="/" element={<Dashboard />} />
+      <LocalizationProvider dateAdapter={AdapterMoment}>
+        <Routes>
+          <Route path="/login" element={<PublicRoute />}>
+            <Route path="/login" element={<Login />} />
           </Route>
-        </Route>
-
-        <Route path="/admin" element={<AdminRoute />}>
-          <Route path="/admin" element={<Main />}>
-            <Route path="admin/sub-menu-2" element={<Blank />} />
-            <Route path="admin/sub-menu-1" element={<SubMenu />} />
-            <Route path="/admin/students" element={<Students />} />
-            <Route path="admin/profile" element={<Profile />} />
-            <Route path="/admin/" element={<Dashboard />} />
+          <Route path="/register" element={<PublicRoute />}>
+            <Route path="/register" element={<Register />} />
           </Route>
-        </Route>
+          <Route path="/forgot-password" element={<PublicRoute />}>
+            <Route path="/forgot-password" element={<ForgetPassword />} />
+          </Route>
+          <Route path="/recover-password" element={<PublicRoute />}>
+            <Route path="/recover-password" element={<RecoverPassword />} />
+          </Route>
+          <Route path="/" element={<PrivateRoute />}>
+            <Route path="/" element={<Main />}>
+              <Route path="/sub-menu-2" element={<Blank />} />
+              <Route path="/sub-menu-1" element={<SubMenu />} />
+              <Route path="/blank" element={<Blank />} />
+              <Route path="/profile" element={<Profile />} />
+              <Route path="/" element={<Dashboard />} />
+            </Route>
+          </Route>
 
-        
-      </Routes>
-      <ToastContainer
-        autoClose={3000}
-        draggable={false}
-        position="top-right"
-        hideProgressBar={false}
-        newestOnTop
-        closeOnClick
-        rtl={false}
-        pauseOnHover
-      />
+          <Route path="/admin" element={<AdminRoute />}>
+            <Route path="/admin" element={<Main />}>
+              <Route path="admin/sub-menu-2" element={<Blank />} />
+              <Route path="admin/sub-menu-1" element={<SubMenu />} />
+              <Route path="/admin/students" element={<Students />} />
+              <Route path="admin/profile" element={<Profile />} />
+              <Route path="/admin/classroom" element={<Classroom />} />
+              <Route path="/admin/" element={<Dashboard />} />
+            </Route>
+          </Route>
+
+
+        </Routes>
+        <ToastContainer
+          autoClose={3000}
+          draggable={false}
+          position="top-right"
+          hideProgressBar={false}
+          newestOnTop
+          closeOnClick
+          rtl={false}
+          pauseOnHover
+        />
+      </LocalizationProvider>
     </>
   );
 };
