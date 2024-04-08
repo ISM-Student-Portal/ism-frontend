@@ -8,6 +8,7 @@ import ActivityTab from './ActivityTab';
 import TimelineTab from './TimelineTab';
 import SettingsTab from './SettingsTab';
 import { Button } from '@app/styles/common';
+import { useSelector } from 'react-redux';
 
 const StyledUserImage = styled(Image)`
   --pf-border: 3px solid #adb5bd;
@@ -15,7 +16,10 @@ const StyledUserImage = styled(Image)`
 `;
 
 const Profile = () => {
-  const [activeTab, setActiveTab] = useState('ACTIVITY');
+  const [activeTab, setActiveTab] = useState('TIMELINE');
+  const profile = useSelector((state: any) => state.profile.profile);
+  console.log(profile)
+
   const [t] = useTranslation();
 
   const toggle = (tab: string) => {
@@ -109,17 +113,7 @@ const Profile = () => {
               <div className="card">
                 <div className="card-header p-2">
                   <ul className="nav nav-pills">
-                    <li className="nav-item">
-                      <button
-                        type="button"
-                        className={`nav-link ${
-                          activeTab === 'ACTIVITY' ? 'active' : ''
-                        }`}
-                        onClick={() => toggle('ACTIVITY')}
-                      >
-                        {t('main.label.activity')}
-                      </button>
-                    </li>
+                   
                     <li className="nav-item">
                       <button
                         type="button"
@@ -139,7 +133,7 @@ const Profile = () => {
                         }`}
                         onClick={() => toggle('SETTINGS')}
                       >
-                        {t('main.label.settings')}
+                        Edit Profile
                       </button>
                     </li>
                   </ul>

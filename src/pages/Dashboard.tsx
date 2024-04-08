@@ -1,6 +1,32 @@
+import { getDashboardStats } from '@app/services/admin/dashboardService';
 import { ContentHeader } from '@components';
+import { useEffect, useState } from 'react';
+
+interface Stats {
+  students: number,
+  classes: number,
+  basicSub: number,
+  premiumSub: number
+}
 
 const Dashboard = () => {
+
+  const [stats, setStats] = useState <Stats>();
+
+  const getStats = async () => {
+    try{
+    let stats = await getDashboardStats();
+    setStats(stats.stats);
+
+    }
+    catch(error: any){
+      console.log(error);
+    }
+  }
+
+  useEffect(() => {
+    getStats();
+  }, []);
   return (
     <div>
       <ContentHeader title="Dashboard" />
@@ -11,7 +37,7 @@ const Dashboard = () => {
             <div className="col-lg-3 col-6">
               <div className="small-box bg-info">
                 <div className="inner">
-                  <h3>150</h3>
+                  <h3>{stats?.students}</h3>
 
                   <p>Students</p>
                 </div>
@@ -27,7 +53,7 @@ const Dashboard = () => {
               <div className="small-box bg-success">
                 <div className="inner">
                   <h3>
-                    53<sup style={{ fontSize: '20px' }}>%</sup>
+                    {stats?.classes}<sup style={{ fontSize: '20px' }}></sup>
                   </h3>
 
                   <p>Courses</p>
@@ -43,7 +69,7 @@ const Dashboard = () => {
             <div className="col-lg-3 col-6">
               <div className="small-box bg-warning">
                 <div className="inner">
-                  <h3>44</h3>
+                  <h3>{stats?.basicSub}</h3>
 
                   <p>Basic Subscription</p>
                 </div>
@@ -58,7 +84,7 @@ const Dashboard = () => {
             <div className="col-lg-3 col-6">
               <div className="small-box bg-danger">
                 <div className="inner">
-                  <h3>65</h3>
+                  <h3>{stats?.premiumSub}</h3>
 
                   <p>Premium</p>
                 </div>
