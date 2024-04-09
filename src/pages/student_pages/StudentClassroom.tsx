@@ -9,6 +9,7 @@ import Chip from '@mui/material/Chip';
 import Stack from '@mui/material/Stack';
 import Divider from '@mui/material/Divider';
 import Typography from '@mui/material/Typography';
+import { useSelector } from 'react-redux';
 
 interface Classroom {
     id:number
@@ -19,7 +20,7 @@ interface Classroom {
 }
 
 const StudentClassroom = () => {
-
+    const profile = useSelector((state: any) => state.profile.profile);
     const [classroom, setClassroom] = useState<Classroom>();
     const [showLink, setShowLink] = useState(false);
     const [loading, setLoading] = useState(false);
@@ -36,6 +37,15 @@ const StudentClassroom = () => {
         catch (error: any) {
             console.log(error);
         }
+        let attendances = profile.attendances;
+        let item = attendances.find((item:any) => {
+            return item.classroom_id === classroom?.id
+        });
+        if(item){
+            setShowLink(true);
+            setLoading(true);
+        }
+
     }
     const getDate = (date: string) => {
         let day = moment(date);
@@ -66,7 +76,7 @@ const StudentClassroom = () => {
                     <Card variant="outlined" sx={{ maxWidth: "420px" }}>
                         <Box sx={{ p: 2 }}>
                             <Stack direction="row" justifyContent="space-between" alignItems="center">
-                                <Typography gutterBottom variant="h4" component="div">
+                                <Typography gutterBottom variant="h6" component="div">
                                     {classroom?.title}
                                 </Typography>
                                 <Chip label={getDate(classroom?.expires_on)} variant='filled' color='secondary'>
