@@ -30,10 +30,13 @@ import {
 } from './utils/oidc-providers';
 import { Spinner } from './styles/common';
 import { setProfile } from './store/reducers/profile';
-import LoginTest from './modules/login/LoginTest';
 import AdminRoute from './routes/AdminRoute';
 import Students from './pages/Students';
 import Classroom from './pages/Classroom';
+import Assignment from './pages/student_pages/Assignment';
+import StudentClassroom from './pages/student_pages/StudentClassroom';
+import StudentNotification from './pages/student_pages/StudentNotification';
+import StudentDashboard from './pages/student_pages/StudentDashboard';
 
 const { VITE_NODE_ENV } = import.meta.env;
 
@@ -111,11 +114,11 @@ const App = () => {
           </Route>
           <Route path="/" element={<PrivateRoute />}>
             <Route path="/" element={<Main />}>
-              <Route path="/sub-menu-2" element={<Blank />} />
-              <Route path="/sub-menu-1" element={<SubMenu />} />
-              <Route path="/blank" element={<Blank />} />
+              <Route path="/assignments" element={<Assignment />} />
+              <Route path="/classroom" element={<StudentClassroom />} />
+              <Route path="/notification" element={<StudentNotification />} />
               <Route path="/profile" element={<Profile />} />
-              <Route path="/" element={<Dashboard />} />
+              <Route path="/" element={<StudentDashboard />} />
             </Route>
           </Route>
 

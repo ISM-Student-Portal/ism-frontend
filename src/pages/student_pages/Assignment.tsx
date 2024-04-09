@@ -9,7 +9,7 @@ interface Stats {
   premiumSub: number
 }
 
-const Dashboard = () => {
+const Assignment = () => {
 
   const [stats, setStats] = useState <Stats>();
 
@@ -44,7 +44,7 @@ const Dashboard = () => {
                 <div className="icon">
                   <i className="ion ion-bag" />
                 </div>
-                <a href="/admin/students" className="small-box-footer">
+                <a href="/" className="small-box-footer">
                   More info <i className="fas fa-arrow-circle-right" />
                 </a>
               </div>
@@ -61,7 +61,7 @@ const Dashboard = () => {
                 <div className="icon">
                   <i className="ion ion-stats-bars" />
                 </div>
-                <a href="/admin/classroom" className="small-box-footer">
+                <a href="/" className="small-box-footer">
                   More info <i className="fas fa-arrow-circle-right" />
                 </a>
               </div>
@@ -103,4 +103,4 @@ const Dashboard = () => {
   );
 };
 
-export default Dashboard;
+export default Assignment;
