@@ -19,6 +19,7 @@ const Classroom = () => {
 
   const [open, setOpen] = React.useState(false);
   const [pending, setpending] = React.useState(true);
+  const [loading, setLoading] = React.useState(false);
   const [openAdd, setOpenAdd] = React.useState(false);
 
   const [title, setTitle] = React.useState('');
@@ -44,6 +45,7 @@ const Classroom = () => {
   }
 
   const createClassroomAction = async () => {
+    setLoading(true);
     const data = {
       title: title,
       description: description,
@@ -56,6 +58,8 @@ const Classroom = () => {
     toast.success('Student Created Successfully!');
     handleCloseAdd();
     getClassrooms();
+    setLoading(false);
+
 
 
   }
@@ -169,7 +173,7 @@ const Classroom = () => {
             <Button variant='outlined' size='small' sx={{
               marginRight: ".2rem"
             }} onClick={handleCloseAdd}>Cancel</Button>
-            <Button variant='contained' size='small' onClick={createClassroomAction}>Submit</Button>
+            <Button variant='contained' size='small' onClick={createClassroomAction} disabled={loading}>Submit</Button>
           </Box>
 
           {/* <Button variant="outlined" onClick={handleClose}>Close Child Modal</Button> */}

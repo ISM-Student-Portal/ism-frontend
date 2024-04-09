@@ -21,6 +21,7 @@ const Students = () => {
 
   const [open, setOpen] = React.useState(false);
   const [pending, setpending] = React.useState(true);
+  const [loading, setLoading] = React.useState(false);
   const [openAdd, setOpenAdd] = React.useState(false);
   const [filename, setFilename] = React.useState("");
   const [file, setFile] = React.useState(null);
@@ -52,6 +53,7 @@ const Students = () => {
   }
 
   const createStudentAction = async () => {
+    setLoading(true);
     const data = {
       first_name: firstName,
       last_name: lastName,
@@ -59,10 +61,11 @@ const Students = () => {
       phone_number: phoneNumber
     }
     const student = await createStudent(data);
-    console.log(student);
     toast.success('Student Created Successfully!');
     handleCloseAdd();
     getStudents();
+    setLoading(false);
+
 
 
   }
@@ -80,6 +83,7 @@ const Students = () => {
   };
 
   const submitBatchStudents = async()=> {
+    setLoading(true);
     let formData = new FormData();
     //@ts-ignore
     formData.append("file",file);
@@ -91,6 +95,7 @@ const Students = () => {
     if(res){
       toast.success('Upload done');
     }
+    setLoading(false);
     handleClose();
     
 
@@ -150,6 +155,7 @@ const Students = () => {
             variant="outlined"
             startIcon={<UploadFileIcon />}
             sx={{ marginRight: "1rem" }}
+            disabled={loading}
           >
             Upload File
             <input
@@ -241,7 +247,7 @@ const Students = () => {
             <Button variant='outlined' size='small' sx={{
               marginRight: ".2rem"
             }} onClick={handleCloseAdd}>Cancel</Button>
-            <Button variant='contained' size='small' onClick={createStudentAction}>Submit</Button>
+            <Button variant='contained' size='small' onClick={createStudentAction} disabled={loading}>Submit</Button>
           </Box>
 
           {/* <Button variant="outlined" onClick={handleClose}>Close Child Modal</Button> */}

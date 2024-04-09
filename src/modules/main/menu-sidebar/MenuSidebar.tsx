@@ -36,7 +36,33 @@ export const MENU: IMenuItem[] = [
     icon: 'fas fa-envelope-square nav-icon',
     path: '/Notifications',
   },
- 
+
+];
+
+export const STUDENT_MENU: IMenuItem[] = [
+  {
+    name: i18n.t('menusidebar.label.dashboard'),
+    icon: 'fas fa-tachometer-alt nav-icon',
+    path: '/',
+  },
+  {
+    name: 'Assignments',
+    icon: 'fas fa-briefcase nav-icon',
+    path: '/assignments',
+  },
+
+  {
+    name: 'Classrooms',
+    icon: 'fas fa-graduation-cap nav-icon',
+    path: '/classroom',
+  },
+
+  {
+    name: i18n.t('menusidebar.label.notifications'),
+    icon: 'fas fa-envelope-square nav-icon',
+    path: '/notifications',
+  },
+
 ];
 
 const StyledBrandImage = styled(Image)`
@@ -97,7 +123,14 @@ const MenuSidebar = () => {
               }${menuChildIndent ? ' nav-child-indent' : ''}`}
             role="menu"
           >
-            {MENU.map((menuItem: IMenuItem) => (
+            {profile.is_admin && MENU.map((menuItem: IMenuItem) => (
+              <MenuItem
+                key={menuItem.name + menuItem.path}
+                menuItem={menuItem}
+              />
+            ))}
+
+            {profile.is_admin === 0 && STUDENT_MENU.map((menuItem: IMenuItem) => (
               <MenuItem
                 key={menuItem.name + menuItem.path}
                 menuItem={menuItem}
