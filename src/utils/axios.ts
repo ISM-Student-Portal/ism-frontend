@@ -1,17 +1,21 @@
 import axios from 'axios';
 import { useSelector } from 'react-redux';
 import { Link, useNavigate } from 'react-router-dom';
-
-
-const instance = axios.create({
-    baseURL: process.env.REACT_APP_API_URL
-})
-
+console.log('got here');
 const authentication = localStorage.getItem('authentication');
 let token: any = null;
 if(authentication){
     token = JSON.parse(authentication).plainTextToken;
 }
+
+const instance = axios.create({
+    baseURL: process.env.REACT_APP_API_URL,
+    headers: {
+        Authorization: 'Bearer ' + token
+    }
+})
+
+
 
 
 // axios.defaults.baseURL = process.env.REACT_APP_API_URL;

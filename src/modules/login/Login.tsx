@@ -9,7 +9,7 @@ import { setWindowClass } from '@app/utils/helpers';
 import { Checkbox } from '@profabric/react-components';
 import * as Yup from 'yup';
 
-import { authLogin } from '@app/utils/oidc-providers';
+import { authLogin, getAuthStatus, getProfileStatus } from '@app/utils/oidc-providers';
 import { Form, InputGroup } from 'react-bootstrap';
 import { Button } from '@app/styles/common';
 import { Image } from '@profabric/react-components';
@@ -29,9 +29,16 @@ const Login = () => {
     try {
       setAuthLoading(true);
       const response: any = await authLogin(email, password);
-      console.log(response);
-      dispatch(setAuthentication(response.authentication));
-      dispatch(setProfile(response.profile));
+      const authStatus: any = await getAuthStatus();
+      let profile: any = await getProfileStatus();
+
+      if (authStatus) {
+        console.log(authStatus);
+        dispatch(setAuthentication(authStatus));
+        dispatch(setProfile(profile));
+      }
+      // console.log(response);
+      
       toast.success('Login is Successful!');
       setAuthLoading(false);
       console.log(response);
@@ -42,6 +49,7 @@ const Login = () => {
       } else {
         navigate('/');
       }
+      window.location.reload();
     } catch (error: any) {
       setAuthLoading(false);
       toast.error(error.message || 'Failed');

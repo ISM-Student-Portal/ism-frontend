@@ -75,7 +75,6 @@ export const authLogin = (email: string, password: string) => {
       }
     }).then(res => {
       
-        console.log(res);
       localStorage.setItem(
               'authentication',
               JSON.stringify(res.data.token)           
