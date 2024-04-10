@@ -10,15 +10,18 @@ import { Checkbox } from '@profabric/react-components';
 import * as Yup from 'yup';
 
 import { authLogin, getAuthStatus, getProfileStatus } from '@app/utils/oidc-providers';
-import { Form, InputGroup } from 'react-bootstrap';
+import { Form, InputGroup, ToggleButton } from 'react-bootstrap';
 import { Button } from '@app/styles/common';
 import { Image } from '@profabric/react-components';
 import { setProfile } from '@app/store/reducers/profile';
+import { Visibility, VisibilityOff } from '@mui/icons-material';
+import { ButtonBase } from '@mui/material';
 
 
 const Login = () => {
   const [isAuthLoading, setAuthLoading] = useState(false);
   const [isGoogleAuthLoading, setGoogleAuthLoading] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
   const [isFacebookAuthLoading, setFacebookAuthLoading] = useState(false);
   const dispatch = useDispatch();
 
@@ -38,7 +41,7 @@ const Login = () => {
         dispatch(setProfile(profile));
       }
       // console.log(response);
-      
+
       toast.success('Login is Successful!');
       setAuthLoading(false);
       console.log(response);
@@ -137,21 +140,22 @@ const Login = () => {
                     <Form.Control
                       id="password"
                       name="password"
-                      type="password"
+                      type={showPassword ? "text" : "password"}
                       placeholder="Password"
                       onChange={handleChange}
                       value={values.password}
                       isValid={touched.password && !errors.password}
                       isInvalid={touched.password && !!errors.password}
                     />
+
                     {touched.password && errors.password ? (
                       <Form.Control.Feedback type="invalid">
                         {errors.password}
                       </Form.Control.Feedback>
                     ) : (
                       <InputGroup.Append>
-                        <InputGroup.Text>
-                          <i className="fas fa-lock" />
+                        <InputGroup.Text onClick={() => setShowPassword(!showPassword)}>
+                          {!showPassword ? <i className="fas fa-eye-slash" /> : <i className="fas fa-eye" />}
                         </InputGroup.Text>
                       </InputGroup.Append>
                     )}

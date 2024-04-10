@@ -12,9 +12,11 @@ import AddIcon from '@mui/icons-material/Add'
 import UploadIcon from '@mui/icons-material/Upload'
 import { toast } from 'react-toastify';
 import axios from '../utils/axios';
+import memoize from 'memoize-one';
 
 import { ChangeEvent, useState } from "react";
-import { fetchAllStudents, createStudent } from '@app/services/admin/studentServices';
+import { fetchAllStudents, createStudent, updateStudentStatus, deleteStudent } from '@app/services/admin/studentServices';
+import { Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle } from '@mui/material';
 
 
 const Students = () => {
@@ -23,6 +25,11 @@ const Students = () => {
   const [pending, setpending] = React.useState(true);
   const [loading, setLoading] = React.useState(false);
   const [openAdd, setOpenAdd] = React.useState(false);
+  const [openEdit, setOpenEdit] = React.useState(false);
+  const [openDelete, setOpenDelete] = React.useState(false);
+
+  const [selectedStudent, setSelectedStudent] = React.useState<any>();
+
   const [filename, setFilename] = React.useState("");
   const [file, setFile] = React.useState(null);
   const [email, setEmail] = React.useState('');
@@ -37,12 +44,56 @@ const Students = () => {
   const handleClose = () => {
     setOpen(false);
   };
+
+  const handleOpenEdit = () => {
+    setOpenEdit(true);
+  };
+  const handleCloseEdit = () => {
+    setOpenEdit(false);
+  };
+
+  const handleOpenDelete = () => {
+    setOpenDelete(true);
+  };
+  const handleCloseDelete = () => {
+    setOpenDelete(false);
+  };
   const handleOpenAdd = () => {
     setOpenAdd(true);
   }
 
   const handleCloseAdd = () => {
     setOpenAdd(false);
+  }
+  const handleButtonClick = (type: any, student: any) => {
+    setSelectedStudent(student);
+    if (type === 'edit') {
+      handleOpenEdit();
+    } else {
+      handleOpenDelete();
+    }
+  }
+
+  const performActionEdit = async () => {
+    setLoading(true);
+    const res = await updateStudentStatus(selectedStudent?.id, selectedStudent?.is_admin);
+    if (res.status === 'success') {
+      toast.success('Student updated Successfully!');
+      handleCloseEdit();
+      getStudents();
+    }
+    setLoading(false);
+  }
+
+  const performActionDelete = async () => {
+    setLoading(true);
+    const res = await deleteStudent(selectedStudent?.id, selectedStudent?.is_active);
+    if (res.status === 'success') {
+      toast.success('Student Deleted Successfully!');
+      handleCloseDelete();
+      getStudents();
+    }
+    setLoading(false);
   }
 
   const getStudents = async () => {
@@ -70,34 +121,34 @@ const Students = () => {
 
   }
 
-  const handleFileUpload = async(e: ChangeEvent<HTMLInputElement>) => {
+  const handleFileUpload = async (e: ChangeEvent<HTMLInputElement>) => {
     if (!e.target.files) {
       return;
     }
-    
-    const file:any = e.target.files[0];
+
+    const file: any = e.target.files[0];
     setFile(file);
     const { name } = file;
-    
+
     setFilename(name);
   };
 
-  const submitBatchStudents = async()=> {
+  const submitBatchStudents = async () => {
     setLoading(true);
     let formData = new FormData();
     //@ts-ignore
-    formData.append("file",file);
+    formData.append("file", file);
     let res = await axios.post('/batch-create', formData, {
       headers: {
         'Content-Type': 'multipart/form-data'
       }
     });
-    if(res){
+    if (res) {
       toast.success('Upload done');
     }
     setLoading(false);
     handleClose();
-    
+
 
   }
   const style = {
@@ -105,7 +156,7 @@ const Students = () => {
     top: '50%',
     left: '50%',
     transform: 'translate(-50%, -50%)',
-    width: 400,
+    width: 600,
     bgcolor: 'background.paper',
     border: '2px solid #000',
     boxShadow: 24,
@@ -113,17 +164,28 @@ const Students = () => {
     px: 4,
     pb: 3,
   };
-  const columns = [
-
-    { name: 'First Name', selector: (row: any) => row.profile?.first_name },
-    { name: 'Last Name', selector: (row: any) => row.profile?.last_name },
+  const columns = memoize(clickHandler => [
+    { name: 'First Name', selector: (row: any) => row.profile?.first_name, sortable: true, reorder: true },
+    { name: 'Last Name', selector: (row: any) => row.profile?.last_name, sortable: true, reorder: true },
     { name: 'Email', selector: (row: any) => row.email },
     { name: 'Phone', selector: (row: any) => row.profile?.phone },
     { name: 'Subscription', selector: (row: any) => row.profile?.subscription },
+    { name: 'Role', selector: (row: any) => row.is_admin ? "Admin" : "Student" },
+    { name: 'Status', selector: (row: any) => row.is_active ? "Active" : "Inactive" },
 
-    { name: 'Gender', selector: (row: any) => row.profile?.gender },
-  ];
-  
+
+
+    {
+
+      cell: (row: any) => (<div><button className='btn btn-primary btn-sm' onClick={() => { clickHandler('edit', row) }}>Edit</button> <button className='btn btn-danger btn-sm' onClick={() => { clickHandler('delete', row) }}>Delete</button></div>),
+      ignoreRowClick: true,
+      allowOverflow: true,
+      button: true,
+    },
+
+
+  ]);
+
 
   useEffect(() => {
     getStudents();
@@ -135,10 +197,10 @@ const Students = () => {
 
         <div className="container-fluid">
           <div className="d-grid gap-2 d-md-block py-2">
-            <Button size='small' variant='outlined' startIcon={<UploadIcon />} onClick={handleOpen} className="btn btn-primary btn-sm float-right" type="button">Upload</Button>
-            <Button size='small' variant='outlined' startIcon={<AddIcon />} onClick={handleOpenAdd} className="btn btn-primary btn-sm float-right mx-1" type="button">Add</Button>
+            <Button size='small' startIcon={<UploadIcon />} onClick={handleOpen} className="btn btn-primary btn-sm float-right" type="button">Upload</Button>
+            <Button size='small' startIcon={<AddIcon />} onClick={handleOpenAdd} className="btn btn-primary btn-sm float-right mx-1" type="button">Add</Button>
           </div>
-          <DataTable columns={columns} data={rows} progressPending={pending} responsive/>
+          <DataTable columns={columns(handleButtonClick)} data={rows} progressPending={pending} responsive={true} striped={true} />
         </div>
       </section>
       <Footer />
@@ -253,6 +315,46 @@ const Students = () => {
           {/* <Button variant="outlined" onClick={handleClose}>Close Child Modal</Button> */}
         </Container>
       </Modal>
+
+
+      <Dialog
+        open={openEdit}
+        onClose={handleCloseEdit}
+        aria-labelledby="child-modal-title"
+        aria-describedby="child-modal-description">
+
+        <DialogTitle align='center' variant='h5'>Change Admin Status</DialogTitle>
+        <DialogContent>
+          <DialogContentText>Are you sure you want to {selectedStudent?.is_admin ? 'remove' : 'set'} student <b>{selectedStudent?.profile?.first_name}</b> as <b>Admin</b>?</DialogContentText>
+        </DialogContent>
+
+        <DialogActions>
+          <Button variant='outlined' size='small' sx={{
+            marginRight: ".2rem"
+          }} onClick={handleCloseEdit}>Cancel</Button>
+          <Button variant='contained' size='small' onClick={performActionEdit} disabled={loading}>Submit</Button>
+        </DialogActions>
+      </Dialog>
+
+
+      <Dialog
+        open={openDelete}
+        onClose={handleCloseDelete}
+        aria-labelledby="child-modal-title"
+        aria-describedby="child-modal-description">
+
+        <DialogTitle align='center' variant='h5'>Set Student Inactive</DialogTitle>
+        <DialogContent>
+          <DialogContentText>Are you sure you want to <b>{selectedStudent?.is_active ? 'deactivate' : 'reactivate'}</b> student <b>{selectedStudent?.profile?.first_name}</b>?</DialogContentText>
+        </DialogContent>
+
+        <DialogActions>
+          <Button variant='outlined' size='small' sx={{
+            marginRight: ".2rem"
+          }} onClick={handleCloseDelete}>Cancel</Button>
+          <Button variant='contained' size='small' color='error' onClick={performActionDelete} disabled={loading}>Submit</Button>
+        </DialogActions>
+      </Dialog>
     </div>
   );
 };
