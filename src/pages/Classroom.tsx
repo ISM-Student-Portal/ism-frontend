@@ -83,9 +83,7 @@ const Classroom = () => {
       title: title,
       description: description,
       link: link,
-      expires_on: expiresOn
     }
-    console.log(data)
     const student = await createClassroom(data);
     console.log(student);
     toast.success('Student Created Successfully!');
@@ -138,8 +136,8 @@ const Classroom = () => {
   ])
 
   const columns2 = [
-    { name: 'First Name', selector: (row: any) => row.profile.first_name },
-    { name: 'Last Name', selector: (row: any) => row.profile.last_name },
+    { name: 'First Name', selector: (row: any) => row.profile?.first_name },
+    { name: 'Last Name', selector: (row: any) => row.profile?.last_name },
     { name: 'Email', selector: (row: any) => row.email },
    
   ];
@@ -214,13 +212,7 @@ const Classroom = () => {
                 setLink(event.target.value);
               }}
             />
-            <DateTimePicker
-              sx={{ marginRight: '1rem', marginY: '.5rem', width: '100%', }}
-              value={expiresOn}
-              autoFocus
-              // @ts-ignore
-              onChange={(newValue) => setExpiresOn(newValue)}
-              label="Link Expiry Date" />
+            
           </Container>
 
 

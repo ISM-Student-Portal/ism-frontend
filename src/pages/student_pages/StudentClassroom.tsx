@@ -12,7 +12,7 @@ import Typography from '@mui/material/Typography';
 import { useSelector } from 'react-redux';
 
 interface Classroom {
-    id:number
+    id: number
     title: string,
     description: string,
     link: string,
@@ -22,7 +22,9 @@ interface Classroom {
 const StudentClassroom = () => {
     const profile = useSelector((state: any) => state.profile.profile);
     const [classroom, setClassroom] = useState<Classroom>();
-    const [showLink, setShowLink] = useState(false);
+    const [attendanceMarked, setAttendanceMarked] = useState(false);
+    const [attendanceExpired, setAttendanceExpired] = useState(false);
+
     const [loading, setLoading] = useState(false);
 
 
@@ -31,20 +33,26 @@ const StudentClassroom = () => {
     const getUpcomingClass = async () => {
         try {
             let classroom1 = await getUpcoming();
-            setClassroom(classroom1.data[classroom1.data.length -1]);
+            let res = classroom1.data[classroom1.data.length - 1]
+            setClassroom(res);
+            let attendances = profile.attendances;
+            let item = attendances.find((item: any) => {
+                return item.classroom_id === res?.id
+            });
+            if (item) {
+                setAttendanceMarked(true);
+                // setLoading(true);
+            }
+            if(moment() > moment(res?.expires_on)){
+                setAttendanceExpired(true);
+            }
 
         }
         catch (error: any) {
             console.log(error);
         }
-        let attendances = profile.attendances;
-        let item = attendances.find((item:any) => {
-            return item.classroom_id === classroom?.id
-        });
-        if(item){
-            setShowLink(true);
-            setLoading(true);
-        }
+
+
 
     }
     const getDate = (date: string) => {
@@ -55,11 +63,11 @@ const StudentClassroom = () => {
         return "Will Expire " + day.fromNow();
     }
 
-    const getClassLink = async() => {
+    const getClassLink = async () => {
         setLoading(true)
         let result = await markAttendance(classroom?.id);
-        if(result.status === 'Success'){
-            setShowLink(true);
+        if (result.status === 'Success') {
+            setAttendanceMarked(true);
         }
         setLoading(false);
     }
@@ -95,7 +103,7 @@ const StudentClassroom = () => {
                         <Box sx={{ p: 2 }}>
 
                             <Stack direction="row" spacing={1}>
-                                <Button variant='contained' color='success' onClick={getClassLink} disabled={loading}>Mark Attendance</Button>
+                                <Button variant='contained' color='success' onClick={getClassLink} disabled={attendanceMarked || attendanceExpired}>Mark Attendance</Button>
                             </Stack>
                         </Box>
                     </Card>

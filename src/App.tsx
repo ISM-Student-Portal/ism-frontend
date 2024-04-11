@@ -56,7 +56,6 @@ const App = () => {
         getAuthStatus(),
       ]);
       let profile: any = await getProfileStatus();
-      console.log(profile, 'entry')
 
       responses = responses.filter((r: any) => Boolean(r));
 

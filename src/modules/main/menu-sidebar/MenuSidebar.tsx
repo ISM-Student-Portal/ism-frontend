@@ -31,11 +31,11 @@ export const MENU: IMenuItem[] = [
     path: '/admin/classroom',
   },
 
-  {
-    name: i18n.t('menusidebar.label.notifications'),
-    icon: 'fas fa-envelope-square nav-icon',
-    path: '/Notifications',
-  },
+  // {
+  //   name: i18n.t('menusidebar.label.notifications'),
+  //   icon: 'fas fa-envelope-square nav-icon',
+  //   path: '/Notifications',
+  // },
 
 ];
 
@@ -57,11 +57,11 @@ export const STUDENT_MENU: IMenuItem[] = [
     path: '/classroom',
   },
 
-  {
-    name: i18n.t('menusidebar.label.notifications'),
-    icon: 'fas fa-envelope-square nav-icon',
-    path: '/notifications',
-  },
+  // {
+  //   name: i18n.t('menusidebar.label.notifications'),
+  //   icon: 'fas fa-envelope-square nav-icon',
+  //   path: '/notifications',
+  // },
 
 ];
 
