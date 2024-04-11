@@ -170,7 +170,7 @@ const Students = () => {
     { name: 'Email', selector: (row: any) => row.email },
     { name: 'Phone', selector: (row: any) => row.profile?.phone },
     { name: 'Subscription', selector: (row: any) => row.profile?.subscription },
-    { name: 'Role', selector: (row: any) => row.is_admin ? "Admin" : "Student" },
+    { name: 'Reg No', selector: (row: any) => row.reg_no },
     { name: 'Status', selector: (row: any) => row.is_active ? "Active" : "Inactive" },
 
 
