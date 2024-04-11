@@ -20,7 +20,6 @@ const Dashboard = () => {
 
     }
     catch(error: any){
-      console.log(error);
     }
   }
 

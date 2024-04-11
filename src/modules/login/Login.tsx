@@ -36,7 +36,6 @@ const Login = () => {
       let profile: any = await getProfileStatus();
 
       if (authStatus) {
-        console.log(authStatus);
         dispatch(setAuthentication(authStatus));
         dispatch(setProfile(profile));
       }
@@ -44,7 +43,6 @@ const Login = () => {
 
       toast.success('Login is Successful!');
       setAuthLoading(false);
-      console.log(response);
       // dispatch(loginUser(token));
       if (response.profile.is_admin === 1) {
         console.log('here')
