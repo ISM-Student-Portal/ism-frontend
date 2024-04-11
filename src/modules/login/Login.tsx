@@ -97,9 +97,17 @@ const Login = () => {
         <div className="login-box mx-auto ">
           <div className="card card-outline card-warning">
             <div className="card-header text-center">
+              <span className='px-1'> <Image
+                src={"./img/logo1.png"}
+
+                alt="AdminLTELogo"
+                height={40}
+                width={30}
+              /></span>
 
 
               <Link to="/" className="h1">
+
 
                 <b>ISM</b>
                 <span> Portal</span>
