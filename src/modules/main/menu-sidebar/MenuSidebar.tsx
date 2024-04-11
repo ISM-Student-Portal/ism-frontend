@@ -88,7 +88,7 @@ const MenuSidebar = () => {
 
   return (
     <aside className={`main-sidebar elevation-4 ${sidebarSkin}`}>
-      <Link to="/" className="brand-link">
+      <Link to={profile.is_admin ? "/admin" : "/"} className="brand-link">
         <StyledBrandImage
           src="/img/logo1.png"
           alt="ISM Logo"

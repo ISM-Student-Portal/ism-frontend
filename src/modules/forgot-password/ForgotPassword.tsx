@@ -27,12 +27,17 @@ const ForgotPassword = () => {
 
   return (
     <div className="login-box">
-      <div className="card card-outline card-primary">
+      <div className="card card-outline card-warning">
         <div className="card-header text-center">
-          <Link to="/" className="h1">
-            <b>Admin</b>
-            <span>LTE</span>
-          </Link>
+          <div className="card-header text-center">
+
+
+            <Link to="/" className="h1">
+
+              <b>ISM</b>
+              <span> Portal</span>
+            </Link>
+          </div>
         </div>
         <div className="card-body">
           <p className="login-box-msg">{t('recover.forgotYourPassword')}</p>
@@ -63,9 +68,14 @@ const ForgotPassword = () => {
               </InputGroup>
             </div>
             <div className="row">
-              <div className="col-12">
-                <Button>{t('recover.requestNewPassword')}</Button>
-              </div>
+            <Button
+                      
+                      onClick={handleSubmit as any}
+                      variant='warning'
+
+                    >
+                      {t('recover.requestNewPassword')}
+                    </Button>
             </div>
           </form>
           <p className="mt-3 mb-1">

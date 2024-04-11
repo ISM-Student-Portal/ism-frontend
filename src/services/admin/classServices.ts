@@ -20,3 +20,13 @@ export const createClassroom = async(data: any) => {
             return error.message
         }
 }
+
+export const getAttendance = async(id: any) => {
+    try{
+        const attendance = await axios.get('/view-attendance/'+ id);
+        return attendance.data;
+    
+        }catch (error: any){
+            return error.message
+        }
+}

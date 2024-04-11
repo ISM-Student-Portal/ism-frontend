@@ -87,15 +87,15 @@ const StudentClassroom = () => {
                                 {classroom?.description}
                             </Typography>
 
-                            <Typography color="text.secondary" variant="body2">
-                                {showLink && (<a href={classroom?.link} target='_blank'> {classroom?.link}</a>)}
+                            <Typography color="text.secondary" variant="h6">
+                                <a href={classroom?.link} target='_blank'> {classroom?.link}</a>
                             </Typography>
                         </Box>
                         <Divider />
                         <Box sx={{ p: 2 }}>
 
                             <Stack direction="row" spacing={1}>
-                                <Button variant='contained' onClick={getClassLink} disabled={loading}>Get Class Link</Button>
+                                <Button variant='contained' color='success' onClick={getClassLink} disabled={loading}>Mark Attendance</Button>
                             </Stack>
                         </Box>
                     </Card>

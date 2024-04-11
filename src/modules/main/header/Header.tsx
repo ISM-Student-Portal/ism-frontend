@@ -16,6 +16,8 @@ const Header = () => {
   const dispatch = useDispatch();
   const navbarVariant = useSelector((state: any) => state.ui.navbarVariant);
   const headerBorder = useSelector((state: any) => state.ui.headerBorder);
+  const profile = useSelector((state: any) => state.profile.profile);
+
 
   const handleToggleMenuSidebar = () => {
     dispatch(toggleSidebarMenu());
@@ -46,15 +48,11 @@ const Header = () => {
           </button>
         </li>
         <li className="nav-item d-none d-sm-inline-block">
-          <Link to="/" className="nav-link">
+          <Link to={profile.is_admin ? "/admin" : "/"} className="nav-link">
             {t('header.label.home')}
           </Link>
         </li>
-        <li className="nav-item d-none d-sm-inline-block">
-          <Link to="/" className="nav-link">
-            {t('header.label.contact')}
-          </Link>
-        </li>
+        
       </ul>
       <ul className="navbar-nav ml-auto">
         {/* <MessagesDropdown /> */}
