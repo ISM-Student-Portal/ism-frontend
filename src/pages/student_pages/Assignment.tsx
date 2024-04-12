@@ -130,34 +130,54 @@ const Assignment = () => {
 
       <section className="content">
         <div className="container-fluid">
-          <Card variant="outlined" sx={{ maxWidth: "420px" }}>
-            <Box sx={{ p: 2 }}>
-              <Stack direction="row" justifyContent="space-between" alignItems="center">
-                <Typography gutterBottom variant="h6" component="div" align='center'>
-                  {classroom?.title}
+          {classroom ? (
+            <Card variant="outlined" sx={{ maxWidth: "420px" }}>
+              <Box sx={{ p: 2 }}>
+                <Stack direction="row" justifyContent="space-between" alignItems="center">
+                  <Typography gutterBottom variant="h6" component="div" align='center'>
+                    {classroom?.title}
+                  </Typography>
+
+
+                </Stack>
+                <Typography color="text.secondary" variant="body1">
+                  {classroom?.description}
                 </Typography>
 
+                <Typography color="text.secondary" variant="h6">
+                  <a href={classroom?.link} target='_blank'> {classroom?.link}</a>
+                </Typography>
+                <Chip label={getDate(classroom?.deadline)} variant='filled' color='secondary'>
+                </Chip>
+              </Box>
+              <Divider />
+              <Box sx={{ p: 2 }}>
 
-              </Stack>
-              <Typography color="text.secondary" variant="body1">
-                {classroom?.description}
-              </Typography>
+                <Stack direction="row" spacing={1}>
 
-              <Typography color="text.secondary" variant="h6">
-                <a href={classroom?.link} target='_blank'> {classroom?.link}</a>
-              </Typography>
-              <Chip label={getDate(classroom?.deadline)} variant='filled' color='secondary'>
-              </Chip>
-            </Box>
-            <Divider />
-            <Box sx={{ p: 2 }}>
+                  <Button variant='contained' color='success' onClick={handleOpenAdd} disabled={attendanceMarked || attendanceExpired}>Make Submission</Button>
+                </Stack>
+              </Box>
+            </Card>
+          ) : (
+            <Card variant="outlined" sx={{ maxWidth: "420px" }}>
+              <Box sx={{ p: 2 }}>
+                <Stack direction="row" justifyContent="space-between" alignItems="center">
+                  <Typography gutterBottom variant="h6" component="div" align='center'>
+                    There is no assignment for now
+                  </Typography>
 
-              <Stack direction="row" spacing={1}>
 
-                <Button variant='contained' color='success' onClick={handleOpenAdd} disabled={attendanceMarked || attendanceExpired}>Make Submission</Button>
-              </Stack>
-            </Box>
-          </Card>
+                </Stack>
+                <Typography color="text.secondary" variant="body1">
+                  Check back later
+                </Typography>
+              </Box>
+              <Divider />
+
+            </Card>
+          )}
+
 
         </div>
       </section>
