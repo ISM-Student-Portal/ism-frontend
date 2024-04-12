@@ -1,25 +1,25 @@
-import { getDashboardStats } from '@app/services/admin/dashboardService';
+import { getDashboardStats } from '@app/services/student/dashboardService';
 import { ContentHeader } from '@components';
 import { useEffect, useState } from 'react';
 
 interface Stats {
-  students: number,
+  total_assignment: number,
   classes: number,
-  basicSub: number,
-  premiumSub: number
+  assign_sub: number,
 }
 
 const StudentDashboard = () => {
 
-  const [stats, setStats] = useState <Stats>();
+  const [stats, setStats] = useState<Stats>();
 
   const getStats = async () => {
-    try{
-    let stats = await getDashboardStats();
-    setStats(stats.stats);
+    try {
+      let stats = await getDashboardStats();
+      console.log(stats)
+      setStats(stats.stats);
 
     }
-    catch(error: any){
+    catch (error: any) {
       console.log(error);
     }
   }
@@ -36,9 +36,9 @@ const StudentDashboard = () => {
             <div className="col-lg-4 col-6">
               <div className="small-box bg-info">
                 <div className="inner">
-                  <h3>{stats?.students}</h3>
+                  <h3>{stats?.total_assignment}</h3>
 
-                  <p>Upcoming Assignments</p>
+                  <p>Total Assignments</p>
                 </div>
                 <div className="icon">
                   <i className="ion ion-bag" />
@@ -68,7 +68,7 @@ const StudentDashboard = () => {
             <div className="col-lg-4 col-6">
               <div className="small-box bg-warning">
                 <div className="inner">
-                  <h3>{stats?.basicSub}</h3>
+                  <h3>{stats?.assign_sub}</h3>
 
                   <p>Assignments Completed</p>
                 </div>
