@@ -30,3 +30,13 @@ export const getAttendance = async(id: any) => {
             return error.message
         }
 }
+
+export const deleteClassroom = async(id:any) =>{
+    try{
+        const classroom = await axios.delete('/classroom/'+ id);
+        return classroom.data;
+    
+        }catch (error: any){
+            return error.message
+        }
+}

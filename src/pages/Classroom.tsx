@@ -12,7 +12,8 @@ import { toast } from 'react-toastify';
 import { DateTimePicker } from '@mui/x-date-pickers/DateTimePicker';
 import memoize from 'memoize-one';
 
-import { fetchAllClassrooms, createClassroom, getAttendance } from '@app/services/admin/classServices';
+import { fetchAllClassrooms, createClassroom, getAttendance, deleteClassroom } from '@app/services/admin/classServices';
+import { Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle } from '@mui/material';
 
 
 const Classroom = () => {
@@ -42,7 +43,7 @@ const Classroom = () => {
   const handleCloseAdd = () => {
     setOpenAdd(false);
   }
-  const handleOpenEdit = async(id:any) => {
+  const handleOpenEdit = async (id: any) => {
     setpending2(true);
     let attendance = await getAttendance(id);
     console.log(attendance);
@@ -76,6 +77,18 @@ const Classroom = () => {
     setpending(false);
     console.log(classrooms);
   }
+  const performActionDelete = async () => {
+    setLoading(true);
+    const res = await deleteClassroom(selectedClassroom?.id);
+    if (res.status === 'Success') {
+      toast.success('Class Deleted Successfully!');
+      handleCloseDelete();
+      getClassrooms();
+      
+    }
+    setLoading(false);
+  }
+
 
   const createClassroomAction = async () => {
     setLoading(true);
@@ -86,7 +99,7 @@ const Classroom = () => {
     }
     const student = await createClassroom(data);
     console.log(student);
-    toast.success('Student Created Successfully!');
+    toast.success('Class Created Successfully!');
     handleCloseAdd();
     getClassrooms();
     setLoading(false);
@@ -127,8 +140,9 @@ const Classroom = () => {
     { name: 'Link', selector: (row: any) => row.link },
     { name: 'Expiry', selector: (row: any) => row.expires_on },
     {
+      name: 'Action',
 
-      cell: (row: any) => (<div><button className='btn btn-primary btn-sm' onClick={() => { clickHandler('edit', row) }}>View</button> </div>),
+      cell: (row: any) => (<div><button className='btn btn-primary btn-sm p-1' title='View Attendance' onClick={() => { clickHandler('edit', row) }}>View</button> <button className='btn p-1 btn-danger btn-sm' onClick={() => { clickHandler('delete', row) }} title='Delete Class'>Delete</button></div>),
       ignoreRowClick: true,
       allowOverflow: true,
       button: true,
@@ -139,7 +153,7 @@ const Classroom = () => {
     { name: 'First Name', selector: (row: any) => row.profile?.first_name },
     { name: 'Last Name', selector: (row: any) => row.profile?.last_name },
     { name: 'Email', selector: (row: any) => row.email },
-   
+
   ];
 
 
@@ -212,7 +226,7 @@ const Classroom = () => {
                 setLink(event.target.value);
               }}
             />
-            
+
           </Container>
 
 
@@ -241,7 +255,7 @@ const Classroom = () => {
           ...style2, borderRadius: '5px', paddingY: '1.5rem'
         }} maxWidth="lg" component="form" noValidate>
           <h5 id="child-modal-title" className='text-center my-3'>View Attendance</h5>
-         
+
 
           <DataTable columns={columns2} data={attendance} progressPending={pending2} responsive keyField='id' striped />
 
@@ -259,6 +273,25 @@ const Classroom = () => {
           {/* <Button variant="outlined" onClick={handleClose}>Close Child Modal</Button> */}
         </Container>
       </Modal>
+
+      <Dialog
+        open={openDelete}
+        onClose={handleCloseDelete}
+        aria-labelledby="child-modal-title"
+        aria-describedby="child-modal-description">
+
+        <DialogTitle align='center' variant='h5'>Delete Class</DialogTitle>
+        <DialogContent>
+          <DialogContentText>Are you sure you want to <b>delete</b> {selectedClassroom?.title}</DialogContentText>
+        </DialogContent>
+
+        <DialogActions>
+          <Button variant='outlined' size='small' sx={{
+            marginRight: ".2rem"
+          }} onClick={handleCloseDelete}>Cancel</Button>
+          <Button variant='contained' size='small' color='error' onClick={performActionDelete} disabled={loading}>Submit</Button>
+        </DialogActions>
+      </Dialog>
     </div>
   );
 };

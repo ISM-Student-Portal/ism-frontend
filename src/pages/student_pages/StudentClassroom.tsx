@@ -11,6 +11,8 @@ import Divider from '@mui/material/Divider';
 import Typography from '@mui/material/Typography';
 import { useSelector } from 'react-redux';
 import DataTable from '../../components/data-table/DataTableBase';
+import { toast } from 'react-toastify';
+
 
 
 interface Classroom {
@@ -76,6 +78,7 @@ const StudentClassroom = () => {
         let result = await markAttendance(classroom?.id);
         if (result.status === 'Success') {
             setAttendanceMarked(true);
+            toast.success('Attendance marked successfully');
         }
         setLoading(false);
     }
