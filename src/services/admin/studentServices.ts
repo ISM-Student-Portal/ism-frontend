@@ -21,9 +21,9 @@ export const createStudent = async(data: any) => {
         }
 }
 
-export const updateStudentStatus = async(id: number, is_admin: boolean) => {
+export const updateStudentStatus = async(id: number, data: any) => {
     try{
-        const student = await axios.put('/set-admin-status/'+id, {is_admin: !is_admin});
+        const student = await axios.put('/set-admin-status/'+id, data);
         return student.data;
     
         }catch (error: any){

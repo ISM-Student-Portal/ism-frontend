@@ -55,7 +55,7 @@ const Dashboard = () => {
                     {stats?.classes}<sup style={{ fontSize: '20px' }}></sup>
                   </h3>
 
-                  <p>Courses</p>
+                  <p>Classes</p>
                 </div>
                 <div className="icon">
                   <i className="ion ion-stats-bars" />
@@ -75,7 +75,7 @@ const Dashboard = () => {
                 <div className="icon">
                   <i className="ion ion-person-add" />
                 </div>
-                <a href="/" className="small-box-footer">
+                <a href="#" className="small-box-footer">
                   More info <i className="fas fa-arrow-circle-right" />
                 </a>
               </div>
@@ -90,7 +90,7 @@ const Dashboard = () => {
                 <div className="icon">
                   <i className="ion ion-pie-graph" />
                 </div>
-                <a href="/" className="small-box-footer">
+                <a href="#" className="small-box-footer">
                   More info <i className="fas fa-arrow-circle-right" />
                 </a>
               </div>

@@ -10,13 +10,17 @@ import TextField from '@mui/material/TextField';
 import UploadFileIcon from "@mui/icons-material/UploadFile";
 import AddIcon from '@mui/icons-material/Add'
 import UploadIcon from '@mui/icons-material/Upload'
+import Radio from '@mui/material/Radio';
+import RadioGroup from '@mui/material/RadioGroup';
+import FormLabel from '@mui/material/FormLabel';
 import { toast } from 'react-toastify';
 import axios from '../utils/axios';
 import memoize from 'memoize-one';
 
 import { ChangeEvent, useState } from "react";
 import { fetchAllStudents, createStudent, updateStudentStatus, deleteStudent } from '@app/services/admin/studentServices';
-import { Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle } from '@mui/material';
+import { Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, FormControlLabel, FormGroup, Switch } from '@mui/material';
+import ModalHeader from 'react-bootstrap/esm/ModalHeader';
 
 
 const Students = () => {
@@ -27,6 +31,9 @@ const Students = () => {
   const [openAdd, setOpenAdd] = React.useState(false);
   const [openEdit, setOpenEdit] = React.useState(false);
   const [openDelete, setOpenDelete] = React.useState(false);
+  const [editStudentStatus, setEditStudentStatus] = React.useState(false);
+  const [editStudentSub, setEditStudentSub] = React.useState(false);
+
 
   const [selectedStudent, setSelectedStudent] = React.useState<any>();
 
@@ -68,6 +75,8 @@ const Students = () => {
   const handleButtonClick = (type: any, student: any) => {
     setSelectedStudent(student);
     if (type === 'edit') {
+      setEditStudentStatus(student.is_admin);
+      setEditStudentSub(student.profile.subscription === 'premium')
       handleOpenEdit();
     } else {
       handleOpenDelete();
@@ -76,7 +85,7 @@ const Students = () => {
 
   const performActionEdit = async () => {
     setLoading(true);
-    const res = await updateStudentStatus(selectedStudent?.id, selectedStudent?.is_admin);
+    const res = await updateStudentStatus(selectedStudent?.id, {is_admin: editStudentStatus, subscription: editStudentSub ? 'premium' : 'basic'});
     if (res.status === 'success') {
       toast.success('Student updated Successfully!');
       handleCloseEdit();
@@ -120,6 +129,13 @@ const Students = () => {
 
 
   }
+  const handleChangeStat = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setEditStudentStatus(event.target.checked);
+  };
+
+  const handleChangeSub = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setEditStudentSub(event.target.checked);
+  };
 
   const handleFileUpload = async (e: ChangeEvent<HTMLInputElement>) => {
     if (!e.target.files) {
@@ -170,17 +186,19 @@ const Students = () => {
     { name: 'Email', selector: (row: any) => row.email },
     { name: 'Phone', selector: (row: any) => row.profile?.phone },
     { name: 'Subscription', selector: (row: any) => row.profile?.subscription },
-    { name: 'Reg No', selector: (row: any) => row.reg_no },
-    { name: 'Status', selector: (row: any) => row.is_active ? "Active" : "Inactive" },
+    { name: 'Reg No', selector: (row: any) => row.reg_no, grow: 1 },
+    { name: 'Status', selector: (row: any) => row.is_active ? "Active" : "Inactive", grow: 1 },
 
 
 
     {
+      name: 'Action',
 
-      cell: (row: any) => (<div><button className='btn btn-primary btn-sm' onClick={() => { clickHandler('edit', row) }}>Edit</button> <button className='btn btn-danger btn-sm' onClick={() => { clickHandler('delete', row) }}>Delete</button></div>),
+      cell: (row: any) => (<div><button className='btn btn-primary btn-sm' onClick={() => { clickHandler('edit', row) }}>Edit</button> <button className='btn btn-danger btn-sm' onClick={() => { clickHandler('delete', row) }}>Deact</button></div>),
       ignoreRowClick: true,
       allowOverflow: true,
       button: true,
+
     },
 
 
@@ -317,24 +335,58 @@ const Students = () => {
       </Modal>
 
 
-      <Dialog
+      <Modal
         open={openEdit}
         onClose={handleCloseEdit}
         aria-labelledby="child-modal-title"
         aria-describedby="child-modal-description">
+        <Container sx={{
+          ...style, borderRadius: '5px', paddingY: '1.5rem'
+        }} maxWidth="lg" component="form" noValidate>
+          <h5 id="child-modal-title" className='text-center my-3'>Edit Student Status</h5>
+          <Container
+            sx={{ marginTop: '1rem', marginBottom: '1rem', display: 'flex' }}>
 
-        <DialogTitle align='center' variant='h5'>Change Admin Status</DialogTitle>
-        <DialogContent>
-          <DialogContentText>Are you sure you want to {selectedStudent?.is_admin ? 'remove' : 'set'} student <b>{selectedStudent?.profile?.first_name}</b> as <b>Admin</b>?</DialogContentText>
-        </DialogContent>
+            <TextField
+              id="outlined-controlled"
+              size='small'
+              label="Email"
+              value={selectedStudent?.email}
+              sx={{ marginRight: '1rem' }}
+              onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
+                setEmail(event.target.value);
+              }}
+              disabled
+            />
 
-        <DialogActions>
-          <Button variant='outlined' size='small' sx={{
-            marginRight: ".2rem"
-          }} onClick={handleCloseEdit}>Cancel</Button>
-          <Button variant='contained' size='small' onClick={performActionEdit} disabled={loading}>Submit</Button>
-        </DialogActions>
-      </Dialog>
+          </Container>
+
+          <Container
+            sx={{ marginTop: '1rem', marginBottom: '1rem', display: 'flex' }}>
+
+            <FormGroup>
+              <FormControlLabel control={<Switch inputProps={{ 'aria-label': 'controlled' }} onChange={handleChangeStat} checked={editStudentStatus} />} label="Admin Status" />
+              <FormControlLabel control={<Switch inputProps={{ 'aria-label': 'controlled' }} onChange={handleChangeSub} checked={editStudentSub} />} label="Premium Subscription" />
+            </FormGroup>
+          </Container>
+
+
+          <br />
+          <Box sx={{
+            marginRight: "1rem",
+            float: 'right'
+          }}>
+            <Button variant='outlined' size='small' sx={{
+              marginRight: ".2rem"
+            }} onClick={handleCloseEdit}>Cancel</Button>
+            <Button variant='contained' size='small' onClick={performActionEdit} disabled={loading}>Submit</Button>
+          </Box>
+
+          {/* <Button variant="outlined" onClick={handleClose}>Close Child Modal</Button> */}
+        </Container>
+      </Modal>
+
+
 
 
       <Dialog
