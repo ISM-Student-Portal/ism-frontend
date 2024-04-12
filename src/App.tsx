@@ -33,6 +33,7 @@ import { setProfile } from './store/reducers/profile';
 import AdminRoute from './routes/AdminRoute';
 import Students from './pages/Students';
 import Classroom from './pages/Classroom';
+import Assignment2 from './pages/Assignment'
 import Assignment from './pages/student_pages/Assignment';
 import StudentClassroom from './pages/student_pages/StudentClassroom';
 import StudentNotification from './pages/student_pages/StudentNotification';
@@ -128,6 +129,8 @@ const App = () => {
               <Route path="/admin/students" element={<Students />} />
               <Route path="admin/profile" element={<Profile />} />
               <Route path="/admin/classroom" element={<Classroom />} />
+              <Route path="/admin/assignment" element={<Assignment2 />} />
+
               <Route path="/admin/" element={<Dashboard />} />
             </Route>
           </Route>

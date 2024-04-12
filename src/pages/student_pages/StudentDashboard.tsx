@@ -70,7 +70,7 @@ const StudentDashboard = () => {
                 <div className="inner">
                   <h3>{stats?.basicSub}</h3>
 
-                  <p>Classes Completed</p>
+                  <p>Assignments Completed</p>
                 </div>
                 <div className="icon">
                   <i className="ion ion-person-add" />

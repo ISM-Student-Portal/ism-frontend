@@ -27,8 +27,13 @@ export const MENU: IMenuItem[] = [
 
   {
     name: 'Classrooms',
-    icon: 'fas fa-users nav-icon',
+    icon: 'fas fa-graduation-cap nav-icon',
     path: '/admin/classroom',
+  },
+  {
+    name: 'Assignments',
+    icon: 'fas fa-briefcase nav-icon',
+    path: '/admin/assignment',
   },
 
   // {

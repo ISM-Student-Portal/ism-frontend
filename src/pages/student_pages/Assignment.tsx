@@ -1,104 +1,240 @@
-import { getDashboardStats } from '@app/services/admin/dashboardService';
+import { createSubmission, getAssignment, getUpcoming, markAttendance } from '@app/services/student/classServices';
 import { ContentHeader } from '@components';
+import { Button, Container, Modal, TextField } from '@mui/material';
 import { useEffect, useState } from 'react';
+import moment from 'moment';
+import Card from '@mui/material/Card';
+import Box from '@mui/material/Box';
+import Chip from '@mui/material/Chip';
+import Stack from '@mui/material/Stack';
+import Divider from '@mui/material/Divider';
+import Typography from '@mui/material/Typography';
+import { useSelector } from 'react-redux';
+import DataTable from '../../components/data-table/DataTableBase';
+import { toast } from 'react-toastify';
 
-interface Stats {
-  students: number,
-  classes: number,
-  basicSub: number,
-  premiumSub: number
+
+
+interface Assignment {
+  id: number
+  title: string,
+  description: string,
+  link: string,
+  deadline: string | any
 }
 
 const Assignment = () => {
+  const profile = useSelector((state: any) => state.profile.profile);
+  const [classroom, setClassroom] = useState<Assignment>();
+  const [classroomList, setClassroomList] = useState([]);
+  const [pending, setPending] = useState(true);
+  const [openAdd, setOpenAdd] = useState(false);
+  const [feedbacks, setFeedbacks] = useState<any>();
+  const [link, setLink] = useState<any>();
 
-  const [stats, setStats] = useState <Stats>();
 
-  const getStats = async () => {
-    try{
-    let stats = await getDashboardStats();
-    setStats(stats.stats);
 
-    }
-    catch(error: any){
-      console.log(error);
-    }
+  const [attendanceMarked, setAttendanceMarked] = useState(false);
+  const [attendanceExpired, setAttendanceExpired] = useState(false);
+
+  const [loading, setLoading] = useState(false);
+
+
+
+  const handleOpenAdd = () => {
+    setOpenAdd(true);
   }
 
+  const handleCloseAdd = () => {
+    setOpenAdd(false);
+  }
+
+
+  const getUpcomingAssignment = async () => {
+    try {
+      let classroom1: any = await getAssignment();
+      console.log(classroom1);
+      setClassroomList(classroom1?.assignments);
+      let res = classroom1.assignments[classroom1.assignments.length - 1]
+      setClassroom(res);
+      let attendances = profile.attendances;
+      let item = attendances.find((item: any) => {
+        return item.classroom_id === res?.id
+      });
+      if (item) {
+        setAttendanceMarked(true);
+        // setLoading(true);
+      }
+      if (moment() > moment(res?.expires_on)) {
+        setAttendanceExpired(true);
+      }
+
+    }
+    catch (error: any) {
+      console.log(error);
+    }
+    setPending(false);
+
+
+
+  }
+
+  const style = {
+    position: 'absolute' as 'absolute',
+    top: '50%',
+    left: '50%',
+    transform: 'translate(-50%, -50%)',
+    width: 650,
+    bgcolor: 'background.paper',
+    border: '2px solid #000',
+    boxShadow: 24,
+    pt: 2,
+    px: 4,
+    pb: 3,
+  };
+  const getDate = (date: string) => {
+    let day = moment(date);
+    if (moment() > moment(date)) {
+      return "Expired " + day.toNow()
+    }
+    return "The Attendance link will Expire " + day.fromNow();
+  }
+
+  const submitAssignment = async () => {
+    setLoading(true)
+    let data = {
+      assignment_id: classroom?.id,
+      feedbacks: feedbacks,
+      link: link
+    }
+    let result = await createSubmission(data);
+    if (result.message === 'Success') {
+      setAttendanceMarked(true);
+      toast.success('Submission made successfully');
+    }
+    setLoading(false);
+    handleCloseAdd();
+  }
+  const columns = [
+    { name: 'Title', selector: (row: any) => row.title },
+    { name: 'Description', selector: (row: any) => row.description },
+    { name: 'Link', selector: (row: any) => (<a href={row.link}>{row.link}</a>) },
+  ]
+
   useEffect(() => {
-    getStats();
+    getUpcomingAssignment();
   }, []);
   return (
     <div>
-      <ContentHeader title="Dashboard" />
+      <ContentHeader title="Assignment" />
 
       <section className="content">
         <div className="container-fluid">
-          <div className="row">
-            <div className="col-lg-3 col-6">
-              <div className="small-box bg-info">
-                <div className="inner">
-                  <h3>{stats?.students}</h3>
+          <Card variant="outlined" sx={{ maxWidth: "420px" }}>
+            <Box sx={{ p: 2 }}>
+              <Stack direction="row" justifyContent="space-between" alignItems="center">
+                <Typography gutterBottom variant="h6" component="div" align='center'>
+                  {classroom?.title}
+                </Typography>
 
-                  <p>Students</p>
-                </div>
-                <div className="icon">
-                  <i className="ion ion-bag" />
-                </div>
-                <a href="/" className="small-box-footer">
-                  More info <i className="fas fa-arrow-circle-right" />
-                </a>
-              </div>
-            </div>
-            <div className="col-lg-3 col-6">
-              <div className="small-box bg-success">
-                <div className="inner">
-                  <h3>
-                    {stats?.classes}<sup style={{ fontSize: '20px' }}></sup>
-                  </h3>
 
-                  <p>Courses</p>
-                </div>
-                <div className="icon">
-                  <i className="ion ion-stats-bars" />
-                </div>
-                <a href="/" className="small-box-footer">
-                  More info <i className="fas fa-arrow-circle-right" />
-                </a>
-              </div>
-            </div>
-            <div className="col-lg-3 col-6">
-              <div className="small-box bg-warning">
-                <div className="inner">
-                  <h3>{stats?.basicSub}</h3>
+              </Stack>
+              <Typography color="text.secondary" variant="body1">
+                {classroom?.description}
+              </Typography>
 
-                  <p>Basic Subscription</p>
-                </div>
-                <div className="icon">
-                  <i className="ion ion-person-add" />
-                </div>
-                <a href="/" className="small-box-footer">
-                  More info <i className="fas fa-arrow-circle-right" />
-                </a>
-              </div>
-            </div>
-            <div className="col-lg-3 col-6">
-              <div className="small-box bg-danger">
-                <div className="inner">
-                  <h3>{stats?.premiumSub}</h3>
+              <Typography color="text.secondary" variant="h6">
+                <a href={classroom?.link} target='_blank'> {classroom?.link}</a>
+              </Typography>
+              <Chip label={getDate(classroom?.deadline)} variant='filled' color='secondary'>
+              </Chip>
+            </Box>
+            <Divider />
+            <Box sx={{ p: 2 }}>
 
-                  <p>Premium</p>
-                </div>
-                <div className="icon">
-                  <i className="ion ion-pie-graph" />
-                </div>
-                <a href="/" className="small-box-footer">
-                  More info <i className="fas fa-arrow-circle-right" />
-                </a>
-              </div>
-            </div>
-          </div>
+              <Stack direction="row" spacing={1}>
+
+                <Button variant='contained' color='success' onClick={handleOpenAdd} disabled={attendanceMarked || attendanceExpired}>Make Submission</Button>
+              </Stack>
+            </Box>
+          </Card>
+
         </div>
       </section>
+      <section className="content my-3">
+
+        <div className="container-fluid">
+          <Typography variant='h5'>All Assignment List</Typography>
+
+
+          <DataTable columns={columns} data={classroomList} progressPending={pending} responsive keyField='id' striped />
+        </div>
+      </section>
+      <Modal
+        open={openAdd}
+        onClose={handleCloseAdd}
+        aria-labelledby="child-modal-title"
+        aria-describedby="child-modal-description">
+        <Container sx={{
+          ...style, borderRadius: '5px', paddingY: '1.5rem'
+        }} maxWidth="lg" component="form" noValidate>
+          <h5 id="child-modal-title" className='text-center my-3'>Create Assignment</h5>
+          <Container
+          >
+
+            <TextField
+              id="outlined-controlled"
+              label="Feedback (Optional)"
+              size='small'
+              sx={{ marginRight: '1rem', marginY: '.5rem', width: '100%' }}
+
+
+              value={feedbacks}
+              onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
+                setFeedbacks(event.target.value);
+              }}
+            />
+
+          </Container>
+
+          <Container
+          >
+
+            <TextField
+              id="outlined-controlled"
+              label="Link"
+              size='small'
+              required
+
+              sx={{ marginRight: '1rem', marginY: '.5rem', width: '100%' }}
+
+
+
+              value={link}
+              onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
+                setLink(event.target.value);
+              }}
+            />
+
+
+
+          </Container>
+
+
+          <br />
+          <Box sx={{
+            marginRight: "1rem",
+            float: 'right'
+          }}>
+            <Button variant='outlined' size='small' sx={{
+              marginRight: ".2rem"
+            }} onClick={handleCloseAdd}>Cancel</Button>
+            <Button variant='contained' size='small' onClick={submitAssignment} disabled={loading}>Submit</Button>
+          </Box>
+
+          {/* <Button variant="outlined" onClick={handleClose}>Close Child Modal</Button> */}
+        </Container>
+      </Modal>
     </div>
   );
 };

@@ -3,35 +3,43 @@ import { ContentHeader } from '@components';
 import DataTable from '../components/data-table/DataTableBase'
 import Button from '@mui/material/Button';
 import Modal from '@mui/material/Modal';
-import React, { useEffect } from 'react';
+import React, { ChangeEvent, useEffect } from 'react';
 import Box from '@mui/material/Box';
 import Container from '@mui/material/Container'
 import TextField from '@mui/material/TextField';
 import AddIcon from '@mui/icons-material/Add'
 import { toast } from 'react-toastify';
 import { DateTimePicker } from '@mui/x-date-pickers/DateTimePicker';
+import UploadFileIcon from "@mui/icons-material/UploadFile";
+import axios from '../utils/axios';
+
+
+
 import memoize from 'memoize-one';
 
-import { fetchAllClassrooms, createClassroom, getAttendance, deleteClassroom } from '@app/services/admin/classServices';
+import { fetchAllClassrooms, createClassroom, getAttendance, deleteClassroom, fetchAllAssignments, createAssignment, deleteAssignment } from '@app/services/admin/classServices';
 import { Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle } from '@mui/material';
 import moment from 'moment';
 
 
-const Classroom = () => {
+const Assignment = () => {
 
   const [open, setOpen] = React.useState(false);
   const [pending, setpending] = React.useState(true);
   const [pending2, setpending2] = React.useState(true);
   const [loading, setLoading] = React.useState(false);
   const [openAdd, setOpenAdd] = React.useState(false);
-  const [selectedClassroom, setSelectedClassroom] = React.useState<any>();
+  const [selectedAssignment, setSelectedAssignment] = React.useState<any>();
   const [openEdit, setOpenEdit] = React.useState(false);
   const [openDelete, setOpenDelete] = React.useState(false);
+  const [filename, setFilename] = React.useState("");
+  const [file, setFile] = React.useState(null);
+
 
   const [title, setTitle] = React.useState('');
   const [description, setDescription] = React.useState('');
   const [link, setLink] = React.useState('');
-  const [expiresOn, setExpiresOn] = React.useState();
+  const [deadline, setDeadline] = React.useState<any>();
   const [rows, setRows] = React.useState([]);
   const [attendance, setAttendance] = React.useState([]);
 
@@ -63,48 +71,88 @@ const Classroom = () => {
     setOpenDelete(false);
   };
 
-  const handleButtonClick = (type: any, classroom: any) => {
-    setSelectedClassroom(classroom);
+  const handleDownload = () => {
+    setOpenDelete(false);
+  };
+
+  const handleButtonClick = (type: any, assignment: any) => {
+    setSelectedAssignment(assignment);
     if (type === 'edit') {
-      handleOpenEdit(classroom.id);
-    } else {
+      handleOpenEdit(assignment.id);
+    } else if (type === 'delete') {
       handleOpenDelete();
+    } else {
+      handleDownload();
     }
   }
+  const handleFileUpload = async (e: ChangeEvent<HTMLInputElement>) => {
+    if (!e.target.files) {
+      return;
+    }
+    const file: any = e.target.files[0];
+    setFile(file);
+    const { name } = file;
 
-  const getClassrooms = async () => {
-    const classrooms = await fetchAllClassrooms();
-    setRows(classrooms.data);
+    setFilename(name);
+  }
+
+  const getAssignments = async () => {
+    const assignments = await fetchAllAssignments();
+    setRows(assignments.assignments);
     setpending(false);
-    console.log(classrooms);
+    console.log(assignments);
   }
   const performActionDelete = async () => {
     setLoading(true);
-    const res = await deleteClassroom(selectedClassroom?.id);
+    const res = await deleteAssignment(selectedAssignment?.id);
     if (res.status === 'Success') {
-      toast.success('Class Deleted Successfully!');
+      toast.success('Assignment Deleted Successfully!');
       handleCloseDelete();
-      getClassrooms();
+      getAssignments();
 
     }
     setLoading(false);
   }
 
 
-  const createClassroomAction = async () => {
-    setLoading(true);
-    const data = {
-      title: title,
-      description: description,
-      link: link,
-    }
-    const student = await createClassroom(data);
-    console.log(student);
-    toast.success('Class Created Successfully!');
-    handleCloseAdd();
-    getClassrooms();
-    setLoading(false);
+  // const createAssignmentAction = async () => {
+  //   setLoading(true);
+  //   const data = {
+  //     title: title,
+  //     description: description,
+  //     link: link,
+  //   }
+  //   const assignment = await createAssignment(data);
+  //   console.log(assignment);
+  //   toast.success('Assignment Created Successfully!');
+  //   handleCloseAdd();
+  //   getAssignments();
+  //   setLoading(false);
 
+
+
+  // }
+
+  const createAssignmentAction = async () => {
+    setLoading(true);
+    let formData = new FormData();
+    //@ts-ignore
+    formData.append("file", file);
+    formData.append("title", title);
+    formData.append("description", description);
+    formData.append("link", link);
+    formData.append("deadline", deadline);
+
+    let res = await axios.post('/assignments', formData, {
+      headers: {
+        'Content-Type': 'multipart/form-data'
+      }
+    });
+    if (res) {
+      toast.success('Assignment created');
+    }
+    setLoading(false);
+    handleCloseAdd();
 
 
   }
@@ -113,7 +161,7 @@ const Classroom = () => {
     top: '50%',
     left: '50%',
     transform: 'translate(-50%, -50%)',
-    width: 400,
+    width: 650,
     bgcolor: 'background.paper',
     border: '2px solid #000',
     boxShadow: 24,
@@ -139,7 +187,9 @@ const Classroom = () => {
     { name: 'Title', selector: (row: any) => row.title },
     { name: 'Description', selector: (row: any) => row.description },
     { name: 'Link', selector: (row: any) => row.link },
-    { name: 'Expiry', selector: (row: any) => row.expires_on },
+    { name: 'Deadline', selector: (row: any) => row.deadline },
+    { name: 'Download File', cell: (row: any) => (<button className='btn btn-primary btn-sm p-1' title='Download File' onClick={() => { clickHandler('download', row) }}>Download</button>) },
+
     {
       name: 'Action',
 
@@ -160,11 +210,11 @@ const Classroom = () => {
 
 
   useEffect(() => {
-    getClassrooms();
+    getAssignments();
   }, [])
   return (
     <div>
-      <ContentHeader title="Classrooms" />
+      <ContentHeader title="Assignments" />
       <section className="content">
 
         <div className="container-fluid">
@@ -184,9 +234,9 @@ const Classroom = () => {
         <Container sx={{
           ...style, borderRadius: '5px', paddingY: '1.5rem'
         }} maxWidth="lg" component="form" noValidate>
-          <h5 id="child-modal-title" className='text-center my-3'>Create a Class</h5>
+          <h5 id="child-modal-title" className='text-center my-3'>Create Assignment</h5>
           <Container
-            sx={{ marginTop: '1rem', marginBottom: '1rem', }}>
+          >
 
             <TextField
               id="outlined-controlled"
@@ -198,6 +248,9 @@ const Classroom = () => {
                 setTitle(event.target.value);
               }}
             />
+            <DateTimePicker label="Deadline"
+              value={deadline}
+              onChange={(newValue) => setDeadline(newValue)}></DateTimePicker>
             <TextField
               id="outlined-controlled"
               label="Description"
@@ -210,14 +263,15 @@ const Classroom = () => {
                 setDescription(event.target.value);
               }}
             />
+
           </Container>
 
           <Container
-            sx={{ marginTop: '.5rem', marginBottom: '.5rem', }}>
+          >
 
             <TextField
               id="outlined-controlled"
-              label="link"
+              label="Link"
               size='small'
               sx={{ marginRight: '1rem', marginY: '.5rem', width: '100%' }}
 
@@ -228,6 +282,22 @@ const Classroom = () => {
                 setLink(event.target.value);
               }}
             />
+
+            <Button
+              component="label"
+              variant="outlined"
+              startIcon={<UploadFileIcon />}
+              sx={{ marginRight: "1rem" }}
+              disabled={loading}
+            >
+              Upload File
+              <input
+                type="file"
+                hidden
+                onChange={handleFileUpload}
+              />
+            </Button>
+            <span>{filename}</span>
 
           </Container>
 
@@ -240,7 +310,7 @@ const Classroom = () => {
             <Button variant='outlined' size='small' sx={{
               marginRight: ".2rem"
             }} onClick={handleCloseAdd}>Cancel</Button>
-            <Button variant='contained' size='small' onClick={createClassroomAction} disabled={loading}>Submit</Button>
+            <Button variant='contained' size='small' onClick={createAssignmentAction} disabled={loading}>Submit</Button>
           </Box>
 
           {/* <Button variant="outlined" onClick={handleClose}>Close Child Modal</Button> */}
@@ -269,7 +339,7 @@ const Classroom = () => {
             <Button variant='outlined' size='small' sx={{
               marginRight: ".2rem"
             }} onClick={handleCloseEdit}>Cancel</Button>
-            <Button variant='contained' size='small' onClick={createClassroomAction} disabled={loading}>Submit</Button>
+            <Button variant='contained' size='small' onClick={createAssignmentAction} disabled={loading}>Submit</Button>
           </Box>
 
           {/* <Button variant="outlined" onClick={handleClose}>Close Child Modal</Button> */}
@@ -282,9 +352,9 @@ const Classroom = () => {
         aria-labelledby="child-modal-title"
         aria-describedby="child-modal-description">
 
-        <DialogTitle align='center' variant='h5'>Delete Class</DialogTitle>
+        <DialogTitle align='center' variant='h5'>Delete Assignment</DialogTitle>
         <DialogContent>
-          <DialogContentText>Are you sure you want to <b>delete</b> {selectedClassroom?.title}</DialogContentText>
+          <DialogContentText>Are you sure you want to <b>delete</b> {selectedAssignment?.title}</DialogContentText>
         </DialogContent>
 
         <DialogActions>
@@ -298,4 +368,4 @@ const Classroom = () => {
   );
 };
 
-export default Classroom;
+export default Assignment;
