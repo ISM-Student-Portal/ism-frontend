@@ -10,9 +10,7 @@ import TextField from '@mui/material/TextField';
 import UploadFileIcon from "@mui/icons-material/UploadFile";
 import AddIcon from '@mui/icons-material/Add'
 import UploadIcon from '@mui/icons-material/Upload'
-import Radio from '@mui/material/Radio';
-import RadioGroup from '@mui/material/RadioGroup';
-import FormLabel from '@mui/material/FormLabel';
+
 import { toast } from 'react-toastify';
 import axios from '../utils/axios';
 import memoize from 'memoize-one';
@@ -20,7 +18,6 @@ import memoize from 'memoize-one';
 import { ChangeEvent, useState } from "react";
 import { fetchAllStudents, createStudent, updateStudentStatus, deleteStudent } from '@app/services/admin/studentServices';
 import { Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, FormControlLabel, FormGroup, Switch } from '@mui/material';
-import ModalHeader from 'react-bootstrap/esm/ModalHeader';
 
 
 const Students = () => {
@@ -85,7 +82,7 @@ const Students = () => {
 
   const performActionEdit = async () => {
     setLoading(true);
-    const res = await updateStudentStatus(selectedStudent?.id, {is_admin: editStudentStatus, subscription: editStudentSub ? 'premium' : 'basic'});
+    const res = await updateStudentStatus(selectedStudent?.id, { is_admin: editStudentStatus, subscription: editStudentSub ? 'premium' : 'basic' });
     if (res.status === 'success') {
       toast.success('Student updated Successfully!');
       handleCloseEdit();
@@ -185,7 +182,7 @@ const Students = () => {
     { name: 'Last Name', selector: (row: any) => row.profile?.last_name, sortable: true, reorder: true },
     { name: 'Email', selector: (row: any) => row.email },
     { name: 'Phone', selector: (row: any) => row.profile?.phone },
-    { name: 'Subscription', selector: (row: any) => row.profile?.subscription },
+    { name: 'Subscription', selector: (row: any) => row.profile?.subscription, sortable: true },
     { name: 'Reg No', selector: (row: any) => row.reg_no, grow: 1 },
     { name: 'Status', selector: (row: any) => row.is_active ? "Active" : "Inactive", grow: 1 },
 
