@@ -140,7 +140,7 @@ const Assignment = () => {
   const performActionDelete = async () => {
     setLoading(true);
     const res = await deleteAssignment(selectedAssignment?.id);
-    if (res.status === 'Success') {
+    if (res.message === 'Success') {
       toast.success('Assignment Deleted Successfully!');
       handleCloseDelete();
       getAssignments();
@@ -188,6 +188,7 @@ const Assignment = () => {
     }
     setLoading(false);
     handleCloseAdd();
+    getAssignments();
 
 
   }
