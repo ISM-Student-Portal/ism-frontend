@@ -38,6 +38,7 @@ import Assignment from './pages/student_pages/Assignment';
 import StudentClassroom from './pages/student_pages/StudentClassroom';
 import StudentNotification from './pages/student_pages/StudentNotification';
 import StudentDashboard from './pages/student_pages/StudentDashboard';
+import Submission from './pages/student_pages/Submission';
 
 const { VITE_NODE_ENV } = import.meta.env;
 
@@ -117,6 +118,8 @@ const App = () => {
               <Route path="/assignments" element={<Assignment />} />
               <Route path="/classroom" element={<StudentClassroom />} />
               <Route path="/notification" element={<StudentNotification />} />
+              <Route path="/submissions" element={<Submission />} />
+
               <Route path="/profile" element={<Profile />} />
               <Route path="/" element={<StudentDashboard />} />
             </Route>

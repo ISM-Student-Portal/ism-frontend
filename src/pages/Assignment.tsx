@@ -17,7 +17,7 @@ import axios from '../utils/axios';
 
 import memoize from 'memoize-one';
 
-import { fetchAllClassrooms, createClassroom, getAttendance, deleteClassroom, fetchAllAssignments, createAssignment, deleteAssignment } from '@app/services/admin/classServices';
+import { fetchAllAssignments, deleteAssignment, updateSubmission } from '@app/services/admin/classServices';
 import { Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle } from '@mui/material';
 import moment from 'moment';
 
@@ -29,7 +29,11 @@ const Assignment = () => {
   const [pending2, setpending2] = React.useState(true);
   const [loading, setLoading] = React.useState(false);
   const [openAdd, setOpenAdd] = React.useState(false);
+  const [openGrade, setOpenGrade] = React.useState(false);
+  const [grade, setGrade] = React.useState<any>();
+  const [changedGrade, setChangedGrade] = React.useState<any>();
   const [selectedAssignment, setSelectedAssignment] = React.useState<any>();
+  const [selectedSubmission, setSelectedSubmission] = React.useState<any>();
   const [openEdit, setOpenEdit] = React.useState(false);
   const [openDelete, setOpenDelete] = React.useState(false);
   const [filename, setFilename] = React.useState("");
@@ -52,11 +56,17 @@ const Assignment = () => {
   const handleCloseAdd = () => {
     setOpenAdd(false);
   }
+
+  const handleOpenGrade = () => {
+    setOpenGrade(true);
+  }
+
+  const handleCloseGrade = () => {
+    setOpenGrade(false);
+  }
   const handleOpenEdit = async (id: any) => {
     setpending2(true);
-    let attendance = await getAttendance(id);
-    console.log(attendance);
-    setAttendance(attendance.data);
+
     setpending2(false);
     setOpenEdit(true);
   };
@@ -84,6 +94,31 @@ const Assignment = () => {
     } else {
       handleDownload();
     }
+  }
+
+  const handleButtonClick2 = async (submission: any) => {
+    // setLoading(true);
+    setSelectedSubmission(submission);
+    setGrade(submission.grade);
+    handleOpenGrade();
+    // let updatedGrade = await updateSubmission(submission.id, { grade: changedGrade });
+    // toast.success('Grade updated successfully')
+    // console.log(submission, 'work please')
+    // setLoading(true);
+
+
+  }
+  const updateGrade = async () => {
+    setLoading(true);
+    let updatedGrade = await updateSubmission(selectedSubmission.id, { grade: grade });
+    toast.success('Grade updated successfully')
+    handleCloseGrade();
+    getAssignments();
+    setSelectedSubmission({ ...selectedSubmission, grade: grade });
+    setLoading(false);
+
+
+
   }
   const handleFileUpload = async (e: ChangeEvent<HTMLInputElement>) => {
     if (!e.target.files) {
@@ -175,7 +210,7 @@ const Assignment = () => {
     top: '50%',
     left: '50%',
     transform: 'translate(-50%, -50%)',
-    width: '75%',
+    width: '90%',
     bgcolor: 'background.paper',
     border: '2px solid #000',
     boxShadow: 24,
@@ -188,25 +223,38 @@ const Assignment = () => {
     { name: 'Description', selector: (row: any) => row.description },
     { name: 'Link', selector: (row: any) => row.link },
     { name: 'Deadline', selector: (row: any) => row.deadline },
-    { name: 'Download File', cell: (row: any) => (<button className='btn btn-primary btn-sm p-1' title='Download File' onClick={() => { clickHandler('download', row) }}>Download</button>) },
+    {
+      name: 'Download File', cell: (row: any) => {
+        return row.file_url ? (<button className='btn btn-primary btn-sm p-1' title='Download File' disabled={pending2} onClick={() => { clickHandler('download', row) }}>Download</button>) : <div></div>
+      }
+    },
 
     {
       name: 'Action',
 
-      cell: (row: any) => (<div><button className='btn btn-primary btn-sm p-1' title='View Attendance' onClick={() => { clickHandler('edit', row) }}>View</button> <button className='btn p-1 btn-danger btn-sm' onClick={() => { clickHandler('delete', row) }} title='Delete Class'>Delete</button></div>),
+      cell: (row: any) => (<div><button className='btn btn-primary btn-sm p-1' title='View Submissions' onClick={() => { clickHandler('edit', row) }}>View</button> <button className='btn p-1 btn-danger btn-sm' onClick={() => { clickHandler('delete', row) }} title='Delete Assignment'>Delete</button></div>),
       ignoreRowClick: true,
       allowOverflow: true,
       button: true,
     },
   ])
 
-  const columns2 = [
-    { name: 'First Name', selector: (row: any) => row.profile?.first_name },
-    { name: 'Last Name', selector: (row: any) => row.profile?.last_name },
-    { name: 'Email', selector: (row: any) => row.email },
-    { name: 'Clock-in Time', selector: (row: any) => moment(row.attendance_user?.created_at).toString() }
-
-  ];
+  const columns2 = memoize(clickHandler2 => [
+    { name: 'Email', selector: (row: any) => row?.student?.email, grow: 2 },
+    { name: 'Link', selector: (row: any) => (<a href={row?.link}>{row?.link}</a>), grow: 2 },
+    { name: 'Feedback', selector: (row: any) => row?.feedback },
+    { name: 'Time Submitted', selector: (row: any) => moment(row?.created_at).toString(), grow: 2 },
+    {
+      name: 'Grade', selector: (row: any) => (
+        row?.grade
+      )
+    },
+    {
+      cell: (row: any) => (<div><Button className='btn p-1 btn-success btn-sm' variant='contained' disabled={loading} color='success' onClick={() => { clickHandler2(row) }}>Update</Button></div>), ignoreRowClick: true,
+      allowOverflow: false,
+      button: true,
+    }
+  ]);
 
 
   useEffect(() => {
@@ -326,10 +374,10 @@ const Assignment = () => {
         <Container sx={{
           ...style2, borderRadius: '5px', paddingY: '1.5rem'
         }} maxWidth="lg" component="form" noValidate>
-          <h5 id="child-modal-title" className='text-center my-3'>View Attendance</h5>
+          <h5 id="child-modal-title" className='text-center my-3'>View Submissions for <b>{selectedAssignment?.title}</b> assignment</h5>
 
 
-          <DataTable columns={columns2} data={attendance} progressPending={pending2} responsive keyField='id' striped />
+          <DataTable columns={columns2(handleButtonClick2)} data={selectedAssignment?.submissions} progressPending={pending2} responsive keyField='id' striped />
 
 
           <Box sx={{
@@ -362,6 +410,34 @@ const Assignment = () => {
             marginRight: ".2rem"
           }} onClick={handleCloseDelete}>Cancel</Button>
           <Button variant='contained' size='small' color='error' onClick={performActionDelete} disabled={loading}>Submit</Button>
+        </DialogActions>
+      </Dialog>
+
+      <Dialog
+        open={openGrade}
+        onClose={handleCloseGrade}
+      >
+
+        <DialogTitle align='center' variant='h5'>Grade Submission</DialogTitle>
+        <DialogContent>
+          <TextField
+            id="outlined-controlled"
+            size='small'
+            label="Grade in percent"
+            value={grade}
+            sx={{ marginRight: '1rem', marginY: '.5rem', width: '100%' }}
+            onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
+              setGrade(event.target.value);
+            }}
+          />
+
+        </DialogContent>
+
+        <DialogActions>
+          <Button variant='outlined' size='small' sx={{
+            marginRight: ".2rem"
+          }} onClick={handleCloseGrade}>Cancel</Button>
+          <Button variant='contained' size='small' color='primary' onClick={updateGrade} disabled={loading}>Submit</Button>
         </DialogActions>
       </Dialog>
     </div>

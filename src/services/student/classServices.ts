@@ -15,8 +15,18 @@ export const getUpcoming = async() => {
 
 export const getAssignment = async() => {
     try{
-        const classroom = await axios.get('/assignments');
+        const classroom = await axios.get('/get-assignments');
         return classroom.data;
+    
+        }catch (error: any){
+            return error.message
+        }
+}
+
+export const getSubmissionList = async() => {
+    try{
+        const submissions = await axios.get('/submissions');
+        return submissions.data;
     
         }catch (error: any){
             return error.message

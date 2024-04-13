@@ -61,6 +61,11 @@ export const STUDENT_MENU: IMenuItem[] = [
     icon: 'fas fa-graduation-cap nav-icon',
     path: '/classroom',
   },
+  {
+    name: 'Submissions',
+    icon: 'fas fa-plane nav-icon',
+    path: '/submissions',
+  },
 
   // {
   //   name: i18n.t('menusidebar.label.notifications'),

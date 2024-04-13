@@ -97,13 +97,14 @@ const StudentClassroom = () => {
 
             <section className="content">
                 <div className="container-fluid">
-                    <Card variant="outlined" sx={{ maxWidth: "420px" }}>
+                    <Card variant="outlined" sx={{ maxWidth: "600px" }}>
                         <Box sx={{ p: 2 }}>
                             <Stack direction="row" justifyContent="space-between" alignItems="center">
                                 <Typography gutterBottom variant="h6" component="div" align='center'>
                                     {classroom?.title}
                                 </Typography>
-
+                                <Chip label={getDate(classroom?.expires_on)} variant='filled' color='secondary'>
+                                </Chip>
 
                             </Stack>
                             <Typography color="text.secondary" variant="body1">
@@ -113,8 +114,7 @@ const StudentClassroom = () => {
                             <Typography color="text.secondary" variant="h6">
                                 <a href={classroom?.link} target='_blank'> {classroom?.link}</a>
                             </Typography>
-                            <Chip label={getDate(classroom?.expires_on)} variant='filled' color='secondary'>
-                            </Chip>
+
                         </Box>
                         <Divider />
                         <Box sx={{ p: 2 }}>

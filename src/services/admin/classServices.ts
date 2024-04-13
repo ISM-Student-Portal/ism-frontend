@@ -43,6 +43,16 @@ export const createAssignment = async(data: any) => {
         }
 }
 
+export const updateSubmission = async(id: any, data: any) => {
+    try{
+        const assignment = await axios.put('/submissions/'+id, data);
+        return assignment.data;
+    
+        }catch (error: any){
+            return error.message
+        }
+}
+
 export const getAttendance = async(id: any) => {
     try{
         const attendance = await axios.get('/view-attendance/'+ id);

@@ -1,4 +1,4 @@
-import { createSubmission, getAssignment } from '@app/services/student/classServices';
+import { createSubmission, getAssignment, getSubmissionList } from '@app/services/student/classServices';
 import { ContentHeader } from '@components';
 import { Button, Container, Modal, TextField } from '@mui/material';
 import { useEffect, useState } from 'react';
@@ -15,7 +15,7 @@ import { toast } from 'react-toastify';
 
 
 
-interface Assignment {
+interface Submission {
   id: number
   title: string,
   description: string,
@@ -23,10 +23,10 @@ interface Assignment {
   deadline: string | any
 }
 
-const Assignment = () => {
+const Submission = () => {
   const profile = useSelector((state: any) => state.profile.profile);
-  const [classroom, setClassroom] = useState<Assignment>();
-  const [classroomList, setClassroomList] = useState([]);
+  const [classroom, setClassroom] = useState<Submission>();
+  const [submissionList, setSubmissionList] = useState([]);
   const [pending, setPending] = useState(true);
   const [openAdd, setOpenAdd] = useState(false);
   const [feedbacks, setFeedbacks] = useState<any>();
@@ -50,30 +50,17 @@ const Assignment = () => {
   }
 
 
-  const getUpcomingAssignment = async () => {
+  const getSubmissions = async () => {
     try {
-      let classroom1: any = await getAssignment();
+      let classroom1: any = await getSubmissionList();
       console.log(classroom1);
-      setClassroomList(classroom1?.assignments);
-      let res = classroom1.assignments[classroom1.assignments.length - 1]
-      setClassroom(res);
-     
-      if (res?.submissions?.length > 0) {
-        setAttendanceMarked(true);
-        // setLoading(true);
-      }
-      if (moment() > moment(res?.deadline)) {
-        setAttendanceExpired(true);
-      }
+      setSubmissionList(classroom1?.submission);
 
     }
     catch (error: any) {
       console.log(error);
     }
     setPending(false);
-
-
-
   }
 
   const style = {
@@ -113,78 +100,27 @@ const Assignment = () => {
     handleCloseAdd();
   }
   const columns = [
-    { name: 'Title', selector: (row: any) => row.title },
-    { name: 'Description', selector: (row: any) => row.description },
-    { name: 'Link', selector: (row: any) => (<a href={row.link}>{row.link}</a>) },
+    { name: 'Assignment title', selector: (row: any) => row?.assignment?.title },
+    { name: 'Submission Link', selector: (row: any) => (<a href={row.link}>{row.link}</a>) },
+    { name: 'Grade', selector: (row: any) => row.grade },
+    { name: 'Date Submitted', selector: (row: any) => moment(row.created_at).toString() },
+
   ]
 
   useEffect(() => {
-    getUpcomingAssignment();
+    getSubmissions();
   }, []);
   return (
     <div>
-      <ContentHeader title="Assignment" />
+      <ContentHeader title="Submissions" />
 
-      <section className="content">
-        <div className="container-fluid">
-          {classroom ? (
-            <Card variant="outlined" sx={{ maxWidth: "600px" }}>
-              <Box sx={{ p: 2 }}>
-                <Stack direction="row" justifyContent="space-between" alignItems="center">
-                  <Typography gutterBottom variant="h6" component="div" align='center'>
-                    {classroom?.title}
-                  </Typography>
-                  <Chip label={getDate(classroom?.deadline)} variant='filled' color='secondary'>
-                  </Chip>
-
-                </Stack>
-                <Typography color="text.secondary" variant="body1">
-                  {classroom?.description}
-                </Typography>
-
-                <Typography color="text.secondary" variant="h6">
-                  <a href={classroom?.link} target='_blank'> {classroom?.link}</a>
-                </Typography>
-
-              </Box>
-              <Divider />
-              <Box sx={{ p: 2 }}>
-
-                <Stack direction="row" spacing={1}>
-
-                  <Button variant='contained' color='success' onClick={handleOpenAdd} disabled={attendanceMarked || attendanceExpired}>Make Submission</Button>
-                </Stack>
-              </Box>
-            </Card>
-          ) : (
-            <Card variant="outlined" sx={{ maxWidth: "420px" }}>
-              <Box sx={{ p: 2 }}>
-                <Stack direction="row" justifyContent="space-between" alignItems="center">
-                  <Typography gutterBottom variant="h6" component="div" align='center'>
-                    There is no assignment for now
-                  </Typography>
-
-
-                </Stack>
-                <Typography color="text.secondary" variant="body1">
-                  Check back later
-                </Typography>
-              </Box>
-              <Divider />
-
-            </Card>
-          )}
-
-
-        </div>
-      </section>
       <section className="content my-3">
 
         <div className="container-fluid">
-          <Typography variant='h5'>All Assignment List</Typography>
+          <Typography variant='h5'>All Submissions</Typography>
 
 
-          <DataTable columns={columns} data={classroomList} progressPending={pending} responsive keyField='id' striped />
+          <DataTable columns={columns} data={submissionList} progressPending={pending} responsive keyField='id' striped />
         </div>
       </section>
       <Modal
@@ -256,4 +192,4 @@ const Assignment = () => {
   );
 };
 
-export default Assignment;
+export default Submission;
