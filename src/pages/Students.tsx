@@ -118,7 +118,13 @@ const Students = () => {
       phone_number: phoneNumber
     }
     const student = await createStudent(data);
-    toast.success('Student Created Successfully!');
+    if(student.message === 'successful'){
+      toast.success('Student Created Successfully!');
+    }
+    else{
+      toast.error('Something went wrong!');
+    }
+    
     handleCloseAdd();
     getStudents();
     setLoading(false);
