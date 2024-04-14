@@ -57,6 +57,10 @@ const SettingsTab = ({ isActive, profile }: { isActive: boolean, profile: any })
       if (pCh.status === 'success') {
         toast.success('profile updated successfully');
         dispatch(setProfile(pCh.user_profile));
+        localStorage.setItem(
+          'profile',
+          JSON.stringify({...pCh.user_profile  })          
+        );
 
         console.log(pCh);
       }

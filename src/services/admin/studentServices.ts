@@ -50,3 +50,14 @@ export const updateProfile = async(data: any) => {
             return error.message
         }
 }
+
+
+export const uploadPics = async(data: any) => {
+    try{
+        const profile = await axios.patch('/update-profile-pix/', data);
+        return profile.data;
+    
+        }catch (error: any){
+            return error.message
+        }
+}
