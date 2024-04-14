@@ -43,7 +43,7 @@ export const deleteStudent = async(id:number, is_active: boolean) => {
 
 export const updateProfile = async(data: any) => {
     try{
-        const profile = await axios.put('/update-profile/', data);
+        const profile = await axios.put('/update-profile', data);
         return profile.data;
     
         }catch (error: any){
@@ -54,7 +54,7 @@ export const updateProfile = async(data: any) => {
 
 export const uploadPics = async(data: any) => {
     try{
-        const profile = await axios.put('/update-profile-pix/', data);
+        const profile = await axios.put('/update-profile-pix', data);
         return profile.data;
     
         }catch (error: any){
