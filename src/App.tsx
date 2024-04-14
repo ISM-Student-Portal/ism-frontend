@@ -130,7 +130,7 @@ const App = () => {
               <Route path="admin/sub-menu-2" element={<Blank />} />
               <Route path="admin/sub-menu-1" element={<SubMenu />} />
               <Route path="/admin/students" element={<Students />} />
-              <Route path="admin/profile" element={<Profile />} />
+              <Route path="/admin/profile" element={<Profile />} />
               <Route path="/admin/classroom" element={<Classroom />} />
               <Route path="/admin/assignment" element={<Assignment2 />} />
 

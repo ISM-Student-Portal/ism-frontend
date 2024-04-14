@@ -40,3 +40,13 @@ export const deleteStudent = async(id:number, is_active: boolean) => {
             return error.message
         }
 }
+
+export const updateProfile = async(data: any) => {
+    try{
+        const profile = await axios.patch('/update-profile/', data);
+        return profile.data;
+    
+        }catch (error: any){
+            return error.message
+        }
+}

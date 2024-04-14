@@ -121,7 +121,7 @@ const MenuSidebar = () => {
             />
           </div>
           <div className="info">
-            <Link to="/profile" className="d-block">
+            <Link to={profile.is_admin ? '/admin/profile' : '/profile'} className="d-block">
               {profile?.email}
             </Link>
           </div>

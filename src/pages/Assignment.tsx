@@ -113,8 +113,11 @@ const Assignment = () => {
     let updatedGrade = await updateSubmission(selectedSubmission.id, { grade: grade });
     toast.success('Grade updated successfully')
     handleCloseGrade();
-    getAssignments();
-    setSelectedSubmission({ ...selectedSubmission, grade: grade });
+    handleCloseEdit()
+    await getAssignments();
+    // setSelectedSubmission({ ...selectedSubmission, grade: grade });
+    handleButtonClick('edit', selectedAssignment);
+    // handleOpenEdit(selectedAssignment?.id);
     setLoading(false);
 
 

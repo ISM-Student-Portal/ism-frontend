@@ -36,11 +36,11 @@ const UserDropdown = () => {
   const navigateToProfile = (event: any) => {
     event.preventDefault();
     setDropdownOpen(false);
-    navigate('/profile');
+    profile.is_admin ? navigate('/admin/profile') : navigate('/profile');
   };
 
   return (
-    
+
     <UserMenuDropdown isOpen={dropdownOpen} hideArrow>
       <StyledSmallUserImage
         slot="head"
@@ -63,10 +63,10 @@ const UserDropdown = () => {
           />
           <p>
             {profile?.email}
-           
+
           </p>
         </UserHeader>
-       
+
         <UserFooter>
           <button
             type="button"

@@ -16,9 +16,11 @@ const StyledUserImage = styled(Image)`
 `;
 
 const Profile = () => {
-  const [activeTab, setActiveTab] = useState('TIMELINE');
+  const [activeTab, setActiveTab] = useState('SETTINGS');
   const profile = useSelector((state: any) => state.profile.profile);
   console.log(profile)
+
+  // const [editProflie, setEditProfile ] = useState<any>(profile);
 
   const [t] = useTranslation();
 
@@ -40,29 +42,14 @@ const Profile = () => {
                       width={100}
                       height={100}
                       rounded
-                      src="/img/default-profile.png"
+                      src={profile?.profile?.profile_pix_url ? profile?.profile?.profile_pix_url : "/img/default-profile.png"}
                       alt="User profile"
                     />
                   </div>
                   <h3 className="profile-username text-center">
-                    Nina Mcintire
+                    {profile?.profile?.first_name} {profile?.profile?.last_name}
                   </h3>
-                  <p className="text-muted text-center">Software Engineer</p>
-                  <ul className="list-group list-group-unbordered mb-3">
-                    <li className="list-group-item">
-                      <b>{t('header.user.followers')}</b>
-                      <span className="float-right">1,322</span>
-                    </li>
-                    <li className="list-group-item">
-                      <b>{t('views.user.following')}</b>
-                      <span className="float-right">543</span>
-                    </li>
-                    <li className="list-group-item">
-                      <b>{t('header.user.friends')}</b>
-                      <span className="float-right">13,287</span>
-                    </li>
-                  </ul>
-                  <Button>{t('main.label.follow')}</Button>
+
                 </div>
                 {/* /.card-body */}
               </div>
@@ -73,39 +60,51 @@ const Profile = () => {
                 <div className="card-body">
                   <strong>
                     <i className="fas fa-book mr-1" />
-                    {t('main.label.education')}
+                    Email
                   </strong>
                   <p className="text-muted">
-                    B.S. in Computer Science from the University of Tennessee at
-                    Knoxville
+                    {profile?.email}
+                  </p>
+                  <hr />
+                  <strong>
+                    <i className="fas fa-book mr-1" />
+                    Alternate Email
+                  </strong>
+                  <p className="text-muted">
+                    {profile?.profile?.alt_email}
+                  </p>
+                  <hr />
+                  <strong>
+                    <i className="fas fa-book mr-1" />
+                    Subscription
+                  </strong>
+                  <p className="text-muted">
+                    {profile?.profile?.subscription}
+                  </p>
+                  <hr />
+                  <strong>
+                    <i className="fas fa-book mr-1" />
+                    Phone
+                  </strong>
+                  <p className="text-muted">
+                    {profile?.profile?.phone}
+                  </p>
+                  <hr />
+                  <strong>
+                    <i className="fas fa-book mr-1" />
+                    Alternate Phone
+                  </strong>
+                  <p className="text-muted">
+                    {profile?.profile?.alt_phone}
                   </p>
                   <hr />
                   <strong>
                     <i className="fas fa-map-marker-alt mr-1" />
                     {t('main.label.location')}
                   </strong>
-                  <p className="text-muted">Malibu, California</p>
+                  <p className="text-muted">{profile?.profile?.country} {profile?.profile?.address} {profile?.profile?.city}</p>
                   <hr />
-                  <strong>
-                    <i className="fas fa-pencil-alt mr-1" />
-                    {t('main.label.skills')}
-                  </strong>
-                  <p className="text-muted">
-                    <span className="tag tag-danger">UI Design</span>
-                    <span className="tag tag-success">Coding</span>
-                    <span className="tag tag-info">Javascript</span>
-                    <span className="tag tag-warning">PHP</span>
-                    <span className="tag tag-primary">Node.js</span>
-                  </p>
-                  <hr />
-                  <strong>
-                    <i className="far fa-file-alt mr-1" />
-                    {t('main.label.notes')}
-                  </strong>
-                  <p className="text-muted">
-                    Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                    Etiam fermentum enim neque.
-                  </p>
+
                 </div>
               </div>
             </div>
@@ -113,24 +112,13 @@ const Profile = () => {
               <div className="card">
                 <div className="card-header p-2">
                   <ul className="nav nav-pills">
-                   
+
+
                     <li className="nav-item">
                       <button
                         type="button"
-                        className={`nav-link ${
-                          activeTab === 'TIMELINE' ? 'active' : ''
-                        }`}
-                        onClick={() => toggle('TIMELINE')}
-                      >
-                        {t('main.label.timeline')}
-                      </button>
-                    </li>
-                    <li className="nav-item">
-                      <button
-                        type="button"
-                        className={`nav-link ${
-                          activeTab === 'SETTINGS' ? 'active' : ''
-                        }`}
+                        className={`nav-link ${activeTab === 'SETTINGS' ? 'active' : ''
+                          }`}
                         onClick={() => toggle('SETTINGS')}
                       >
                         Edit Profile
@@ -140,9 +128,9 @@ const Profile = () => {
                 </div>
                 <div className="card-body">
                   <div className="tab-content">
-                    <ActivityTab isActive={activeTab === 'ACTIVITY'} />
-                    <TimelineTab isActive={activeTab === 'TIMELINE'} />
-                    <SettingsTab isActive={activeTab === 'SETTINGS'} />
+                    {/* <ActivityTab isActive={activeTab === 'ACTIVITY'} /> */}
+                    {/* <TimelineTab isActive={activeTab === 'TIMELINE'} /> */}
+                    <SettingsTab isActive={activeTab === 'SETTINGS'} profile={profile} />
                   </div>
                 </div>
               </div>
