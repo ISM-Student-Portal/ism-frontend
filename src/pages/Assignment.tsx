@@ -116,7 +116,6 @@ const Assignment = () => {
     handleCloseEdit()
     await getAssignments();
     // setSelectedSubmission({ ...selectedSubmission, grade: grade });
-    handleButtonClick('edit', selectedAssignment);
     // handleOpenEdit(selectedAssignment?.id);
     setLoading(false);
 
