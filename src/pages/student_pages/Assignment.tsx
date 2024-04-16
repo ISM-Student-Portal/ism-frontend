@@ -57,7 +57,7 @@ const Assignment = () => {
       setClassroomList(classroom1?.assignments);
       let res = classroom1.assignments[classroom1.assignments.length - 1]
       setClassroom(res);
-     
+
       if (res?.submissions?.length > 0) {
         setAttendanceMarked(true);
         // setLoading(true);
@@ -116,6 +116,10 @@ const Assignment = () => {
     { name: 'Title', selector: (row: any) => row.title },
     { name: 'Description', selector: (row: any) => row.description },
     { name: 'Link', selector: (row: any) => (<a href={row.link}>{row.link}</a>) },
+    { name: 'Submission Link', selector: (row: any) => (<a href={row.submissions[0]?.link}>{row.submissions[0]?.link}</a>) },
+    { name: 'Grade', selector: (row: any) => row.submissions[0]?.grade },
+
+
   ]
 
   useEffect(() => {
