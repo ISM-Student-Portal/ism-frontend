@@ -15,7 +15,6 @@ const StudentDashboard = () => {
   const getStats = async () => {
     try {
       let stats = await getDashboardStats();
-      console.log(stats)
       setStats(stats.stats);
 
     }

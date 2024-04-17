@@ -47,7 +47,6 @@ const Classroom = () => {
   const handleOpenEdit = async (id: any) => {
     setpending2(true);
     let attendance = await getAttendance(id);
-    console.log(attendance);
     setAttendance(attendance.data);
     setpending2(false);
     setOpenEdit(true);
@@ -76,7 +75,6 @@ const Classroom = () => {
     const classrooms = await fetchAllClassrooms();
     setRows(classrooms.data);
     setpending(false);
-    console.log(classrooms);
   }
   const performActionDelete = async () => {
     setLoading(true);
@@ -99,7 +97,6 @@ const Classroom = () => {
       link: link,
     }
     const student = await createClassroom(data);
-    console.log(student);
     toast.success('Class Created Successfully!');
     handleCloseAdd();
     getClassrooms();

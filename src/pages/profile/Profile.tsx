@@ -34,7 +34,6 @@ const Profile = () => {
 
 
   const [loading, setLoading] = useState(false)
-  console.log(profile)
 
   // const [editProflie, setEditProfile ] = useState<any>(profile);
 

@@ -62,7 +62,6 @@ const SettingsTab = ({ isActive, profile }: { isActive: boolean, profile: any })
           JSON.stringify({...pCh.user_profile  })          
         );
 
-        console.log(pCh);
       }
     }
     catch (error: any) {

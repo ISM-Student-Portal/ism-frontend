@@ -53,7 +53,6 @@ const Submission = () => {
   const getSubmissions = async () => {
     try {
       let classroom1: any = await getSubmissionList();
-      console.log(classroom1);
       setSubmissionList(classroom1?.submission);
 
     }

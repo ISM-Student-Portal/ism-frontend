@@ -137,12 +137,10 @@ const Assignment = () => {
     const assignments = await fetchAllAssignments();
     setRows(assignments.assignments);
     setpending(false);
-    console.log(assignments);
   }
   const performActionDelete = async () => {
     setLoading(true);
     const res = await deleteAssignment(selectedAssignment?.id);
-    console.log(res);
     if (res.message === 'success') {
       toast.success('Assignment Deleted Successfully!');
       handleCloseDelete();

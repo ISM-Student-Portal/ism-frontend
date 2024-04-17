@@ -106,7 +106,6 @@ const Students = () => {
     const students = await fetchAllStudents();
     setRows(students.students);
     setpending(false);
-    console.log(students);
   }
 
   const createStudentAction = async () => {
@@ -118,16 +117,16 @@ const Students = () => {
       phone_number: phoneNumber
     }
     const student = await createStudent(data);
-    if(student.message === 'successful'){
+    if (student.message === 'successful') {
       toast.success('Student Created Successfully!');
+      handleCloseAdd();
+      getStudents();
+      setLoading(false);
     }
-    else{
+    else {
       toast.error('Something went wrong!');
     }
-    
-    handleCloseAdd();
-    getStudents();
-    setLoading(false);
+
 
 
 
@@ -164,9 +163,11 @@ const Students = () => {
     });
     if (res) {
       toast.success('Upload done');
+      getStudents();
+      handleClose();
     }
     setLoading(false);
-    handleClose();
+
 
 
   }

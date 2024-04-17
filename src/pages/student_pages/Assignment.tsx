@@ -53,7 +53,6 @@ const Assignment = () => {
   const getUpcomingAssignment = async () => {
     try {
       let classroom1: any = await getAssignment();
-      console.log(classroom1);
       setClassroomList(classroom1?.assignments);
       let res = classroom1.assignments[classroom1.assignments.length - 1]
       setClassroom(res);
