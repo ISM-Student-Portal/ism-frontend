@@ -11,10 +11,30 @@ export const fetchAllStudents = async() => {
     }
 }
 
+export const fetchAllAdmins = async() => {
+    try{
+    const admins = await axios.get('/admins');
+    return admins.data;
+
+    }catch (error: any){
+        return error.message
+    }
+}
+
 export const createStudent = async(data: any) => {
     try{
         const student = await axios.post('/create-user', data);
         return student.data;
+    
+        }catch (error: any){
+            return error.message
+        }
+}
+
+export const createAdmin = async(data: any) => {
+    try{
+        const admin = await axios.post('/create-admin', data);
+        return admin.data;
     
         }catch (error: any){
             return error.message

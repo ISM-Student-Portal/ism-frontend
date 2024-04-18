@@ -45,14 +45,17 @@ const StudentClassroom = () => {
             let res = classroom1.data[classroom1.data.length - 1]
             setClassroom(res);
             let attendances = profile.attendances;
-            let item = attendances.find((item: any) => {
+            let item = attendances?.find((item: any) => {
                 return item.classroom_id === res?.id
             });
             if (item) {
+                console.log('got here attend')
                 setAttendanceMarked(true);
                 // setLoading(true);
             }
             if (moment() > moment(res?.expires_on)) {
+                console.log('got here epire')
+
                 setAttendanceExpired(true);
             }
 
@@ -97,34 +100,54 @@ const StudentClassroom = () => {
 
             <section className="content">
                 <div className="container-fluid">
-                    <Card variant="outlined" sx={{ maxWidth: "600px" }}>
-                        <Box sx={{ p: 2 }}>
-                            <Stack direction="row" justifyContent="space-between" alignItems="center">
-                                <Typography gutterBottom variant="h6" component="div" align='center'>
-                                    {classroom?.title}
+                    {classroom ? (
+                        <Card variant="outlined" sx={{ maxWidth: "600px" }}>
+                            <Box sx={{ p: 2 }}>
+                                <Stack direction="row" justifyContent="space-between" alignItems="center">
+                                    <Typography gutterBottom variant="h6" component="div" align='center'>
+                                        {classroom?.title}
+                                    </Typography>
+                                    <Chip label={getDate(classroom?.expires_on)} variant='filled' color='secondary'>
+                                    </Chip>
+
+                                </Stack>
+                                <Typography color="text.secondary" variant="body1">
+                                    {classroom?.description}
                                 </Typography>
-                                <Chip label={getDate(classroom?.expires_on)} variant='filled' color='secondary'>
-                                </Chip>
 
-                            </Stack>
-                            <Typography color="text.secondary" variant="body1">
-                                {classroom?.description}
-                            </Typography>
+                                <Typography color="text.secondary" variant="h6">
+                                    <a href={classroom?.link} target='_blank'> {classroom?.link}</a>
+                                </Typography>
 
-                            <Typography color="text.secondary" variant="h6">
-                                <a href={classroom?.link} target='_blank'> {classroom?.link}</a>
-                            </Typography>
+                            </Box>
+                            <Divider />
+                            <Box sx={{ p: 2 }}>
 
-                        </Box>
-                        <Divider />
-                        <Box sx={{ p: 2 }}>
+                                <Stack direction="row" spacing={1}>
 
-                            <Stack direction="row" spacing={1}>
+                                    <Button variant='contained' color='success' onClick={getClassLink} disabled={attendanceMarked || attendanceExpired}>Mark Attendance</Button>
+                                </Stack>
+                            </Box>
+                        </Card>
+                    ) : (
+                        <Card variant="outlined" sx={{ maxWidth: "420px" }}>
+                            <Box sx={{ p: 2 }}>
+                                <Stack direction="row" justifyContent="space-between" alignItems="center">
+                                    <Typography gutterBottom variant="h6" component="div" align='center'>
+                                        There is no Class for now
+                                    </Typography>
 
-                                <Button variant='contained' color='success' onClick={getClassLink} disabled={attendanceMarked || attendanceExpired}>Mark Attendance</Button>
-                            </Stack>
-                        </Box>
-                    </Card>
+
+                                </Stack>
+                                <Typography color="text.secondary" variant="body1">
+                                    Check back later
+                                </Typography>
+                            </Box>
+                            <Divider />
+
+                        </Card>
+                    )}
+
 
                 </div>
             </section>

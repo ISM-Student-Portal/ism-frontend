@@ -1,0 +1,25 @@
+import axios from '../utils/axios';
+
+
+
+
+export const resetPassword = async (data: any) => {
+    try{
+        const reset = await axios.post('/password-reset', data);
+        return reset.data;
+    
+        }catch (error: any){
+            return error.message
+        }
+}
+
+export const forgotPasswordAction = async (data:any) => {
+    try{
+        console.log(data)
+        const reset = await axios.post('/forgot-password', data);
+        return reset.data;
+    
+        }catch (error: any){
+            return error.message
+        }
+}

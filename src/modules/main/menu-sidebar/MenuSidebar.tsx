@@ -35,6 +35,11 @@ export const MENU: IMenuItem[] = [
     icon: 'fas fa-briefcase nav-icon',
     path: '/admin/assignment',
   },
+  {
+    name: 'Admins',
+    icon: 'fas fa-user-shield nav-icon',
+    path: '/admin/admins',
+  },
 
   // {
   //   name: i18n.t('menusidebar.label.notifications'),

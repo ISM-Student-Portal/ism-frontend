@@ -16,11 +16,11 @@ import axios from '../utils/axios';
 import memoize from 'memoize-one';
 
 import { ChangeEvent, useState } from "react";
-import { fetchAllStudents, createStudent, updateStudentStatus, deleteStudent } from '@app/services/admin/studentServices';
+import { createStudent, updateStudentStatus, deleteStudent, fetchAllAdmins, createAdmin } from '@app/services/admin/studentServices';
 import { Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, FormControlLabel, FormGroup, Switch } from '@mui/material';
 
 
-const Students = () => {
+const Admins = () => {
 
   const [open, setOpen] = React.useState(false);
   const [pending, setpending] = React.useState(true);
@@ -86,7 +86,7 @@ const Students = () => {
     if (res.status === 'success') {
       toast.success('Student updated Successfully!');
       handleCloseEdit();
-      getStudents();
+      getAdmins();
     }
     setLoading(false);
   }
@@ -97,13 +97,13 @@ const Students = () => {
     if (res.status === 'success') {
       toast.success('Student Deleted Successfully!');
       handleCloseDelete();
-      getStudents();
+      getAdmins();
     }
     setLoading(false);
   }
 
-  const getStudents = async () => {
-    const students = await fetchAllStudents();
+  const getAdmins = async () => {
+    const students = await fetchAllAdmins();
     setRows(students.students);
     setpending(false);
   }
@@ -116,11 +116,11 @@ const Students = () => {
       email: email,
       phone_number: phoneNumber
     }
-    const student = await createStudent(data);
+    const student = await createAdmin(data);
     if (student.message === 'successful') {
-      toast.success('Student Created Successfully!');
+      toast.success('Admin Created Successfully!');
       handleCloseAdd();
-      getStudents();
+      getAdmins();
       setLoading(false);
     }
     else {
@@ -163,7 +163,7 @@ const Students = () => {
     });
     if (res) {
       toast.success('Upload done');
-      getStudents();
+      getAdmins();
       handleClose();
     }
     setLoading(false);
@@ -189,8 +189,6 @@ const Students = () => {
     { name: 'Last Name', selector: (row: any) => row.profile?.last_name, sortable: true, reorder: true },
     { name: 'Email', selector: (row: any) => row.email },
     { name: 'Phone', selector: (row: any) => row.profile?.phone },
-    { name: 'Subscription', selector: (row: any) => row.profile?.subscription, sortable: true },
-    { name: 'Reg No', selector: (row: any) => row.reg_no, grow: 1 },
     { name: 'Status', selector: (row: any) => row.is_active ? "Active" : "Inactive", grow: 1 },
 
 
@@ -210,17 +208,16 @@ const Students = () => {
 
 
   useEffect(() => {
-    getStudents();
+    getAdmins();
   }, [])
   return (
     <div>
-      <ContentHeader title="Students" />
+      <ContentHeader title="Admins" />
       <section className="content">
 
         <div className="container-fluid">
           <div className="d-grid gap-2 d-md-block py-2">
-            <Button size='small' startIcon={<UploadIcon />} onClick={handleOpen} className="btn btn-primary btn-sm float-right" type="button">Upload</Button>
-            <Button size='small' startIcon={<AddIcon />} onClick={handleOpenAdd} className="btn btn-primary btn-sm float-right mx-1" type="button">Add</Button>
+            <Button size='small' startIcon={<AddIcon />} onClick={handleOpenAdd} className="btn btn-primary btn-sm float-right mx-1" title='Add Admin' type="button">Add</Button>
           </div>
           <DataTable columns={columns(handleButtonClick)} data={rows} progressPending={pending} responsive={true} striped={true} />
         </div>
@@ -269,7 +266,7 @@ const Students = () => {
         <Container sx={{
           ...style, borderRadius: '5px', paddingY: '1.5rem'
         }} maxWidth="lg" component="form" noValidate>
-          <h5 id="child-modal-title" className='text-center my-3'>Create Student Form</h5>
+          <h5 id="child-modal-title" className='text-center my-3'>Create Admin Form</h5>
           <Container
             sx={{ marginTop: '1rem', marginBottom: '1rem', display: 'flex' }}>
 
@@ -369,7 +366,7 @@ const Students = () => {
             sx={{ marginTop: '1rem', marginBottom: '1rem', display: 'flex' }}>
 
             <FormGroup>
-              {/* <FormControlLabel control={<Switch inputProps={{ 'aria-label': 'controlled' }} onChange={handleChangeStat} checked={editStudentStatus} />} label="Admin Status" /> */}
+              <FormControlLabel control={<Switch inputProps={{ 'aria-label': 'controlled' }} onChange={handleChangeStat} checked={editStudentStatus} />} label="Admin Status" />
               <FormControlLabel control={<Switch inputProps={{ 'aria-label': 'controlled' }} onChange={handleChangeSub} checked={editStudentSub} />} label="Premium Subscription" />
             </FormGroup>
           </Container>
@@ -415,4 +412,4 @@ const Students = () => {
   );
 };
 
-export default Students;
+export default Admins;

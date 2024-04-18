@@ -1,4 +1,4 @@
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import { useTranslation } from 'react-i18next';
 import { setWindowClass } from '@app/utils/helpers';
@@ -6,9 +6,39 @@ import * as Yup from 'yup';
 import { useFormik } from 'formik';
 import { Form, InputGroup } from 'react-bootstrap';
 import { Button } from '@profabric/react-components';
+import { forgotPasswordAction } from '@app/services/authServices';
+import { useState } from 'react';
 
 const ForgotPassword = () => {
   const [t] = useTranslation();
+  const [isAuthLoading, setAuthLoading] = useState(false);
+  const navigate = useNavigate();
+
+
+
+  const forgotPass = async (email: string) => {
+    setAuthLoading(true);
+    try {
+      let res = await forgotPasswordAction({
+        email: email       
+      });
+      if (res.status === 'success') {
+        toast.success('Check your mail for Instructions');
+      }
+      else {
+        toast.error('An error occurred ');
+
+      }
+
+    }
+    catch (error) {
+      toast.error("unable to complete")
+    }
+
+    setAuthLoading(false);
+
+
+  }
 
   const { handleChange, values, handleSubmit, touched, errors } = useFormik({
     initialValues: {
@@ -18,7 +48,7 @@ const ForgotPassword = () => {
       email: Yup.string().email('Invalid email address').required('Required'),
     }),
     onSubmit: (values) => {
-      toast.warn('Not yet functional');
+      forgotPass(values.email);
       console.log('values', values);
     },
   });
@@ -72,6 +102,7 @@ const ForgotPassword = () => {
                       
                       onClick={handleSubmit as any}
                       variant='warning'
+                      loading={isAuthLoading}
 
                     >
                       {t('recover.requestNewPassword')}

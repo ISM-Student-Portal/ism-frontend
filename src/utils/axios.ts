@@ -1,7 +1,6 @@
 import axios from 'axios';
 import { useSelector } from 'react-redux';
 import { Link, useNavigate } from 'react-router-dom';
-console.log('got here');
 const authentication = localStorage.getItem('authentication');
 let token: any = null;
 if(authentication){
