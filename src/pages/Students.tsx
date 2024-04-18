@@ -256,7 +256,7 @@ const Students = () => {
             <Button variant='outlined' size='small' sx={{
               marginRight: ".2rem"
             }} onClick={handleClose}>Cancel</Button>
-            <Button variant='contained' size='small' onClick={submitBatchStudents}>Submit</Button>
+            <Button variant='contained' disabled={loading} size='small' onClick={submitBatchStudents}>Submit</Button>
           </div>
         </Box>
       </Modal>
