@@ -1,6 +1,6 @@
 import { getUpcoming, markAttendance } from '@app/services/student/classServices';
 import { ContentHeader } from '@components';
-import { Button, Container } from '@mui/material';
+import { Button, Container, ownerDocument } from '@mui/material';
 import { useEffect, useState } from 'react';
 import moment from 'moment';
 import Card from '@mui/material/Card';
@@ -41,15 +41,12 @@ const StudentClassroom = () => {
     const getUpcomingClass = async () => {
         try {
             let classroom1: any = await getUpcoming();
-            setClassroomList(classroom1?.data);
-            let res = classroom1.data[classroom1.data.length - 1]
+            console.log(classroom1);
+            setClassroomList(classroom1?.classrooms);
+            let res = classroom1.classrooms[0]
             setClassroom(res);
-            let attendances = profile.attendances;
-            let item = attendances?.find((item: any) => {
-                return item.classroom_id === res?.id
-            });
-            if (item) {
-                console.log('got here attend')
+
+            if (res.attendance) {
                 setAttendanceMarked(true);
                 // setLoading(true);
             }
@@ -82,6 +79,7 @@ const StudentClassroom = () => {
         if (result.status === 'Success') {
             setAttendanceMarked(true);
             toast.success('Attendance marked successfully');
+            getUpcomingClass();
         }
         setLoading(false);
     }
@@ -89,6 +87,9 @@ const StudentClassroom = () => {
         { name: 'Title', selector: (row: any) => row.title },
         { name: 'Description', selector: (row: any) => row.description },
         { name: 'Link', selector: (row: any) => (<a href={row.link}>{row.link}</a>) },
+        { name: 'Attendance', selector: (row: any) => row.attendance ? (<span className='text-success'>Attended</span>) : row.attendance === null && moment() < moment(row.expires_on) ? (<span></span>) : (<span className='text-danger'>Missed</span>), },
+        { name: 'Expiry', selector: (row: any) => row.expires_on, sortable: true },
+
     ]
 
     useEffect(() => {

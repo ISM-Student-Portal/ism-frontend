@@ -5,7 +5,7 @@ import axios from '../../utils/axios';
 
 export const getUpcoming = async() => {
     try{
-        const classroom = await axios.get('/classroom');
+        const classroom = await axios.get('/get-classrooms');
         return classroom.data;
     
         }catch (error: any){
