@@ -37,8 +37,10 @@ instance.interceptors.response.use(
     },
     function (error) {
         if(error.response.status === 401){
-            // localStorage.removeItem("authentication");
-            // localStorage.removeItem("profile");
+            console.log('got here')
+            localStorage.removeItem("authentication");
+            localStorage.removeItem("profile");
+            window.location.reload();
 
         }
         else if(error.response.status === 404){

@@ -8,6 +8,7 @@ import Header from '@app/modules/main/header/Header';
 import MenuSidebar from '@app/modules/main/menu-sidebar/MenuSidebar';
 import Footer from '@app/modules/main/footer/Footer';
 import { Image } from '@profabric/react-components';
+import useIdle from '../../utils/useIdleTimeout';
 
 const Main = () => {
   const dispatch = useDispatch();
@@ -17,9 +18,15 @@ const Main = () => {
   const controlSidebarCollapsed = useSelector(
     (state: any) => state.ui.controlSidebarCollapsed
   );
+
+  const handleIdle = () => {
+    console.log(true);
+}
   const screenSize = useSelector((state: any) => state.ui.screenSize);
   const authentication = useSelector((state: any) => state.auth.authentication);
   const [isAppLoaded, setIsAppLoaded] = useState(false);
+
+  const {idleTimer} = useIdle({onIdle: handleIdle, idleTime: 300})
 
   const handleToggleMenuSidebar = () => {
     dispatch(toggleSidebarMenu());
