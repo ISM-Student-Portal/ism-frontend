@@ -31,7 +31,7 @@ const Classroom = () => {
   const [title, setTitle] = React.useState('');
   const [description, setDescription] = React.useState('');
   const [link, setLink] = React.useState('');
-  const [expiresOn, setExpiresOn] = React.useState();
+  const [expiresOn, setExpiresOn] = React.useState<any>();
   const [rows, setRows] = React.useState([]);
   const [attendance, setAttendance] = React.useState([]);
 
@@ -95,6 +95,7 @@ const Classroom = () => {
       title: title,
       description: description,
       link: link,
+      expires_on: expiresOn
     }
     const student = await createClassroom(data);
     toast.success('Class Created Successfully!');
@@ -211,6 +212,10 @@ const Classroom = () => {
 
           <Container
             sx={{ marginTop: '.5rem', marginBottom: '.5rem', }}>
+
+            <DateTimePicker label="Deadline"
+              value={expiresOn}
+              onChange={(newValue) => setExpiresOn(newValue)}></DateTimePicker>
 
             <TextField
               id="outlined-controlled"
