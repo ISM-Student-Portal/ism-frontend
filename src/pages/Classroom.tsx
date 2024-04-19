@@ -136,7 +136,7 @@ const Classroom = () => {
   const columns = memoize(clickHandler => [
     { name: 'Title', selector: (row: any) => row.title },
     { name: 'Description', selector: (row: any) => row.description },
-    { name: 'Link', selector: (row: any) => row.link },
+    { name: 'Link', selector: (row: any) => (<a target='_blank' href={row.link}>{row.link}</a>) },
     {
       name: 'Action',
 
@@ -183,7 +183,7 @@ const Classroom = () => {
         }} maxWidth="lg" component="form" noValidate>
           <h5 id="child-modal-title" className='text-center my-3'>Create a Class</h5>
           <Container
-            sx={{ marginTop: '1rem', marginBottom: '1rem', }}>
+            sx={{ marginTop: '.5rem', marginBottom: '.5rem', }}>
 
             <TextField
               id="outlined-controlled"
@@ -212,9 +212,6 @@ const Classroom = () => {
           <Container
             sx={{ marginTop: '.5rem', marginBottom: '.5rem', }}>
 
-            <DateTimePicker label="Deadline"
-              value={expiresOn}
-              onChange={(newValue) => setExpiresOn(newValue)}></DateTimePicker>
 
             <TextField
               id="outlined-controlled"
@@ -228,7 +225,13 @@ const Classroom = () => {
               onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
                 setLink(event.target.value);
               }}
+
+
             />
+
+            <DateTimePicker label="Attendance Deadline"
+              value={expiresOn}
+              onChange={(newValue) => setExpiresOn(newValue)}></DateTimePicker>
 
           </Container>
 
