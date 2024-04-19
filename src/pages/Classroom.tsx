@@ -137,7 +137,6 @@ const Classroom = () => {
     { name: 'Title', selector: (row: any) => row.title },
     { name: 'Description', selector: (row: any) => row.description },
     { name: 'Link', selector: (row: any) => row.link },
-    { name: 'Expiry', selector: (row: any) => row.expires_on },
     {
       name: 'Action',
 
