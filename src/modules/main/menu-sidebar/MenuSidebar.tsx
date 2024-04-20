@@ -3,7 +3,6 @@ import { Link } from 'react-router-dom';
 import { MenuItem } from '@components';
 import { Image } from '@profabric/react-components';
 import styled from 'styled-components';
-import { SidebarSearch } from '@app/components/sidebar-search/SidebarSearch';
 import i18n from '@app/utils/i18n';
 
 export interface IMenuItem {
@@ -51,7 +50,7 @@ export const MENU: IMenuItem[] = [
 
 export const STUDENT_MENU: IMenuItem[] = [
   {
-    name: i18n.t('menusidebar.label.dashboard'),
+    name: 'Dashboard',
     icon: 'fas fa-tachometer-alt nav-icon',
     path: '/',
   },
@@ -144,8 +143,7 @@ const MenuSidebar = () => {
                 menuItem={menuItem}
               />
             ))}
-
-            {profile.is_admin === 0 && STUDENT_MENU.map((menuItem: IMenuItem) => (
+            {!profile.is_admin && STUDENT_MENU.map((menuItem: IMenuItem) => (
               <MenuItem
                 key={menuItem.name + menuItem.path}
                 menuItem={menuItem}
