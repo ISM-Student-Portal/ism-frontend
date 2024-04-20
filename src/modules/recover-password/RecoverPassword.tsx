@@ -14,6 +14,8 @@ import { useState } from 'react';
 const RecoverPassword = () => {
   const [isAuthLoading, setAuthLoading] = useState(false);
   const navigate = useNavigate();
+  const [showPassword, setShowPassword] = useState(false);
+
 
 
   const [t] = useTranslation();
@@ -84,14 +86,14 @@ const RecoverPassword = () => {
           </Link>
         </div>
         <div className="card-body">
-          <p className="login-box-msg">{t('recover.oneStepAway')}</p>
+          <p className="login-box-msg">You are only one step away. Kindly change your password</p>
           <form onSubmit={handleSubmit}>
             <div className="mb-3">
               <InputGroup className="mb-3">
                 <Form.Control
                   id="password"
                   name="password"
-                  type="password"
+                  type={showPassword ? "text" : "password"}
                   placeholder="Password"
                   onChange={handleChange}
                   value={values.password}
@@ -104,8 +106,8 @@ const RecoverPassword = () => {
                   </Form.Control.Feedback>
                 ) : (
                   <InputGroup.Append>
-                    <InputGroup.Text>
-                      <i className="fas fa-lock" />
+                    <InputGroup.Text onClick={() => setShowPassword(!showPassword)}>
+                      {!showPassword ? <i className="fas fa-eye-slash" /> : <i className="fas fa-eye" />}
                     </InputGroup.Text>
                   </InputGroup.Append>
                 )}
@@ -116,7 +118,8 @@ const RecoverPassword = () => {
                 <Form.Control
                   id="confirmPassword"
                   name="confirmPassword"
-                  type="password"
+                  type={showPassword ? "text" : "password"}
+
                   placeholder="Confirm password"
                   onChange={handleChange}
                   value={values.confirmPassword}
@@ -131,8 +134,8 @@ const RecoverPassword = () => {
                   </Form.Control.Feedback>
                 ) : (
                   <InputGroup.Append>
-                    <InputGroup.Text>
-                      <i className="fas fa-lock" />
+                    <InputGroup.Text onClick={() => setShowPassword(!showPassword)}>
+                      {!showPassword ? <i className="fas fa-eye-slash" /> : <i className="fas fa-eye" />}
                     </InputGroup.Text>
                   </InputGroup.Append>
                 )}
