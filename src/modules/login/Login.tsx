@@ -46,6 +46,8 @@ const Login = () => {
       // dispatch(loginUser(token));
       if (response.profile.first_login === 1) {
         navigate('/recover-password');
+        window.location.reload();
+
       } else {
         if (response.profile.is_admin === 1) {
           console.log('here')
