@@ -13,6 +13,16 @@ export const resetPassword = async (data: any) => {
         }
 }
 
+export const changepass = async (data: any) => {
+    try{
+        const reset = await axios.post('/password-update', data);
+        return reset.data;
+    
+        }catch (error: any){
+            return error.message
+        }
+}
+
 export const forgotPasswordAction = async (data:any) => {
     try{
         console.log(data)

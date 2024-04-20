@@ -44,13 +44,18 @@ const Login = () => {
       toast.success('Login is Successful!');
       setAuthLoading(false);
       // dispatch(loginUser(token));
-      if (response.profile.is_admin === 1) {
-        console.log('here')
-        navigate('/admin');
+      if (response.profile.first_login === 1) {
+        navigate('/recover-password');
       } else {
-        navigate('/');
+        if (response.profile.is_admin === 1) {
+          console.log('here')
+          navigate('/admin');
+        } else {
+          navigate('/');
+        }
+        window.location.reload();
       }
-      window.location.reload();
+
     } catch (error: any) {
       setAuthLoading(false);
       toast.error(error.message || 'Failed');

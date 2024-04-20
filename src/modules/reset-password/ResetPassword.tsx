@@ -51,10 +51,19 @@ const ResetPassword = () => {
   const { handleChange, values, handleSubmit, touched, errors } = useFormik({
     initialValues: {
       password: '',
-      repeat_password: '',
+      confirmPassword: '',
+
 
     },
     validationSchema: Yup.object({
+      password: Yup.string()
+        .min(5, 'Must be 5 characters or more')
+        .max(30, 'Must be 30 characters or less')
+        .required('Required'),
+      confirmPassword: Yup.string()
+        .min(5, 'Must be 5 characters or more')
+        .max(30, 'Must be 30 characters or less')
+        .required('Required'),
       // email: Yup.string().email('Invalid email address').required('Required'),
     }),
     onSubmit: (values) => {
@@ -117,12 +126,12 @@ const ResetPassword = () => {
                   type={showPassword ? "text" : "password"}
                   placeholder="Repeat Password"
                   onChange={handleChange}
-                  value={values.repeat_password}
-                  isValid={touched.repeat_password && !errors.repeat_password}
-                  isInvalid={touched.repeat_password && !!errors.repeat_password}
+                  value={values.confirmPassword}
+                  isValid={touched.confirmPassword && !errors.confirmPassword}
+                  isInvalid={touched.confirmPassword && !!errors.confirmPassword}
                 />
 
-                {touched.repeat_password && errors.repeat_password ? (
+                {touched.confirmPassword && errors.confirmPassword ? (
                   <Form.Control.Feedback type="invalid">
                     {errors.password}
                   </Form.Control.Feedback>

@@ -1,14 +1,45 @@
 import { toast } from 'react-toastify';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { setWindowClass } from '@app/utils/helpers';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
 import { Form, InputGroup } from 'react-bootstrap';
 import { Button } from '@app/styles/common';
+import { Image } from '@profabric/react-components';
+import { changepass } from '@app/services/authServices';
+import { useState } from 'react';
+
 
 const RecoverPassword = () => {
+  const [isAuthLoading, setAuthLoading] = useState(false);
+  const navigate = useNavigate();
+
+
   const [t] = useTranslation();
+  const changePassword = async (password: any) => {
+    setAuthLoading(true);
+    try {
+      let res = await changepass({
+        password: password,
+      });
+      if (res.status === 'success') {
+        toast.success('password changed successfully');
+        navigate('/login');
+      }
+      else {
+        toast.error('An error occurred ');
+
+      }
+
+    }
+    catch (error) {
+      toast.error("unable to complete")
+    }
+
+    setAuthLoading(false);
+
+  }
 
   const { handleChange, values, handleSubmit, touched, errors } = useFormik({
     initialValues: {
@@ -26,7 +57,7 @@ const RecoverPassword = () => {
         .required('Required'),
     }),
     onSubmit: (values) => {
-      toast.warn('Not yet functional');
+      changePassword(values.password);
       console.log('values', values);
     },
   });
@@ -34,11 +65,22 @@ const RecoverPassword = () => {
   setWindowClass('hold-transition login-page');
   return (
     <div className="login-box">
-      <div className="card card-outline card-primary">
+      <div className="card card-outline card-warning">
         <div className="card-header text-center">
+          <span className='px-1'> <Image
+            src={"./img/logo1.png"}
+
+            alt="AdminLTELogo"
+            height={40}
+            width={30}
+          /></span>
+
+
           <Link to="/" className="h1">
-            <b>Admin</b>
-            <span>LTE</span>
+
+
+            <b>ISM</b>
+            <span> Portal</span>
           </Link>
         </div>
         <div className="card-body">
@@ -98,7 +140,10 @@ const RecoverPassword = () => {
             </div>
             <div className="row">
               <div className="col-12">
-                <Button>{t('recover.changePassword')}</Button>
+                <Button
+                  disabled={isAuthLoading}
+
+                  onClick={handleSubmit as any}>{t('recover.changePassword')}</Button>
               </div>
             </div>
           </form>
