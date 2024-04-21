@@ -18,6 +18,7 @@ import memoize from 'memoize-one';
 import { ChangeEvent, useState } from "react";
 import { createStudent, updateStudentStatus, deleteStudent, fetchAllAdmins, createAdmin } from '@app/services/admin/studentServices';
 import { Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, FormControlLabel, FormGroup, Switch } from '@mui/material';
+import { useSelector } from 'react-redux';
 
 
 const Admins = () => {
@@ -41,6 +42,9 @@ const Admins = () => {
   const [lastName, setLastName] = React.useState('');
   const [phoneNumber, setPhoneNumber] = React.useState('');
   const [rows, setRows] = React.useState([]);
+
+  const profile = useSelector((state: any) => state.profile.profile);
+
 
   const handleOpen = () => {
     setOpen(true);
@@ -196,7 +200,7 @@ const Admins = () => {
     {
       name: 'Action',
 
-      cell: (row: any) => (<div><button className='btn btn-primary btn-sm' onClick={() => { clickHandler('edit', row) }}>Edit</button> <button className='btn btn-danger btn-sm' onClick={() => { clickHandler('delete', row) }}>Deact</button></div>),
+      cell: (row: any) => profile.is_superadmin ? (<div><button className='btn btn-primary btn-sm' onClick={() => { clickHandler('edit', row) }}>Edit</button> <button className='btn btn-danger btn-sm' onClick={() => { clickHandler('delete', row) }}>Deact</button></div>) : (<span></span>),
       ignoreRowClick: true,
       allowOverflow: true,
       button: true,

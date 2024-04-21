@@ -20,6 +20,8 @@ import memoize from 'memoize-one';
 import { fetchAllAssignments, deleteAssignment, updateSubmission } from '@app/services/admin/classServices';
 import { Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle } from '@mui/material';
 import moment from 'moment';
+import { useSelector } from 'react-redux';
+import { spawn } from 'child_process';
 
 
 const Assignment = () => {
@@ -46,6 +48,9 @@ const Assignment = () => {
   const [deadline, setDeadline] = React.useState<any>();
   const [rows, setRows] = React.useState([]);
   const [attendance, setAttendance] = React.useState([]);
+
+  const profile = useSelector((state: any) => state.profile.profile);
+
 
 
 
@@ -223,7 +228,7 @@ const Assignment = () => {
   const columns = memoize(clickHandler => [
     { name: 'Title', selector: (row: any) => row.title },
     { name: 'Description', selector: (row: any) => row.description },
-    { name: 'Link', selector: (row: any) => row.link },
+    { name: 'Link', selector: (row: any) => (<a target='_blank' href={row.link}>{row.link}</a>) },
     { name: 'Deadline', selector: (row: any) => row.deadline },
     {
       name: 'Download File', cell: (row: any) => {
@@ -234,7 +239,7 @@ const Assignment = () => {
     {
       name: 'Action',
 
-      cell: (row: any) => (<div><button className='btn btn-primary btn-sm p-1' title='View Submissions' onClick={() => { clickHandler('edit', row) }}>View</button> <button className='btn p-1 btn-danger btn-sm' onClick={() => { clickHandler('delete', row) }} title='Delete Assignment'>Delete</button></div>),
+      cell: (row: any) => (<div><button className='btn btn-primary btn-sm p-1' title='View Submissions' onClick={() => { clickHandler('edit', row) }}>View</button> {profile.is_superadmin ? (<button className='btn p-1 btn-danger btn-sm' onClick={() => { clickHandler('delete', row) }} title='Delete Assignment'>Delete</button>) : (<span></span>)}</div>),
       ignoreRowClick: true,
       allowOverflow: true,
       button: true,

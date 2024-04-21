@@ -131,9 +131,7 @@ const Students = () => {
 
 
   }
-  const handleChangeStat = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setEditStudentStatus(event.target.checked);
-  };
+
 
   const handleChangeSub = (event: React.ChangeEvent<HTMLInputElement>) => {
     setEditStudentSub(event.target.checked);
@@ -163,7 +161,7 @@ const Students = () => {
     });
     if (res) {
       toast.success('Upload done');
-      getStudents();
+      await getStudents();
       handleClose();
     }
     setLoading(false);

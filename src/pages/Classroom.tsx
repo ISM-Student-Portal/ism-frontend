@@ -15,6 +15,7 @@ import memoize from 'memoize-one';
 import { fetchAllClassrooms, createClassroom, getAttendance, deleteClassroom } from '@app/services/admin/classServices';
 import { Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle } from '@mui/material';
 import moment from 'moment';
+import { useSelector } from 'react-redux';
 
 
 const Classroom = () => {
@@ -36,6 +37,7 @@ const Classroom = () => {
   const [attendance, setAttendance] = React.useState([]);
 
 
+  const profile = useSelector((state: any) => state.profile.profile);
 
   const handleOpenAdd = () => {
     setOpenAdd(true);
@@ -140,7 +142,7 @@ const Classroom = () => {
     {
       name: 'Action',
 
-      cell: (row: any) => (<div><button className='btn btn-primary btn-sm p-1' title='View Attendance' onClick={() => { clickHandler('edit', row) }}>View</button> <button className='btn p-1 btn-danger btn-sm' onClick={() => { clickHandler('delete', row) }} title='Delete Class'>Delete</button></div>),
+      cell: (row: any) => (<div><button className='btn btn-primary btn-sm p-1' title='View Attendance' onClick={() => { clickHandler('edit', row) }}>View</button> {profile.is_superadmin ? (<button className='btn p-1 btn-danger btn-sm' onClick={() => { clickHandler('delete', row) }} title='Delete Class'>Delete</button>) : (<span></span>)}</div>),
       ignoreRowClick: true,
       allowOverflow: true,
       button: true,
