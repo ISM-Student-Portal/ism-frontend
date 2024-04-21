@@ -137,18 +137,25 @@ const MenuSidebar = () => {
               }${menuChildIndent ? ' nav-child-indent' : ''}`}
             role="menu"
           >
-            {profile.is_admin && MENU.map((menuItem: IMenuItem) => (
+            {profile.is_admin ? (MENU.map((menuItem: IMenuItem) => (
               <MenuItem
                 key={menuItem.name + menuItem.path}
                 menuItem={menuItem}
               />
-            ))}
-            {!profile.is_admin && STUDENT_MENU.map((menuItem: IMenuItem) => (
+            ))) : (
+              STUDENT_MENU.map((menuItem: IMenuItem) => (
+                <MenuItem
+                  key={menuItem.name + menuItem.path}
+                  menuItem={menuItem}
+                />
+              ))
+            )}
+            {/* {!profile.is_admin && STUDENT_MENU.map((menuItem: IMenuItem) => (
               <MenuItem
                 key={menuItem.name + menuItem.path}
                 menuItem={menuItem}
               />
-            ))}
+            ))} */}
           </ul>
         </nav>
       </div>

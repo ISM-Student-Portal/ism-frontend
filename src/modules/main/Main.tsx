@@ -27,7 +27,6 @@ const Main = () => {
   const handleIdle = () => {
     console.log(true);
   }
-  console.log(profile, 'profile');
   if (profile.first_login === 1) {
     navigate('/recover-password');
 
