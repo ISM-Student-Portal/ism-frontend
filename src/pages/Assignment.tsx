@@ -182,7 +182,10 @@ const Assignment = () => {
     formData.append("title", title);
     formData.append("description", description);
     formData.append("link", link);
-    formData.append("deadline", deadline);
+    if (deadline) {
+      formData.append("deadline", deadline);
+
+    }
 
     let res = await axios.post('/assignments', formData, {
       headers: {
