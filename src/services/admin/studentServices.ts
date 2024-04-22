@@ -61,6 +61,16 @@ export const deleteStudent = async(id:number, is_active: boolean) => {
         }
 }
 
+export const changeStudentPass = async(id:number) => {
+    try{
+        const student = await axios.post('/resend-mail', {id: id});
+        return student.data;
+    
+        }catch (error: any){
+            return error.message
+        }
+}
+
 export const updateProfile = async(data: any) => {
     try{
         const profile = await axios.put('/update-profile', data);

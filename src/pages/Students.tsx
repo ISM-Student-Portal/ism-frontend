@@ -16,7 +16,7 @@ import axios from '../utils/axios';
 import memoize from 'memoize-one';
 
 import { ChangeEvent, useState } from "react";
-import { fetchAllStudents, createStudent, updateStudentStatus, deleteStudent } from '@app/services/admin/studentServices';
+import { fetchAllStudents, createStudent, updateStudentStatus, deleteStudent, changeStudentPass } from '@app/services/admin/studentServices';
 import { Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, FormControlLabel, FormGroup, Switch } from '@mui/material';
 
 
@@ -69,12 +69,15 @@ const Students = () => {
   const handleCloseAdd = () => {
     setOpenAdd(false);
   }
-  const handleButtonClick = (type: any, student: any) => {
+  const handleButtonClick = async (type: any, student: any) => {
     setSelectedStudent(student);
     if (type === 'edit') {
-      setEditStudentStatus(student.is_admin);
-      setEditStudentSub(student.profile.subscription === 'premium')
-      handleOpenEdit();
+      await changeStudentPass(student.id);
+      toast.success('Student updated Successfully!');
+
+      // setEditStudentStatus(student.is_admin);
+      // setEditStudentSub(student.profile.subscription === 'premium')
+      // handleOpenEdit();
     } else {
       handleOpenDelete();
     }
