@@ -72,12 +72,12 @@ const Students = () => {
   const handleButtonClick = async (type: any, student: any) => {
     setSelectedStudent(student);
     if (type === 'edit') {
-      await changeStudentPass(student.id);
-      toast.success('Student updated Successfully!');
+      // await changeStudentPass(student.id);
+      // toast.success('Student updated Successfully!');
 
-      // setEditStudentStatus(student.is_admin);
-      // setEditStudentSub(student.profile.subscription === 'premium')
-      // handleOpenEdit();
+      setEditStudentStatus(student.is_admin);
+      setEditStudentSub(student.profile.subscription === 'premium')
+      handleOpenEdit();
     } else {
       handleOpenDelete();
     }
