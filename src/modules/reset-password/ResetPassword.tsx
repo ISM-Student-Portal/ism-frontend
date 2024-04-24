@@ -121,8 +121,8 @@ const ResetPassword = () => {
             <div className="mb-3">
               <InputGroup className="mb-3">
                 <Form.Control
-                  id="repeat_password"
-                  name="repeat_password"
+                  id="confirmPassword"
+                  name="confirmPassword"
                   type={showPassword ? "text" : "password"}
                   placeholder="Repeat Password"
                   onChange={handleChange}
@@ -133,7 +133,7 @@ const ResetPassword = () => {
 
                 {touched.confirmPassword && errors.confirmPassword ? (
                   <Form.Control.Feedback type="invalid">
-                    {errors.password}
+                    {errors.confirmPassword}
                   </Form.Control.Feedback>
                 ) : (
                   <InputGroup.Append>
