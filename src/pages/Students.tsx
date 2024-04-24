@@ -191,7 +191,7 @@ const Students = () => {
     { name: 'Email', selector: (row: any) => row.email },
     { name: 'Phone', selector: (row: any) => row.profile?.phone },
     { name: 'Subscription', selector: (row: any) => row.profile?.subscription, sortable: true },
-    { name: 'Reg No', selector: (row: any) => row.reg_no, grow: 1 },
+    { name: 'Reg No', selector: (row: any) => row.reg_no, grow: 1, sortable: true },
     { name: 'Status', selector: (row: any) => row.is_active ? "Active" : "Inactive", grow: 1 },
 
 
