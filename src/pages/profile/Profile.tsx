@@ -18,6 +18,7 @@ import { Box, Modal } from '@mui/material';
 import { toast } from 'react-toastify';
 import { uploadPics } from '@app/services/admin/studentServices';
 import { setProfile } from '@app/store/reducers/profile';
+import { getAdmission } from '@app/services/student/classServices';
 
 const StyledUserImage = styled(Image)`
   --pf-border: 3px solid #adb5bd;
@@ -98,6 +99,30 @@ const Profile = () => {
 
     setLoading(false);
     handleUploadClose();
+
+
+  }
+
+  const getAdmissionLetter = async () => {
+    // let res = getAdmission().then((res: any) => {
+    //   console.log(res)
+    //   const url = window.URL.createObjectURL(new Blob([res.data]));
+    //   const link = document.createElement('a');
+    //   link.href = url;
+    //   link.setAttribute('download', 'admission_letter.pdf'); //or any other extension
+    //   document.body.appendChild(link);
+    //   link.click();
+    // })
+
+    axios.get('get-admission-letter', { responseType: 'blob' }).then((res: any) => {
+      const url = window.URL.createObjectURL(new Blob([res.data]));
+      const link = document.createElement('a');
+      link.href = url;
+      link.setAttribute('download', 'admission_letter.pdf'); //or any other extension
+      document.body.appendChild(link);
+      link.click();
+    })
+    toast.success("Request was successful");
 
 
   }
@@ -220,11 +245,30 @@ const Profile = () => {
                         // type="button"
                         className={`nav-link ${activeTab === 'SETTINGS' ? 'active' : ''
                           }`}
-                        onClick={() => toggle('SETTINGS')}
                       >
                         Edit Profile
                       </span>
+
                     </li>
+                    {profile.is_admin ? (
+                      <div></div>
+                    ) : (
+                      <li className="nav-item">
+                        <span
+                          // type="button"
+                          className={`nav-link`}
+                          style={{
+                            cursor: "pointer"
+                          }}
+                          onClick={getAdmissionLetter}
+
+                        >
+                          Get Admission Letter
+                        </span>
+
+                      </li>
+                    )}
+
                   </ul>
                 </div>
                 <div className="card-body">

@@ -52,3 +52,13 @@ export const createSubmission = async(data: any) => {
             return error.message
         }
 }
+
+export const getAdmission = async() => {
+    try{
+        const letter = await axios.get('/get-admission-letter');
+        return letter.data;
+    
+        }catch (error: any){
+            return error.message
+        }
+}
