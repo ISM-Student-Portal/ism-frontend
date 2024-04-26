@@ -55,8 +55,8 @@ const App = () => {
   const checkSession = async () => {
     try {
       let responses: any = await Promise.all([
-        getFacebookLoginStatus(),
-        GoogleProvider.getUser(),
+        // getFacebookLoginStatus(),
+        // GoogleProvider.getUser(),
         getAuthStatus(),
       ]);
       let profile: any = await getProfileStatus();
