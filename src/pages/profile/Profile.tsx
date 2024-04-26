@@ -250,24 +250,24 @@ const Profile = () => {
                       </span>
 
                     </li>
-                    {/* {profile.is_admin ? (
+                    {profile.is_admin ? (
                       <div></div>
                     ) : (
-                      // <li className="nav-item">
-                      //   <span
-                      //     // type="button"
-                      //     className={`nav-link`}
-                      //     style={{
-                      //       cursor: "pointer"
-                      //     }}
-                      //     onClick={getAdmissionLetter}
+                      <li className="nav-item">
+                        <span
+                          // type="button"
+                          className={`nav-link`}
+                          style={{
+                            cursor: "pointer"
+                          }}
+                          onClick={getAdmissionLetter}
 
-                      //   >
-                      //     Get Admission Letter
-                      //   </span>
+                        >
+                          Get Admission Letter
+                        </span>
 
-                      // </li>
-                    )} */}
+                      </li>
+                    )}
 
                   </ul>
                 </div>
