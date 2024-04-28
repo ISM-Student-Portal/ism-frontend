@@ -210,8 +210,8 @@ const Students = () => {
   ]);
 
   const caseInsensitiveSort = (rowA: any, rowB: any) => {
-    const a = rowA.email.toLowerCase();
-    const b = rowB.email.toLowerCase();
+    const a = rowA.email?.toLowerCase();
+    const b = rowB.email?.toLowerCase();
 
     if (a > b) {
       return 1;
@@ -224,8 +224,8 @@ const Students = () => {
     return 0;
   };
   const caseInsensitiveRegSort = (rowA: any, rowB: any) => {
-    const a = rowA.reg_no.toLowerCase();
-    const b = rowB.reg_no.toLowerCase();
+    const a = rowA.reg_no?.toLowerCase();
+    const b = rowB.reg_no?.toLowerCase();
 
     if (a > b) {
       return 1;
@@ -239,8 +239,8 @@ const Students = () => {
   };
 
   const caseInsensitiveLastSort = (rowA: any, rowB: any) => {
-    const a = rowA.profile?.last_name.toLowerCase();
-    const b = rowB.profile?.last_name.toLowerCase();
+    const a = rowA.profile?.last_name?.toLowerCase();
+    const b = rowB.profile?.last_name?.toLowerCase();
 
     if (a > b) {
       return 1;
@@ -254,8 +254,8 @@ const Students = () => {
   };
 
   const caseInsensitiveFirstSort = (rowA: any, rowB: any) => {
-    const a = rowA.profile?.first_name.toLowerCase();
-    const b = rowB.profile?.first_name.toLowerCase();
+    const a = rowA.profile?.first_name?.toLowerCase();
+    const b = rowB.profile?.first_name?.toLowerCase();
 
     if (a > b) {
       return 1;
