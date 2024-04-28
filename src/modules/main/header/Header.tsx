@@ -6,9 +6,6 @@ import {
   toggleControlSidebar,
   toggleSidebarMenu,
 } from '@app/store/reducers/ui';
-import MessagesDropdown from '@app/modules/main/header/messages-dropdown/MessagesDropdown';
-import NotificationsDropdown from '@app/modules/main/header/notifications-dropdown/NotificationsDropdown';
-import LanguagesDropdown from '@app/modules/main/header/languages-dropdown/LanguagesDropdown';
 import UserDropdown from '@app/modules/main/header/user-dropdown/UserDropdown';
 
 const Header = () => {
@@ -52,13 +49,13 @@ const Header = () => {
             {t('header.label.home')}
           </Link>
         </li>
-        
+
       </ul>
       <ul className="navbar-nav ml-auto">
         {/* <MessagesDropdown /> */}
         {/* <NotificationsDropdown /> */}
         {/* <LanguagesDropdown /> */}
-        <UserDropdown /> 
+        <UserDropdown />
         {/* <li className="nav-item">
           <button
             type="button"

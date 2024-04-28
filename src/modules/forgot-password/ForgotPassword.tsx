@@ -12,6 +12,7 @@ import { useState } from 'react';
 const ForgotPassword = () => {
   const [t] = useTranslation();
   const [isAuthLoading, setAuthLoading] = useState(false);
+  const [emailSent, setEmailSent] = useState(false);
   const navigate = useNavigate();
 
 
@@ -20,10 +21,11 @@ const ForgotPassword = () => {
     setAuthLoading(true);
     try {
       let res = await forgotPasswordAction({
-        email: email       
+        email: email
       });
       if (res.status === 'success') {
         toast.success('Check your mail for Instructions');
+        setEmailSent(true);
       }
       else {
         toast.error('An error occurred ');
@@ -70,45 +72,55 @@ const ForgotPassword = () => {
           </div>
         </div>
         <div className="card-body">
-          <p className="login-box-msg">{t('recover.forgotYourPassword')}</p>
-          <form onSubmit={handleSubmit}>
-            <div className="mb-3">
-              <InputGroup className="mb-3">
-                <Form.Control
-                  id="email"
-                  name="email"
-                  type="email"
-                  placeholder="Email"
-                  onChange={handleChange}
-                  value={values.email}
-                  isValid={touched.email && !errors.email}
-                  isInvalid={touched.email && !!errors.email}
-                />
-                {touched.email && errors.email ? (
-                  <Form.Control.Feedback type="invalid">
-                    {errors.email}
-                  </Form.Control.Feedback>
-                ) : (
-                  <InputGroup.Append>
-                    <InputGroup.Text>
-                      <i className="fas fa-envelope" />
-                    </InputGroup.Text>
-                  </InputGroup.Append>
-                )}
-              </InputGroup>
-            </div>
-            <div className="row">
-            <Button
-                      
-                      onClick={handleSubmit as any}
-                      variant='warning'
-                      loading={isAuthLoading}
+          {emailSent ? (
+            <div>
+              <p className="login-box-msg">The instructions for password reset has been sent to your mail. Kindly go and check</p>
 
-                    >
-                      {t('recover.requestNewPassword')}
-                    </Button>
             </div>
-          </form>
+          ) : (
+            <div>
+              <p className="login-box-msg">{t('recover.forgotYourPassword')}</p>
+              <form onSubmit={handleSubmit}>
+                <div className="mb-3">
+                  <InputGroup className="mb-3">
+                    <Form.Control
+                      id="email"
+                      name="email"
+                      type="email"
+                      placeholder="Email"
+                      onChange={handleChange}
+                      value={values.email}
+                      isValid={touched.email && !errors.email}
+                      isInvalid={touched.email && !!errors.email}
+                    />
+                    {touched.email && errors.email ? (
+                      <Form.Control.Feedback type="invalid">
+                        {errors.email}
+                      </Form.Control.Feedback>
+                    ) : (
+                      <InputGroup.Append>
+                        <InputGroup.Text>
+                          <i className="fas fa-envelope" />
+                        </InputGroup.Text>
+                      </InputGroup.Append>
+                    )}
+                  </InputGroup>
+                </div>
+                <div className="row">
+                  <Button
+
+                    onClick={handleSubmit as any}
+                    variant='warning'
+                    loading={isAuthLoading}
+
+                  >
+                    {t('recover.requestNewPassword')}
+                  </Button>
+                </div>
+              </form>
+            </div>
+          )}
+
           <p className="mt-3 mb-1">
             <Link to="/login">{t('login.button.signIn.label')}</Link>
           </p>
