@@ -186,12 +186,12 @@ const Students = () => {
     pb: 3,
   };
   const columns = memoize(clickHandler => [
-    { name: 'First Name', selector: (row: any) => row.profile?.first_name, sortable: true },
-    { name: 'Last Name', selector: (row: any) => row.profile?.last_name, sortable: true },
-    { name: 'Email', selector: (row: any) => row.email, sortable: true },
+    { name: 'First Name', selector: (row: any) => row.profile?.first_name, sortable: true, sortFunction: caseInsensitiveFirstSort },
+    { name: 'Last Name', selector: (row: any) => row.profile?.last_name, sortable: true, sortFunction: caseInsensitiveLastSort },
+    { name: 'Email', selector: (row: any) => row.email, sortable: true, sortFunction: caseInsensitiveSort },
     { name: 'Phone', selector: (row: any) => row.profile?.phone, sortable: true },
     { name: 'Subscription', selector: (row: any) => row.profile?.subscription, sortable: true },
-    { name: 'Reg No', selector: (row: any) => row.reg_no, grow: 1, sortable: true },
+    { name: 'Reg No', selector: (row: any) => row.reg_no, grow: 1, sortable: true, sortFunction: caseInsensitiveRegSort },
     { name: 'Status', selector: (row: any) => row.is_active ? "Active" : "Inactive", grow: 1 },
 
 
@@ -208,6 +208,65 @@ const Students = () => {
 
 
   ]);
+
+  const caseInsensitiveSort = (rowA: any, rowB: any) => {
+    const a = rowA.email.toLowerCase();
+    const b = rowB.email.toLowerCase();
+
+    if (a > b) {
+      return 1;
+    }
+
+    if (b > a) {
+      return -1;
+    }
+
+    return 0;
+  };
+  const caseInsensitiveRegSort = (rowA: any, rowB: any) => {
+    const a = rowA.reg_no.toLowerCase();
+    const b = rowB.reg_no.toLowerCase();
+
+    if (a > b) {
+      return 1;
+    }
+
+    if (b > a) {
+      return -1;
+    }
+
+    return 0;
+  };
+
+  const caseInsensitiveLastSort = (rowA: any, rowB: any) => {
+    const a = rowA.profile?.last_name.toLowerCase();
+    const b = rowB.profile?.last_name.toLowerCase();
+
+    if (a > b) {
+      return 1;
+    }
+
+    if (b > a) {
+      return -1;
+    }
+
+    return 0;
+  };
+
+  const caseInsensitiveFirstSort = (rowA: any, rowB: any) => {
+    const a = rowA.profile?.first_name.toLowerCase();
+    const b = rowB.profile?.first_name.toLowerCase();
+
+    if (a > b) {
+      return 1;
+    }
+
+    if (b > a) {
+      return -1;
+    }
+
+    return 0;
+  };
 
 
   useEffect(() => {
