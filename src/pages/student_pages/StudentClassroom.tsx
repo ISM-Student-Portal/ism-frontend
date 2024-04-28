@@ -41,7 +41,6 @@ const StudentClassroom = () => {
     const getUpcomingClass = async () => {
         try {
             let classroom1: any = await getUpcoming();
-            console.log(classroom1);
             setClassroomList(classroom1?.classrooms);
             let res = classroom1.classrooms[0]
             setClassroom(res);
@@ -51,14 +50,12 @@ const StudentClassroom = () => {
                 // setLoading(true);
             }
             if (moment() > moment(res?.expires_on)) {
-                console.log('got here epire')
 
                 setAttendanceExpired(true);
             }
 
         }
         catch (error: any) {
-            console.log(error);
         }
         setPending(false);
 
@@ -90,7 +87,10 @@ const StudentClassroom = () => {
         { name: 'Attendance', selector: (row: any) => row.attendance ? (<span className='text-success'>Attended</span>) : row.attendance === null && moment() < moment(row.expires_on) ? (<span></span>) : (<span className='text-danger'>Missed</span>), },
         { name: 'Expiry', selector: (row: any) => row.expires_on, sortable: true },
 
-    ]
+    ];
+    const handleChange = (state: any) => {
+        setClassroom(state.selectedRows[0]);
+    }
 
     useEffect(() => {
         getUpcomingClass();
@@ -156,9 +156,7 @@ const StudentClassroom = () => {
 
                 <div className="container-fluid">
                     <Typography variant='h5'>All Class List</Typography>
-
-
-                    <DataTable columns={columns} data={classroomList} progressPending={pending} responsive keyField='id' striped />
+                    <DataTable columns={columns} data={classroomList} progressPending={pending} responsive keyField='id' striped selectableRows selectableRowsSingle onSelectedRowsChange={handleChange} />
                 </div>
             </section>
         </div>

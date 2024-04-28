@@ -186,10 +186,10 @@ const Students = () => {
     pb: 3,
   };
   const columns = memoize(clickHandler => [
-    { name: 'First Name', selector: (row: any) => row.profile?.first_name, sortable: true, reorder: true },
-    { name: 'Last Name', selector: (row: any) => row.profile?.last_name, sortable: true, reorder: true },
-    { name: 'Email', selector: (row: any) => row.email },
-    { name: 'Phone', selector: (row: any) => row.profile?.phone },
+    { name: 'First Name', selector: (row: any) => row.profile?.first_name, sortable: true },
+    { name: 'Last Name', selector: (row: any) => row.profile?.last_name, sortable: true },
+    { name: 'Email', selector: (row: any) => row.email, sortable: true },
+    { name: 'Phone', selector: (row: any) => row.profile?.phone, sortable: true },
     { name: 'Subscription', selector: (row: any) => row.profile?.subscription, sortable: true },
     { name: 'Reg No', selector: (row: any) => row.reg_no, grow: 1, sortable: true },
     { name: 'Status', selector: (row: any) => row.is_active ? "Active" : "Inactive", grow: 1 },
