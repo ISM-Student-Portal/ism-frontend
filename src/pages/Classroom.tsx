@@ -16,6 +16,8 @@ import { fetchAllClassrooms, createClassroom, getAttendance, deleteClassroom } f
 import { Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle } from '@mui/material';
 import moment from 'moment';
 import { useSelector } from 'react-redux';
+import axios from '../utils/axios';
+
 
 
 const Classroom = () => {
@@ -56,6 +58,21 @@ const Classroom = () => {
   const handleCloseEdit = () => {
     setOpenEdit(false);
   };
+  const downloadAttendance = async () => {
+    setLoading(true)
+    axios.get('/attendance-export/' + selectedClassroom.id, { responseType: 'blob' }).then((res: any) => {
+      const url = window.URL.createObjectURL(new Blob([res.data]));
+      const link = document.createElement('a');
+      link.href = url;
+      link.setAttribute('download', 'Attendance.xlsx'); //or any other extension
+      document.body.appendChild(link);
+      link.click();
+      toast.success("Request was successful");
+
+    }).finally(() => {
+      setLoading(false);
+    })
+  }
 
   const handleOpenDelete = () => {
     setOpenDelete(true);
@@ -275,7 +292,7 @@ const Classroom = () => {
             <Button variant='outlined' size='small' sx={{
               marginRight: ".2rem"
             }} onClick={handleCloseEdit}>Cancel</Button>
-            <Button variant='contained' size='small' onClick={createClassroomAction} disabled={loading}>Submit</Button>
+            <Button variant='contained' size='small' onClick={downloadAttendance} disabled={loading}>Download Attendance</Button>
           </Box>
 
           {/* <Button variant="outlined" onClick={handleClose}>Close Child Modal</Button> */}
