@@ -39,6 +39,7 @@ const Students = () => {
   const [email, setEmail] = React.useState('');
   const [firstName, setFirstName] = React.useState('');
   const [lastName, setLastName] = React.useState('');
+  const [regNo, setRegNo] = React.useState('');
   const [phoneNumber, setPhoneNumber] = React.useState('');
   const [rows, setRows] = React.useState([]);
 
@@ -117,7 +118,8 @@ const Students = () => {
       first_name: firstName,
       last_name: lastName,
       email: email,
-      phone_number: phoneNumber
+      phone_number: phoneNumber,
+      reg_no: regNo
     }
     const student = await createStudent(data);
     if (student.message === 'successful') {
@@ -380,6 +382,24 @@ const Students = () => {
                 setPhoneNumber(event.target.value);
               }}
             />
+          </Container>
+
+          <Container
+            sx={{ marginTop: '1rem', marginBottom: '1rem', display: 'flex' }}>
+
+            <TextField
+              id="outlined-controlled"
+              label="Reg No"
+              size='small'
+              sx={{ marginRight: '1rem' }}
+
+
+              value={regNo}
+              onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
+                setRegNo(event.target.value);
+              }}
+            />
+
           </Container>
 
 
