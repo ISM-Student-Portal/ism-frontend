@@ -90,22 +90,25 @@ const StudentClassroom = () => {
     ];
     const handleChange = (state: any) => {
         let classR = state.selectedRows[0];
-        setClassroom(classR);
-        if (classR.attendance) {
+        if (classR) {
+            setClassroom(classR);
+            if (classR.attendance) {
 
-            setAttendanceMarked(true);
-            // setLoading(true);
-        }
-        else {
-            setAttendanceMarked(false);
-        }
-        if (moment() > moment(classR?.expires_on)) {
+                setAttendanceMarked(true);
+                // setLoading(true);
+            }
+            else {
+                setAttendanceMarked(false);
+            }
+            if (moment() > moment(classR?.expires_on)) {
 
-            setAttendanceExpired(true);
+                setAttendanceExpired(true);
+            }
+            else {
+                setAttendanceExpired(false);
+            }
         }
-        else {
-            setAttendanceExpired(false);
-        }
+
     }
 
     useEffect(() => {
