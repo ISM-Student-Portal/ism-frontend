@@ -92,12 +92,19 @@ const StudentClassroom = () => {
         let classR = state.selectedRows[0];
         setClassroom(classR);
         if (classR.attendance) {
+
             setAttendanceMarked(true);
             // setLoading(true);
+        }
+        else {
+            setAttendanceMarked(false);
         }
         if (moment() > moment(classR?.expires_on)) {
 
             setAttendanceExpired(true);
+        }
+        else {
+            setAttendanceExpired(false);
         }
     }
 
