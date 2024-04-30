@@ -3,7 +3,7 @@ import { ContentHeader } from '@components';
 import DataTable from '../components/data-table/DataTableBase'
 import Button from '@mui/material/Button';
 import Modal from '@mui/material/Modal';
-import React, { useEffect } from 'react';
+import React, { useEffect, useMemo } from 'react';
 import Box from '@mui/material/Box';
 import Container from '@mui/material/Container'
 import TextField from '@mui/material/TextField';
@@ -18,6 +18,7 @@ import memoize from 'memoize-one';
 import { ChangeEvent, useState } from "react";
 import { fetchAllStudents, createStudent, updateStudentStatus, deleteStudent, changeStudentPass } from '@app/services/admin/studentServices';
 import { Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, FormControlLabel, FormGroup, Switch } from '@mui/material';
+import FilterComponent from '@app/components/data-table/FilterComponent';
 
 
 const Students = () => {
@@ -30,6 +31,11 @@ const Students = () => {
   const [openDelete, setOpenDelete] = React.useState(false);
   const [editStudentStatus, setEditStudentStatus] = React.useState(false);
   const [editStudentSub, setEditStudentSub] = React.useState(false);
+  const [filterText, setFilterText] = React.useState("");
+  const [resetPaginationToggle, setResetPaginationToggle] = React.useState(
+    false
+  );
+
 
 
   const [selectedStudent, setSelectedStudent] = React.useState<any>();
@@ -56,6 +62,30 @@ const Students = () => {
   const handleCloseEdit = () => {
     setOpenEdit(false);
   };
+
+  const filteredItems = rows.filter(
+    (item: any) =>
+      JSON.stringify(item)
+        .toLowerCase()
+        .indexOf(filterText.toLowerCase()) !== -1
+  );
+
+  const subHeaderComponent = useMemo(() => {
+    const handleClear = () => {
+      if (filterText) {
+        setResetPaginationToggle(!resetPaginationToggle);
+        setFilterText("");
+      }
+    };
+
+    return (
+      <FilterComponent
+        onFilter={(e: any) => setFilterText(e.target.value)}
+        onClear={handleClear}
+        filterText={filterText}
+      />
+    );
+  }, [filterText, resetPaginationToggle]);
 
   const handleOpenDelete = () => {
     setOpenDelete(true);
@@ -284,7 +314,7 @@ const Students = () => {
             <Button size='small' startIcon={<UploadIcon />} onClick={handleOpen} className="btn btn-primary btn-sm float-right" type="button">Upload</Button>
             <Button size='small' startIcon={<AddIcon />} onClick={handleOpenAdd} className="btn btn-primary btn-sm float-right mx-1" type="button">Add</Button>
           </div>
-          <DataTable columns={columns(handleButtonClick)} data={rows} progressPending={pending} responsive={true} striped={true} />
+          <DataTable columns={columns(handleButtonClick)} data={filteredItems} progressPending={pending} responsive={true} striped={true} subHeader subHeaderComponent={subHeaderComponent} />
         </div>
       </section>
       <Footer />
