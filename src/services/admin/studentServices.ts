@@ -41,6 +41,16 @@ export const createAdmin = async(data: any) => {
         }
 }
 
+export const fetchStudentAttendanceReport = async () =>{
+    try{
+        const students = await axios.get('/attendance-report');
+        return students.data;
+    
+        }catch (error: any){
+            return error.message
+        }
+}
+
 export const updateStudentStatus = async(id: number, data: any) => {
     try{
         const student = await axios.put('/set-admin-status/'+id, data);

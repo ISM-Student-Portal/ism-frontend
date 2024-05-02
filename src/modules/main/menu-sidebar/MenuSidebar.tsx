@@ -39,6 +39,12 @@ export const MENU: IMenuItem[] = [
     icon: 'fas fa-user-shield nav-icon',
     path: '/admin/admins',
   },
+  {
+    name: 'Attendance Report',
+    icon: 'fas fa-user-shield nav-icon',
+    path: '/admin/attendance-report',
+  },
+
 
   // {
   //   name: i18n.t('menusidebar.label.notifications'),
