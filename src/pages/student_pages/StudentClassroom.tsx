@@ -84,7 +84,7 @@ const StudentClassroom = () => {
         { name: 'Title', selector: (row: any) => row.title },
         { name: 'Description', selector: (row: any) => row.description },
         { name: 'Link', selector: (row: any) => (<a target='_blank' href={row.link}>{row.link}</a>) },
-        { name: 'Attendance', selector: (row: any) => row.attendance ? (<span className='text-success'>Attended</span>) : row.attendance === null && moment() < moment(row.expires_on) ? (<span></span>) : (<span className='text-danger'>Missed</span>), },
+        { name: 'Attendance', selector: (row: any) => row.attendance ? (<span className='text-success'>Attended</span>) : row.attendance === null && moment() < moment(row.expires_on) ? (<span></span>) : (<span className='text-danger'>Yet to be Uploaded</span>), },
         { name: 'Expiry', selector: (row: any) => row.expires_on, sortable: true },
 
     ];
