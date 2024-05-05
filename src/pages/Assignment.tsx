@@ -251,7 +251,7 @@ const Assignment = () => {
 
   const columns2 = memoize(clickHandler2 => [
     { name: 'Email', selector: (row: any) => row?.student?.email, grow: 2 },
-    { name: 'Link', selector: (row: any) => (<a href={row?.link}>{row?.link}</a>), grow: 2 },
+    { name: 'Link', selector: (row: any) => (<a target='_blank' href={row?.link}>{row?.link}</a>), grow: 2 },
     { name: 'Feedback', selector: (row: any) => row?.feedback },
     { name: 'Time Submitted', selector: (row: any) => moment(row?.created_at).toString(), grow: 2 },
     {

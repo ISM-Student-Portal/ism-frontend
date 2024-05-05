@@ -138,7 +138,7 @@ const Assignment = () => {
     { name: 'Title', selector: (row: any) => row.title },
     { name: 'Description', selector: (row: any) => row.description },
     { name: 'Link', selector: (row: any) => (<a href={row.link}>{row.link}</a>) },
-    { name: 'Submission Link', selector: (row: any) => (<a href={row.submissions[0]?.link}>{row.submissions[0]?.link}</a>) },
+    { name: 'Submission Link', selector: (row: any) => (<a target='_blank' href={row.submissions[0]?.link}>{row.submissions[0]?.link}</a>) },
     { name: 'Grade', selector: (row: any) => row.submissions[0]?.grade },
 
 
