@@ -86,8 +86,20 @@ const Assignment = () => {
     setOpenDelete(false);
   };
 
-  const handleDownload = () => {
-    setOpenDelete(false);
+  const handleDownload = async () => {
+    setLoading(true)
+    axios.post('/download-file', { file_url: selectedAssignment.file_url }, { responseType: 'blob' }).then((res: any) => {
+      const url = window.URL.createObjectURL(new Blob([res.data]));
+      const link = document.createElement('a');
+      link.href = url;
+      link.setAttribute('download', 'assignment.pdf'); //or any other extension
+      document.body.appendChild(link);
+      link.click();
+      toast.success("Request was successful");
+
+    }).finally(() => {
+      setLoading(false);
+    })
   };
 
   const handleButtonClick = (type: any, assignment: any) => {
@@ -235,7 +247,7 @@ const Assignment = () => {
     { name: 'Deadline', selector: (row: any) => row.deadline },
     {
       name: 'Download File', cell: (row: any) => {
-        return row.file_url ? (<button className='btn btn-primary btn-sm p-1' title='Download File' disabled={pending2} onClick={() => { clickHandler('download', row) }}>Download</button>) : <div></div>
+        return row.file_url ? (<button className='btn btn-primary btn-sm p-1' title='Download File' disabled={loading} onClick={() => { clickHandler('download', row) }}>Download</button>) : <div></div>
       }
     },
 

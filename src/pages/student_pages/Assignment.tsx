@@ -12,6 +12,8 @@ import Typography from '@mui/material/Typography';
 import { useSelector } from 'react-redux';
 import DataTable from '../../components/data-table/DataTableBase';
 import { toast } from 'react-toastify';
+import axios from '../../utils/axios';
+
 
 
 
@@ -21,6 +23,7 @@ interface Assignment {
   description: string,
   link: string,
   deadline: string | any
+  file_url: string
 }
 
 const Assignment = () => {
@@ -97,6 +100,21 @@ const Assignment = () => {
 
 
   }
+  const downloadFile = async () => {
+    setLoading(true)
+    axios.post('/download-file', { file_url: classroom?.file_url }, { responseType: 'blob' }).then((res: any) => {
+      const url = window.URL.createObjectURL(new Blob([res.data]));
+      const link = document.createElement('a');
+      link.href = url;
+      link.setAttribute('download', 'assignment.pdf'); //or any other extension
+      document.body.appendChild(link);
+      link.click();
+      toast.success("Request was successful");
+
+    }).finally(() => {
+      setLoading(false);
+    })
+  };
 
   const style = {
     position: 'absolute' as 'absolute',
@@ -171,6 +189,10 @@ const Assignment = () => {
                 <Typography color="text.secondary" variant="h6">
                   <a href={classroom?.link} target='_blank'> {classroom?.link}</a>
                 </Typography>
+
+                {classroom.file_url ? (
+                  <button onClick={downloadFile} className='text-success pointer-cursor bold'> Get Assignment File</button>
+                ) : (<div></div>)}
 
               </Box>
               <Divider />
