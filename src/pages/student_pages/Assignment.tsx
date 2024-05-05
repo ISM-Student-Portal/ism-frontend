@@ -52,25 +52,25 @@ const Assignment = () => {
   const handleChange = (state: any) => {
     let classR = state.selectedRows[0];
     if (classR) {
-        setClassroom(classR);
-        if (classR.submissions) {
+      setClassroom(classR);
+      if (classR.submissions?.length > 0) {
 
-            setAttendanceMarked(true);
-            // setLoading(true);
-        }
-        else {
-            setAttendanceMarked(false);
-        }
-        if (moment() > moment(classR?.deadline)) {
+        setAttendanceMarked(true);
+        // setLoading(true);
+      }
+      else {
+        setAttendanceMarked(false);
+      }
+      if (moment() > moment(classR?.deadline)) {
 
-            setAttendanceExpired(true);
-        }
-        else {
-            setAttendanceExpired(false);
-        }
+        setAttendanceExpired(true);
+      }
+      else {
+        setAttendanceExpired(false);
+      }
     }
 
-}
+  }
 
 
   const getUpcomingAssignment = async () => {
