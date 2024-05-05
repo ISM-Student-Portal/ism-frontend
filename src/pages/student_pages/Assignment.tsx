@@ -49,6 +49,29 @@ const Assignment = () => {
     setOpenAdd(false);
   }
 
+  const handleChange = (state: any) => {
+    let classR = state.selectedRows[0];
+    if (classR) {
+        setClassroom(classR);
+        if (classR.submissions) {
+
+            setAttendanceMarked(true);
+            // setLoading(true);
+        }
+        else {
+            setAttendanceMarked(false);
+        }
+        if (moment() > moment(classR?.deadline)) {
+
+            setAttendanceExpired(true);
+        }
+        else {
+            setAttendanceExpired(false);
+        }
+    }
+
+}
+
 
   const getUpcomingAssignment = async () => {
     try {
@@ -187,7 +210,7 @@ const Assignment = () => {
           <Typography variant='h5'>All Assignment List</Typography>
 
 
-          <DataTable columns={columns} data={classroomList} progressPending={pending} responsive keyField='id' striped />
+          <DataTable columns={columns} data={classroomList} progressPending={pending} responsive keyField='id' striped selectableRows selectableRowsSingle onSelectedRowsChange={handleChange} />
         </div>
       </section>
       <Modal
