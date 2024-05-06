@@ -86,16 +86,23 @@ const Assignment = () => {
     setOpenDelete(false);
   };
 
-  const handleDownload = async () => {
+  const handleDownload = async (assignment: any) => {
     setLoading(true)
-    axios.post('/download-file', { file_url: selectedAssignment.file_url }, { responseType: 'blob' }).then((res: any) => {
+    console.log('got here')
+    axios.post('/download-file', { file_url: assignment?.file_url }, { responseType: 'blob' }).then((res: any) => {
       const url = window.URL.createObjectURL(new Blob([res.data]));
       const link = document.createElement('a');
-      link.href = url;
-      link.setAttribute('download', 'assignment.pdf'); //or any other extension
-      document.body.appendChild(link);
-      link.click();
-      toast.success("Request was successful");
+      let filename: any = assignment?.file_url.split('/');
+      if (filename?.length > 0) {
+        let filenameS = filename[filename?.length - 1];
+        filenameS = filenameS.split(" ").join("_");
+        link.href = url;
+        link.setAttribute('download', filenameS); //or any other extension
+        document.body.appendChild(link);
+        link.click();
+        toast.success("Request was successful");
+
+      }
 
     }).finally(() => {
       setLoading(false);
@@ -109,7 +116,7 @@ const Assignment = () => {
     } else if (type === 'delete') {
       handleOpenDelete();
     } else {
-      handleDownload();
+      handleDownload(assignment);
     }
   }
 

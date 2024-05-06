@@ -80,7 +80,7 @@ const Assignment = () => {
     try {
       let classroom1: any = await getAssignment();
       setClassroomList(classroom1?.assignments);
-      let res = classroom1.assignments[classroom1.assignments.length - 1]
+      let res = classroom1.assignments[0]
       setClassroom(res);
 
       if (res?.submissions?.length > 0) {
@@ -105,11 +105,19 @@ const Assignment = () => {
     axios.post('/download-file', { file_url: classroom?.file_url }, { responseType: 'blob' }).then((res: any) => {
       const url = window.URL.createObjectURL(new Blob([res.data]));
       const link = document.createElement('a');
-      link.href = url;
-      link.setAttribute('download', 'assignment.pdf'); //or any other extension
-      document.body.appendChild(link);
-      link.click();
-      toast.success("Request was successful");
+      let filename: any = classroom?.file_url.split('/');
+      if (filename?.length > 0) {
+        let filenameS = filename[filename?.length - 1];
+        filenameS = filenameS.split(" ").join("_");
+        console.log(filenameS);
+        link.href = url;
+        link.setAttribute('download', filenameS); //or any other extension
+        document.body.appendChild(link);
+        link.click();
+        toast.success("Request was successful");
+
+      }
+      
 
     }).finally(() => {
       setLoading(false);
