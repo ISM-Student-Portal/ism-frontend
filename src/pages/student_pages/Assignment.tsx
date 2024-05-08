@@ -129,7 +129,7 @@ const Assignment = () => {
     top: '50%',
     left: '50%',
     transform: 'translate(-50%, -50%)',
-    width: 650,
+    // width: '50%',
     bgcolor: 'background.paper',
     border: '2px solid #000',
     boxShadow: 24,
@@ -180,7 +180,7 @@ const Assignment = () => {
       <section className="content">
         <div className="container-fluid">
           {classroom ? (
-            <Card variant="outlined" sx={{ maxWidth: "600px" }}>
+            <Card variant="outlined" sx={{ maxWidth: "550px" }}>
               <Box sx={{ p: 2 }}>
                 <Stack direction="row" justifyContent="space-between" alignItems="center">
                   <Typography gutterBottom variant="h6" component="div" align='center'>
@@ -250,7 +250,7 @@ const Assignment = () => {
         aria-describedby="child-modal-description">
         <Container sx={{
           ...style, borderRadius: '5px', paddingY: '1.5rem'
-        }} maxWidth="lg" component="form" noValidate>
+        }} maxWidth="sm" component="form" noValidate>
           <h5 id="child-modal-title" className='text-center my-3'>Create Assignment</h5>
           <Container
           >
