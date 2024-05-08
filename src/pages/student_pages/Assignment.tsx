@@ -199,7 +199,7 @@ const Assignment = () => {
                 </Typography>
 
                 {classroom.file_url ? (
-                  <button onClick={downloadFile} className='text-success pointer-cursor bold'> Get Assignment File</button>
+                  <a href={classroom.file_url} target='_blank' className='text-success pointer-cursor bold'> Get Assignment File</a>
                 ) : (<div></div>)}
 
               </Box>

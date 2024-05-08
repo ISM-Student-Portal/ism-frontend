@@ -10,7 +10,6 @@ import axios from '../../utils/axios';
 // import { Button } from '@app/styles/common';
 import Button from '@mui/material/Button';
 import UploadFileIcon from "@mui/icons-material/UploadFile";
-import { Cloudinary } from '@cloudinary/url-gen';
 
 
 import { useDispatch, useSelector } from 'react-redux';

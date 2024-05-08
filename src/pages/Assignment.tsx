@@ -89,7 +89,7 @@ const Assignment = () => {
   const handleDownload = async (assignment: any) => {
     setLoading(true)
     console.log('got here')
-    axios.post('/download-file', { file_url: assignment?.file_url }, { responseType: 'blob' }).then((res: any) => {
+    axios.get(assignment?.file_url, { responseType: 'blob' }).then((res: any) => {
       const url = window.URL.createObjectURL(new Blob([res.data]));
       const link = document.createElement('a');
       let filename: any = assignment?.file_url.split('/');
@@ -196,29 +196,47 @@ const Assignment = () => {
   const createAssignmentAction = async () => {
     setLoading(true);
     let formData = new FormData();
+
+    let cloudName = 'ded69cslb';
+    formData.append('upload_preset', 'ml_default');
     //@ts-ignore
     formData.append("file", file);
-    formData.append("title", title);
-    formData.append("description", description);
-    formData.append("link", link);
-    if (deadline) {
-      formData.append("deadline", deadline);
+    // formData.append("title", title);
+    // formData.append("description", description);
+    // formData.append("link", link);
+    // if (deadline) {
+    //   formData.append("deadline", deadline);
 
-    }
+    // }
 
-    let res = await axios.post('/assignments', formData, {
-      headers: {
-        'Content-Type': 'multipart/form-data'
-      }
-    });
-    if (res) {
-      toast.success('Assignment created');
-    }
-    setLoading(false);
-    handleCloseAdd();
-    getAssignments();
+    let url = `https://api.cloudinary.com/v1_1/${cloudName}/upload`;
+    fetch(url, {
+      method: 'POST',
+      body: formData
+    }).then((response) => response.json()).then((data) => {
+      let res = axios.post('/assignments', {
+        file_url: data.url,
+        title: title,
+        link: link,
+        description: description,
+        deadline: deadline
+      }).then((res: any) => {
+        if (res) {
+          toast.success('Assignment created');
+        }
+        setLoading(false);
+        handleCloseAdd();
+        getAssignments();
+
+      }).catch((error) => {
+        toast.error('An error occured')
+      })
 
 
+
+    }).catch((error) => {
+      toast.error('Error uploading Document')
+    })
   }
   const style = {
     position: 'absolute' as 'absolute',
@@ -254,7 +272,7 @@ const Assignment = () => {
     { name: 'Deadline', selector: (row: any) => row.deadline },
     {
       name: 'Download File', cell: (row: any) => {
-        return row.file_url ? (<button className='btn btn-primary btn-sm p-1' title='Download File' disabled={loading} onClick={() => { clickHandler('download', row) }}>Download</button>) : <div></div>
+        return row.file_url ? (<a className='btn btn-primary btn-sm p-1' title='Download File' target='_blank' href={row.file_url}>Download</a>) : <div></div>
       }
     },
 
