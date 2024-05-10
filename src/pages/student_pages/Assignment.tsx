@@ -1,6 +1,6 @@
 import { createSubmission, getAssignment } from '@app/services/student/classServices';
 import { ContentHeader } from '@components';
-import { Button, Container, Modal, TextField } from '@mui/material';
+import { Button, Container, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Modal, TextField } from '@mui/material';
 import { useEffect, useState } from 'react';
 import moment from 'moment';
 import Card from '@mui/material/Card';
@@ -31,6 +31,7 @@ const Assignment = () => {
   const [classroom, setClassroom] = useState<Assignment>();
   const [classroomList, setClassroomList] = useState([]);
   const [pending, setPending] = useState(true);
+  const [openPrompt, setOpenPrompt] = useState(false);
   const [openAdd, setOpenAdd] = useState(false);
   const [feedbacks, setFeedbacks] = useState<any>();
   const [link, setLink] = useState<any>();
@@ -48,8 +49,16 @@ const Assignment = () => {
     setOpenAdd(true);
   }
 
+  const handleOpenPrompt = () => {
+    setOpenPrompt(true);
+  }
+
   const handleCloseAdd = () => {
     setOpenAdd(false);
+  }
+
+  const handleClosePrompt = () => {
+    setOpenPrompt(false);
   }
 
   const handleChange = (state: any) => {
@@ -100,30 +109,7 @@ const Assignment = () => {
 
 
   }
-  const downloadFile = async () => {
-    setLoading(true)
-    axios.post('/download-file', { file_url: classroom?.file_url }, { responseType: 'blob' }).then((res: any) => {
-      const url = window.URL.createObjectURL(new Blob([res.data]));
-      const link = document.createElement('a');
-      let filename: any = classroom?.file_url.split('/');
-      if (filename?.length > 0) {
-        let filenameS = filename[filename?.length - 1];
-        filenameS = filenameS.split(" ").join("_");
-        console.log(filenameS);
-        link.href = url;
-        link.setAttribute('download', filenameS); //or any other extension
-        document.body.appendChild(link);
-        link.click();
-        toast.success("Request was successful");
-
-      }
-      
-
-    }).finally(() => {
-      setLoading(false);
-    })
-  };
-
+  
   const style = {
     position: 'absolute' as 'absolute',
     top: '50%',
@@ -158,6 +144,7 @@ const Assignment = () => {
       toast.success('Submission made successfully');
     }
     setLoading(false);
+    handleClosePrompt();
     handleCloseAdd();
   }
   const columns = [
@@ -199,7 +186,7 @@ const Assignment = () => {
                 </Typography>
 
                 {classroom.file_url ? (
-                  <a href={classroom.file_url} target='_blank' className='text-success pointer-cursor bold'> Get Assignment File</a>
+                  <a href={classroom.file_url} target='_blank' className='text-success pointer-cursor bold'> <b>Download Assignment File</b></a>
                 ) : (<div></div>)}
 
               </Box>
@@ -251,7 +238,7 @@ const Assignment = () => {
         <Container sx={{
           ...style, borderRadius: '5px', paddingY: '1.5rem'
         }} maxWidth="sm" component="form" noValidate>
-          <h5 id="child-modal-title" className='text-center my-3'>Create Assignment</h5>
+          <h5 id="child-modal-title" className='text-center my-3'>Create Submission</h5>
           <Container
           >
 
@@ -302,12 +289,31 @@ const Assignment = () => {
             <Button variant='outlined' size='small' sx={{
               marginRight: ".2rem"
             }} onClick={handleCloseAdd}>Cancel</Button>
-            <Button variant='contained' size='small' onClick={submitAssignment} disabled={loading}>Submit</Button>
+            <Button variant='contained' size='small' onClick={handleOpenPrompt} disabled={loading}>Submit</Button>
           </Box>
 
           {/* <Button variant="outlined" onClick={handleClose}>Close Child Modal</Button> */}
         </Container>
       </Modal>
+
+      <Dialog
+        open={openPrompt}
+        onClose={handleClosePrompt}
+        aria-labelledby="child-modal-title"
+        aria-describedby="child-modal-description">
+
+        <DialogTitle align='center' variant='h5'>Very Important!!</DialogTitle>
+        <DialogContent>
+          <DialogContentText>Are you sure to want make submission for <b>{classroom?.title}</b></DialogContentText>
+        </DialogContent>
+
+        <DialogActions>
+          <Button variant='outlined' size='small' sx={{
+            marginRight: ".2rem"
+          }} color='error' onClick={handleClosePrompt}>Cancel</Button>
+          <Button variant='contained' size='small' color='primary' onClick={submitAssignment} disabled={loading}>Yes</Button>
+        </DialogActions>
+      </Dialog>
     </div>
   );
 };
