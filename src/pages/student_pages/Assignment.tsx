@@ -195,7 +195,7 @@ const Assignment = () => {
 
                 <Stack direction="row" spacing={1}>
 
-                  <Button variant='contained' color='success' onClick={handleOpenAdd} disabled={attendanceMarked || attendanceExpired}>Make Submission</Button>
+                  <Button variant='contained' color='success' onClick={handleOpenAdd} disabled={attendanceMarked || attendanceExpired || loading}>Make Submission</Button>
                 </Stack>
               </Box>
             </Card>
