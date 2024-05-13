@@ -291,16 +291,18 @@ const Assignment = () => {
     { name: 'Link', selector: (row: any) => (<a target='_blank' href={row?.link}>{row?.link}</a>), grow: 2 },
     { name: 'Feedback', selector: (row: any) => row?.feedback },
     { name: 'Time Submitted', selector: (row: any) => moment(row?.created_at).toString(), grow: 2 },
+
+    {
+      name: 'Action',
+      cell: (row: any) => (<div><Button className='btn p-1 btn-success btn-sm' variant='contained' disabled={loading} color='success' onClick={() => { clickHandler2(row) }}>Update</Button></div>), ignoreRowClick: true,
+      allowOverflow: false,
+      button: true,
+    },
     {
       name: 'Grade', selector: (row: any) => (
         row?.grade
       )
     },
-    {
-      cell: (row: any) => (<div><Button className='btn p-1 btn-success btn-sm' variant='contained' disabled={loading} color='success' onClick={() => { clickHandler2(row) }}>Update</Button></div>), ignoreRowClick: true,
-      allowOverflow: false,
-      button: true,
-    }
   ]);
 
 
