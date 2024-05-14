@@ -13,7 +13,7 @@ import { DateTimePicker } from '@mui/x-date-pickers/DateTimePicker';
 import memoize from 'memoize-one';
 
 import { fetchAllClassrooms, createClassroom, getAttendance, deleteClassroom } from '@app/services/admin/classServices';
-import { Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle } from '@mui/material';
+import { Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, FormControlLabel, FormGroup, Switch } from '@mui/material';
 import moment from 'moment';
 import { useSelector } from 'react-redux';
 import axios from '../utils/axios';
@@ -35,6 +35,7 @@ const Classroom = () => {
   const [description, setDescription] = React.useState('');
   const [link, setLink] = React.useState('');
   const [expiresOn, setExpiresOn] = React.useState<any>();
+  const [mentorship, setMentorship] = React.useState<boolean>(false);
   const [rows, setRows] = React.useState([]);
   const [attendance, setAttendance] = React.useState([]);
 
@@ -114,7 +115,8 @@ const Classroom = () => {
       title: title,
       description: description,
       link: link,
-      expires_on: expiresOn
+      expires_on: expiresOn,
+      mentorship: mentorship
     }
     const student = await createClassroom(data);
     toast.success('Class Created Successfully!');
@@ -125,6 +127,10 @@ const Classroom = () => {
 
 
   }
+
+  const handleChangeMentor = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setMentorship(event.target.checked);
+  };
   const style = {
     position: 'absolute' as 'absolute',
     top: '50%',
@@ -236,7 +242,7 @@ const Classroom = () => {
 
             <TextField
               id="outlined-controlled"
-              label="link"
+              label="Link"
               size='small'
               sx={{ marginRight: '1rem', marginY: '.5rem', width: '100%' }}
 
@@ -254,6 +260,14 @@ const Classroom = () => {
               value={expiresOn}
               onChange={(newValue) => setExpiresOn(newValue)}></DateTimePicker>
 
+          </Container>
+          <Container
+            sx={{ marginTop: '1rem', marginBottom: '1rem', display: 'flex' }}>
+
+            <FormGroup>
+              {/* <FormControlLabel control={<Switch inputProps={{ 'aria-label': 'controlled' }} onChange={handleChangeStat} checked={editStudentStatus} />} label="Admin Status" /> */}
+              <FormControlLabel control={<Switch inputProps={{ 'aria-label': 'controlled' }} onChange={handleChangeMentor} checked={mentorship} />} label="Mentorship Class" />
+            </FormGroup>
           </Container>
 
 

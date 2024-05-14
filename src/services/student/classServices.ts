@@ -13,6 +13,16 @@ export const getUpcoming = async() => {
         }
 }
 
+export const getMentorship = async() => {
+    try{
+        const classroom = await axios.get('/get-mentorship');
+        return classroom.data;
+    
+        }catch (error: any){
+            return error.message
+        }
+}
+
 export const getAssignment = async() => {
     try{
         const classroom = await axios.get('/get-assignments');

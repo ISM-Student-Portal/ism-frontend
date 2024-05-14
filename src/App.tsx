@@ -42,6 +42,7 @@ import Submission from './pages/student_pages/Submission';
 import Admins from './pages/Admins';
 import ResetPassword from './modules/reset-password/ResetPassword';
 import AttendanceStats from './pages/AttendanceStats';
+import Mentorship from './pages/student_pages/Mentorship';
 
 const { VITE_NODE_ENV } = import.meta.env;
 
@@ -125,6 +126,7 @@ const App = () => {
               <Route path="/classroom" element={<StudentClassroom />} />
               <Route path="/notification" element={<StudentNotification />} />
               <Route path="/submissions" element={<Submission />} />
+              <Route path="/mentorship" element={<Mentorship />} />
 
               <Route path="/profile" element={<Profile />} />
               <Route path="/" element={<StudentDashboard />} />

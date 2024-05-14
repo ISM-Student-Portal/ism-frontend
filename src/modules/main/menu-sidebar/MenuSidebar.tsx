@@ -102,6 +102,14 @@ const MenuSidebar = () => {
   const authentication = useSelector((state: any) => state.auth.authentication);
   const profile = useSelector((state: any) => state.profile.profile);
 
+  if (profile?.profile?.subscription === 'premium' && STUDENT_MENU.length < 4) {
+    STUDENT_MENU.push({
+      name: 'Mentorship',
+      icon: 'fas fa-chalkboard-teacher nav-icon',
+      path: '/mentorship',
+    })
+  }
+
   const sidebarSkin = useSelector((state: any) => state.ui.sidebarSkin);
   const menuItemFlat = useSelector((state: any) => state.ui.menuItemFlat);
   const menuChildIndent = useSelector((state: any) => state.ui.menuChildIndent);
