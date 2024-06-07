@@ -2,11 +2,10 @@ import Footer from '@app/modules/main/footer/Footer';
 import { ContentHeader } from '@components';
 import DataTable from '../components/data-table/DataTableBase'
 import Button from '@mui/material/Button';
-import Modal from '@mui/material/Modal';
 import React, { useEffect, useMemo } from 'react';
-import Box from '@mui/material/Box';
-import Container from '@mui/material/Container'
-import TextField from '@mui/material/TextField';
+import axios from '../utils/axios';
+
+
 
 
 import { toast } from 'react-toastify';
@@ -95,7 +94,23 @@ const AttendanceStats = () => {
     }
   }
 
-  
+  const downloadAttendance = async () => {
+    setLoading(true)
+    axios.get('/attendance-report-export', { responseType: 'blob' }).then((res: any) => {
+      const url = window.URL.createObjectURL(new Blob([res.data]));
+      const link = document.createElement('a');
+      link.href = url;
+      link.setAttribute('download', 'AttendanceReport.xlsx'); //or any other extension
+      document.body.appendChild(link);
+      link.click();
+      toast.success("Request was successful");
+
+    }).finally(() => {
+      setLoading(false);
+    })
+  }
+
+
 
   const performActionDelete = async () => {
     setLoading(true);
@@ -231,6 +246,13 @@ const AttendanceStats = () => {
           <DataTable columns={columns(handleButtonClick)} data={filteredItems} progressPending={pending} responsive={true} striped={true} subHeader subHeaderComponent={subHeaderComponent} />
         </div>
       </section>
+      <div style={{
+        textAlign: 'right'
+      }}>
+        <Button variant='contained' style={{
+        }} size='small' onClick={downloadAttendance} disabled={loading}>Download Attendance</Button>
+      </div>
+
       <Footer />
 
 
