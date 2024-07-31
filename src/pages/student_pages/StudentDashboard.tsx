@@ -6,6 +6,8 @@ interface Stats {
   total_assignment: number,
   classes: number,
   assign_sub: number,
+  aggregate_grade: number,
+  percent_grade: number
 }
 
 const StudentDashboard = () => {
@@ -32,7 +34,7 @@ const StudentDashboard = () => {
       <section className="content">
         <div className="container-fluid">
           <div className="row">
-            <div className="col-lg-4 col-6">
+            <div className="col-lg-3 col-6">
               <div className="small-box bg-info">
                 <div className="inner">
                   <h3>{stats?.total_assignment}</h3>
@@ -47,7 +49,7 @@ const StudentDashboard = () => {
                 </a>
               </div>
             </div>
-            <div className="col-lg-4 col-6">
+            <div className="col-lg-3 col-6">
               <div className="small-box bg-success">
                 <div className="inner">
                   <h3>
@@ -64,12 +66,44 @@ const StudentDashboard = () => {
                 </a>
               </div>
             </div>
-            <div className="col-lg-4 col-6">
+            <div className="col-lg-3 col-6">
               <div className="small-box bg-warning">
                 <div className="inner">
                   <h3>{stats?.assign_sub}</h3>
 
                   <p>Assignments Completed</p>
+                </div>
+                <div className="icon">
+                  <i className="ion ion-person-add" />
+                </div>
+                <a href="/" className="small-box-footer">
+                  More info <i className="fas fa-arrow-circle-right" />
+                </a>
+              </div>
+            </div>
+
+            <div className="col-lg-3 col-6">
+              <div className="small-box bg-danger">
+                <div className="inner">
+                  <h3>{stats?.aggregate_grade}</h3>
+
+                  <p>Aggregate Grade</p>
+                </div>
+                <div className="icon">
+                  <i className="ion ion-person-add" />
+                </div>
+                <a href="/" className="small-box-footer">
+                  More info <i className="fas fa-arrow-circle-right" />
+                </a>
+              </div>
+            </div>
+
+            <div className="col-lg-3 col-6">
+              <div className="small-box bg-secondary">
+                <div className="inner">
+                  <h3>{stats?.percent_grade}%</h3>
+
+                  <p>Percent Grade</p>
                 </div>
                 <div className="icon">
                   <i className="ion ion-person-add" />
