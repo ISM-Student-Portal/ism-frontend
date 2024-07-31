@@ -156,6 +156,14 @@ const AttendanceStats = () => {
     { name: 'Reg No', selector: (row: any) => row.reg_no, grow: 1, sortable: true, sortFunction: caseInsensitiveRegSort },
     { name: 'Class Attended', selector: (row: any) => row.attendance_count, grow: 1 },
     { name: 'Percent Class Attended', selector: (row: any) => row.attendance_count_percent + "%", sortable: true },
+    { name: 'Aggregate Grade', selector: (row: any) => row.total_grades, sortable: true },
+    { name: 'Average grade', selector: (row: any) => row.average_grade, sortable: true },
+    { name: 'Percent grade', selector: (row: any) => row.percent_grade + "%", sortable: true },
+
+
+
+
+
 
 
 
@@ -238,7 +246,7 @@ const AttendanceStats = () => {
   }, [])
   return (
     <div>
-      <ContentHeader title="Attendance Report" />
+      <ContentHeader title="Report" />
       <section className="content">
 
         <div className="container-fluid">

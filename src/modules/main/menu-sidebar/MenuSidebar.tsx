@@ -40,7 +40,7 @@ export const MENU: IMenuItem[] = [
     path: '/admin/admins',
   },
   {
-    name: 'Attendance Report',
+    name: 'Report',
     icon: 'fas fa-user-shield nav-icon',
     path: '/admin/attendance-report',
   },
