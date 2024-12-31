@@ -9,6 +9,7 @@ import { Button } from '@app/styles/common';
 import { Image } from '@profabric/react-components';
 import { changepass } from '@app/services/authServices';
 import { useState } from 'react';
+import ReCAPTCHA from 'react-google-recaptcha';
 
 
 const RecoverPassword = () => {
@@ -41,6 +42,9 @@ const RecoverPassword = () => {
 
     setAuthLoading(false);
 
+  }
+  const onChange = () => {
+    console.log('Key is working')
   }
 
   const { handleChange, values, handleSubmit, touched, errors } = useFormik({
@@ -148,6 +152,12 @@ const RecoverPassword = () => {
 
                   onClick={handleSubmit as any}>{t('recover.changePassword')}</Button>
               </div>
+            </div>
+            <div className="col-12">
+              <ReCAPTCHA
+                sitekey="6Ld4lKoqAAAAAJKSGNRE-FL0W1gPnKH_LMQXCpGG"
+                onChange={onChange}
+              />
             </div>
           </form>
           <p className="mt-3 mb-1">

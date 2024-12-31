@@ -14,6 +14,7 @@ import { Form, InputGroup, ToggleButton } from 'react-bootstrap';
 import { Button } from '@app/styles/common';
 import { Image } from '@profabric/react-components';
 import { setProfile } from '@app/store/reducers/profile';
+import ReCAPTCHA from 'react-google-recaptcha';
 
 
 
@@ -62,6 +63,10 @@ const Login = () => {
       toast.error(error.message || 'Failed');
     }
   };
+
+  const onChange = () => {
+    console.log('Key is working')
+  }
 
 
 
@@ -193,6 +198,13 @@ const Login = () => {
                     >
                       {t('login.button.signIn.label')}
                     </Button>
+                    
+                  </div>
+                  <div className="col-12">
+                  <ReCAPTCHA
+                      sitekey="6Ld4lKoqAAAAAJKSGNRE-FL0W1gPnKH_LMQXCpGG"
+                      onChange={onChange}
+                    />
                   </div>
                 </div>
               </form>

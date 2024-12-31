@@ -8,6 +8,7 @@ import { Form, InputGroup } from 'react-bootstrap';
 import { Button } from '@profabric/react-components';
 import { forgotPasswordAction } from '@app/services/authServices';
 import { useState } from 'react';
+import ReCAPTCHA from 'react-google-recaptcha';
 
 const ForgotPassword = () => {
   const [t] = useTranslation();
@@ -54,6 +55,9 @@ const ForgotPassword = () => {
       console.log('values', values);
     },
   });
+  const onChange = () => {
+    console.log('Key is working')
+  }
 
   setWindowClass('hold-transition login-page');
 
@@ -116,6 +120,13 @@ const ForgotPassword = () => {
                   >
                     {t('recover.requestNewPassword')}
                   </Button>
+
+                  <div className="col-12">
+                    <ReCAPTCHA
+                      sitekey="6Ld4lKoqAAAAAJKSGNRE-FL0W1gPnKH_LMQXCpGG"
+                      onChange={onChange}
+                    />
+                  </div>
                 </div>
               </form>
             </div>
