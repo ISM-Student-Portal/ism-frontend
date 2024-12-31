@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from "react";
+import React, { useMemo, useRef, useState } from "react";
 import FormWizard from "react-form-wizard-component";
 import "react-form-wizard-component/dist/style.css";
 import PhoneInput from 'react-phone-number-input'
@@ -9,6 +9,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { Image } from "@profabric/react-components";
 import { registerStudent } from "@app/utils/oidc-providers";
 import { toast } from 'react-toastify';
+import ReCAPTCHA from "react-google-recaptcha";
 
 
 
@@ -35,6 +36,9 @@ const Register = () => {
 
   const options = useMemo(() => countryList().getData(), [])
   const navigate = useNavigate();
+
+  const [captchaToken, setCaptchaToken] = useState(null);
+  const captchaRef = useRef(null);
 
 
   const handleComplete = async () => {
@@ -78,6 +82,17 @@ const Register = () => {
     // Handle form completion logic here
   };
   // check validate tab
+  const onChange = () => {
+    console.log('Key is working')
+  }
+  const verify = () => {
+
+    //@ts-ignore
+    captchaRef.current && captchaRef.current?.getResponse().then(res => {
+      setCaptchaToken(res)
+    })
+
+  }
   const checkValidateTab = () => {
     if (
       firstName === "" ||
@@ -122,11 +137,20 @@ const Register = () => {
       </div>
       <FormWizard onComplete={handleComplete} shape="circle" title="Register" subtitle="Please fill in the form below"
         finishButtonTemplate={(handleComplete) => (
-          <button className="finish-button" onClick={handleComplete} disabled={loading}>
-            finish
-          </button>
+          <div className="">
+            <button className="finish-button d-block" onClick={handleComplete} disabled={loading} >
+
+              finish
+            </button>
+            <ReCAPTCHA
+              sitekey="6Ld4lKoqAAAAAJKSGNRE-FL0W1gPnKH_LMQXCpGG"
+              onChange={onChange}
+            />,
+          </div>
+
         )}
         color="#C28E27">
+
         <FormWizard.TabContent title="Personal details" icon="ti-user">
           <div className="row">
 
