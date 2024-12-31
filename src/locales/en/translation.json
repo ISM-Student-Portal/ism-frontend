@@ -19,8 +19,8 @@
     }
   },
   "register": {
-    "alreadyHave": "I already have a membership",
-    "registerNew": "Register a new membership",
+    "alreadyHave": "I already have an account",
+    "registerNew": "Register a new account",
     "label": "Register"
   },
   "recover": {

@@ -16,10 +16,6 @@ const ResetPassword = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [isAuthLoading, setAuthLoading] = useState(false);
   const navigate = useNavigate();
-
-
-
-
   const [data, setData] = useState(Object.fromEntries([...params]));
 
   const resetPass = async (password: string) => {

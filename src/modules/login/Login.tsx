@@ -14,8 +14,7 @@ import { Form, InputGroup, ToggleButton } from 'react-bootstrap';
 import { Button } from '@app/styles/common';
 import { Image } from '@profabric/react-components';
 import { setProfile } from '@app/store/reducers/profile';
-import { Visibility, VisibilityOff } from '@mui/icons-material';
-import { ButtonBase } from '@mui/material';
+
 
 
 const Login = () => {
@@ -107,7 +106,7 @@ const Login = () => {
               <span className='px-1'> <Image
                 src={"./img/logo1.png"}
 
-                alt="AdminLTELogo"
+                alt="ISM Logo"
                 height={40}
                 width={30}
               /></span>

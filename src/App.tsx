@@ -43,6 +43,7 @@ import Admins from './pages/Admins';
 import ResetPassword from './modules/reset-password/ResetPassword';
 import AttendanceStats from './pages/AttendanceStats';
 import Mentorship from './pages/student_pages/Mentorship';
+import ResendMail from './modules/resend-verification/ResendMail';
 
 const { VITE_NODE_ENV } = import.meta.env;
 
@@ -110,6 +111,10 @@ const App = () => {
           </Route>
           <Route path="/register" element={<PublicRoute />}>
             <Route path="/register" element={<Register />} />
+          </Route>
+
+          <Route path="/resend-verification" element={<PublicRoute />}>
+            <Route path="/resend-verification" element={<ResendMail />} />
           </Route>
           <Route path="/forgot-password" element={<PublicRoute />}>
             <Route path="/forgot-password" element={<ForgetPassword />} />

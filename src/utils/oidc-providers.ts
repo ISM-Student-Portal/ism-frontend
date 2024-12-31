@@ -64,8 +64,24 @@ export const getFacebookLoginStatus = () => {
   });
 };
 
+export const registerStudent = (data: any) => {
+  return new Promise((resolve, reject) => {
+    axios.post(`${process.env.REACT_APP_API_URL}/register`, data, {
+      headers: {
+        "Content-Type": 'application/json',
+        "Accept": 'application/json'
+      }
+    }).then(res => {
+      resolve(res.data);
+    }).catch((err: any) => {
+      reject(err.response.data);
+    });
+
+  })
+};
+
 export const authLogin = (email: string, password: string) => {
-  const data = {email, password};
+  const data = { email, password };
 
   return new Promise((resolve, reject) => {
     axios.post(`${process.env.REACT_APP_API_URL}/login`, data, {
@@ -74,70 +90,26 @@ export const authLogin = (email: string, password: string) => {
         "Accept": 'application/json'
       }
     }).then(res => {
-      
-      localStorage.setItem(
-              'authentication',
-              JSON.stringify(res.data.token)           
-            );
-      localStorage.setItem(
-              'profile',
-              JSON.stringify({...res.data.user  })          
-            );
-            resolve({profile: {...res.data.user}, authentication: res.data.token  });
-      
-     
-      
-    }).catch((err: any) => {
-      reject({ message: 'Credentials are wrong!' })});
-    // return new Promise(async (res, rej) => {
-    //   await sleep(500);
-    //   if (email === 'admin@example.com' && password === 'admin') {
-    //     localStorage.setItem(
-    //       'authentication',
-    //       JSON.stringify({ profile: { email: 'admin@example.com' } })
-    //     );
-    //     return res({ profile: { email: 'admin@example.com' } });
-    //   }
-    //   return rej({ message: 'Credentials are wrong!' });
-    // });
-  })
-  
-  axios.post(`${process.env.REACT_APP_API_URL}/login`, data, {
-    headers: {
-      "Content-Type": 'application/json',
-      "Accept": 'application/json'
-    }
-  }).then(res => {
-    if(res.data.status === "success"){
-      console.log(res);
-    localStorage.setItem(
-            'token',
-            res.data.token.plainTextToken            
-          );
-    localStorage.setItem(
-            'profile',
-            JSON.stringify({profile: {email: res.data.user.email, ...res.data.profile}  })          
-          );
-          return {profile: {email: res.data.user.email, ...res.data.profile}  };
-    }
-    else{
 
-      // return { message: 'Credentials are wrong!' };
-    }
-    
-  }).catch((err: any) => {
-    return { message: 'Credentials are wrong!' }});
-  // return new Promise(async (res, rej) => {
-  //   await sleep(500);
-  //   if (email === 'admin@example.com' && password === 'admin') {
-  //     localStorage.setItem(
-  //       'authentication',
-  //       JSON.stringify({ profile: { email: 'admin@example.com' } })
-  //     );
-  //     return res({ profile: { email: 'admin@example.com' } });
-  //   }
-  //   return rej({ message: 'Credentials are wrong!' });
-  // });
+      localStorage.setItem(
+        'authentication',
+        JSON.stringify(res.data.token)
+      );
+      localStorage.setItem(
+        'profile',
+        JSON.stringify({ ...res.data.user })
+      );
+      resolve({ profile: { ...res.data.user }, authentication: res.data.token });
+
+
+
+    }).catch((err: any) => {
+      reject({ message: 'Credentials are wrong!' })
+    });
+
+  })
+
+
 };
 
 export const getAuthStatus = () => {
