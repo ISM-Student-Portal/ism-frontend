@@ -18,7 +18,7 @@ const Payment = () => {
         reference: (new Date()).getTime().toString(),
         email: student?.email,
         amount: amount * 100, //Amount is in the country's lowest currency. E.g Kobo, so 20000 kobo = N200
-        publicKey: 'pk_test_9c829e9124ec2921d5c73e50f60535d91bf4a0f5',
+        publicKey: process.env.REACT_APP_PAYSTACK_KEY,
     };
 
     const initializePayment = usePaystackPayment(config);
