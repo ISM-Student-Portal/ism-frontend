@@ -63,10 +63,10 @@ const Payment = () => {
     const selectPlan = (e: any) => {
         setPlan(e.target.value);
         if (e.target.value === "basic") {
-            setAmount(1000);
+            setAmount(225000);
         }
         else if (e.target.value === "premium") {
-            setAmount(2000);
+            setAmount(375000);
         }
     }
 
