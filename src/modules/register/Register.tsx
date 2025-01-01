@@ -158,7 +158,7 @@ const Register = () => {
           <div className="row">
 
             <div className="col">
-              <label>
+              <label className="text-sm">
                 First Name
                 <span
                   style={{ color: "red", fontSize: "20px", fontWeight: "bold" }}
@@ -176,7 +176,7 @@ const Register = () => {
             </div>
 
             <div className="col-md-6">
-              <label className="for">
+              <label className="text-sm">
                 Last Name
                 <span
                   style={{ color: "red", fontSize: "20px", fontWeight: "bold" }}
@@ -192,7 +192,7 @@ const Register = () => {
 
           <div className="row">
             <div className="col-md-6">
-              <label>
+              <label className="text-sm">
                 Email
                 <span
                   style={{ color: "red", fontSize: "20px", fontWeight: "bold" }}
@@ -205,7 +205,7 @@ const Register = () => {
             </div>
 
             <div className="col-md-6">
-              <label>
+              <label className="text-sm">
                 Phone
                 <span
                   style={{ color: "red", fontSize: "20px", fontWeight: "bold" }}
@@ -228,7 +228,7 @@ const Register = () => {
 
           <div className="row">
             <div className="col-md-6">
-              <label>
+              <label className="text-sm">
                 Country of residence
                 <span
                   style={{ color: "red", fontSize: "20px", fontWeight: "bold" }}
@@ -244,7 +244,7 @@ const Register = () => {
             </div>
 
             <div className="col-md-6">
-              <label>
+              <label className="text-sm">
                 City of residence
                 <span
                   style={{ color: "red", fontSize: "20px", fontWeight: "bold" }}
@@ -261,7 +261,7 @@ const Register = () => {
 
           <div className="row">
             <div className="col-md-6">
-              <label>
+              <label className="text-sm">
                 Gender
                 <span
                   style={{ color: "red", fontSize: "20px", fontWeight: "bold" }}
@@ -278,7 +278,7 @@ const Register = () => {
             </div>
 
             <div className="col-md-6">
-              <label>
+              <label className="text-sm">
                 Level of Education
                 <span
                   style={{ color: "red", fontSize: "20px", fontWeight: "bold" }}
@@ -316,7 +316,7 @@ const Register = () => {
           <div className="row gap-20">
 
             <div className="col-md-6">
-              <label className="label">
+              <label className="text-sm">
                 Are You baptized in the Holy Ghost with the evidence of speaking in tongues?
 
               </label>
@@ -330,7 +330,7 @@ const Register = () => {
             </div>
 
             <div className="col-md-6">
-              <label className="col-form-label">
+              <label className="text-sm">
                 Have you attended any school of ministry before?
 
               </label>
@@ -345,7 +345,7 @@ const Register = () => {
           </div>
 
           <div className="row">
-            <label>
+            <label className="text-sm">
               Tell us where
 
             </label>
@@ -356,7 +356,7 @@ const Register = () => {
           <div className="row">
 
             <div className="col-md-6">
-              <label className="label">
+              <label className="text-sm">
                 Mode of Participation
 
               </label>
@@ -369,7 +369,7 @@ const Register = () => {
             </div>
 
             <div className="col-md-6">
-              <label className="col-form-label">
+              <label className="text-sm">
                 Are you a member?
 
               </label>
@@ -385,7 +385,7 @@ const Register = () => {
           <div className="row">
 
             <div className="col-md-6">
-              <label>
+              <label className="text-sm">
                 Name of Ministry
 
               </label>
@@ -399,7 +399,7 @@ const Register = () => {
             </div>
 
             <div className="col-md-6">
-              <label className="for">
+              <label className="text-sm">
                 Position in Ministry
 
               </label>
@@ -413,7 +413,7 @@ const Register = () => {
         </FormWizard.TabContent>
         <FormWizard.TabContent title="Last step" icon="ti-check">
           <div className="row">
-            <label>
+            <label className="text-sm">
               Tell us about your salvation experience
 
             </label>
@@ -421,7 +421,7 @@ const Register = () => {
             <textarea name="" id="" cols={30} rows={5} className="form-control" value={salvationExperience} onChange={(e) => setSalvationExperience(e.target.value)}></textarea>
           </div>
           <div className="row">
-            <label>
+            <label className="text-sm">
               What are your expectations?
 
             </label>
