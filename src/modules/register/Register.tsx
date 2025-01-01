@@ -9,7 +9,6 @@ import { Link, useNavigate } from "react-router-dom";
 import { Image } from "@profabric/react-components";
 import { registerStudent } from "@app/utils/oidc-providers";
 import { toast } from 'react-toastify';
-import ReCAPTCHA from "react-google-recaptcha";
 
 
 
@@ -62,10 +61,18 @@ const Register = () => {
       salvation_experience: salvationExperience,
       expectations: expectation,
     }
+    let dataToSend: any = {};
+    Object.entries(data).forEach(entry => {
+      const [key, value] = entry;
+      if (value !== '') {
+        dataToSend[key] = value;
+      }
+    });
+
     try {
       setLoading(true);
       // call api to register student
-      let response = await registerStudent(data) as { student: any };
+      let response = await registerStudent(dataToSend) as { student: any };
       console.log("Data", response);
       toast.success('Registration was successful');
       navigate(`/resend-verification?id=${response.student.id}`);
@@ -139,13 +146,9 @@ const Register = () => {
         finishButtonTemplate={(handleComplete) => (
           <div className="">
             <button className="finish-button d-block" onClick={handleComplete} disabled={loading} >
-
               finish
             </button>
-            <ReCAPTCHA
-              sitekey="6Ld4lKoqAAAAAJKSGNRE-FL0W1gPnKH_LMQXCpGG"
-              onChange={onChange}
-            />,
+
           </div>
 
         )}

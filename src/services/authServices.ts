@@ -34,9 +34,9 @@ export const forgotPasswordAction = async (data: any) => {
     }
 }
 
-export const resendVerification = async () => {
+export const resendVerification = async (id: any) => {
     try {
-        const reset = await axios.post('/email/resend');
+        const reset = await axios.post('/email/resend/id');
         return reset.data;
 
     } catch (error: any) {
