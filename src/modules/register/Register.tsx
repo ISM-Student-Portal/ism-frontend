@@ -124,7 +124,7 @@ const Register = () => {
   };
 
   return (
-    <div className="container my-5">
+    <div className="container my-5 bg-almond">
       <div className="card-header text-center">
         <span className='px-1'> <Image
           src={"./img/logo1.png"}
@@ -142,16 +142,8 @@ const Register = () => {
           <span> Portal</span>
         </Link>
       </div>
-      <FormWizard onComplete={handleComplete} shape="circle" title="Register" subtitle="Please fill in the form below"
-        finishButtonTemplate={(handleComplete) => (
-          <div className="">
-            <button className="finish-button d-block" onClick={handleComplete} disabled={loading} >
-              finish
-            </button>
+      <FormWizard onComplete={handleComplete} shape="square" stepSize="sm" title="Register" subtitle="Please fill in the form below"
 
-          </div>
-
-        )}
         color="#C28E27">
 
         <FormWizard.TabContent title="Personal details" icon="ti-user">
@@ -344,14 +336,21 @@ const Register = () => {
             </div>
           </div>
 
-          <div className="row">
-            <label className="text-sm">
-              Tell us where
 
-            </label>
-            <br />
-            <textarea name="" id="" cols={30} rows={5} className="form-control" value={whereAttended} onChange={(e) => setWhereAttended(e.target.value)}></textarea>
-          </div>
+          {
+            attended === 'yes' && (
+              <div className="row">
+                <label className="text-sm">
+                  Tell us where
+
+                </label>
+                <br />
+                <textarea name="" id="" cols={30} rows={5} className="form-control" value={whereAttended} onChange={(e) => setWhereAttended(e.target.value)}></textarea>
+              </div>
+            )
+          }
+
+
 
           <div className="row">
 
@@ -370,7 +369,7 @@ const Register = () => {
 
             <div className="col-md-6">
               <label className="text-sm">
-                Are you a member?
+                Are you a minister?
 
               </label>
               <br />
@@ -382,31 +381,35 @@ const Register = () => {
             </div>
           </div>
 
-          <div className="row">
+          {member === 'yes' && (
+            <div className="row">
 
-            <div className="col-md-6">
-              <label className="text-sm">
-                Name of Ministry
+              <div className="col-md-6">
+                <label className="text-sm">
+                  Name of Ministry
 
-              </label>
-              <br />
-              <input
-                className="form-control"
-                type="text"
-                value={ministryName}
-                onChange={(e) => setMinistryName(e.target.value)}
-              />
+                </label>
+                <br />
+                <input
+                  className="form-control"
+                  type="text"
+                  value={ministryName}
+                  onChange={(e) => setMinistryName(e.target.value)}
+                />
+              </div>
+
+              <div className="col-md-6">
+                <label className="text-sm">
+                  Position in Ministry
+
+                </label>
+                <br />
+                <input className="form-control" type="text" value={ministryPosition} onChange={(e) => setMinistryPosition(e.target.value)} />
+              </div>
             </div>
+          )}
 
-            <div className="col-md-6">
-              <label className="text-sm">
-                Position in Ministry
 
-              </label>
-              <br />
-              <input className="form-control" type="text" value={ministryPosition} onChange={(e) => setMinistryPosition(e.target.value)} />
-            </div>
-          </div>
 
 
 
