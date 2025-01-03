@@ -36,7 +36,7 @@ export const forgotPasswordAction = async (data: any) => {
 
 export const resendVerification = async (id: any) => {
     try {
-        const reset = await axios.post('/email/resend/id');
+        const reset = await axios.get(`/email/resend/${id}`);
         return reset.data;
 
     } catch (error: any) {

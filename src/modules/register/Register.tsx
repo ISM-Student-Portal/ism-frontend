@@ -77,8 +77,21 @@ const Register = () => {
       toast.success('Registration was successful');
       navigate(`/resend-verification?id=${response.student.id}`);
     }
-    catch (error) {
-      toast.error('Something went wrong!!! Try again later')
+    catch (error: any) {
+      if (error.message === 'Email already exists') {
+        console.log('Error', error);
+        if (error.student.email_verified_at === null) {
+          toast.info('Email already exists but not verified', { autoClose: 10000 });
+          navigate(`/resend-verification?id=${error.student.id}`);
+        }
+        else {
+          toast.info('Email already exists and verified', { autoClose: 10000 });
+          navigate(`/payment/${error.student.id}`);
+        }
+      }
+      else {
+        toast.error('Something went wrong!!! Try again later');
+      }
 
 
     }
