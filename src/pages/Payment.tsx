@@ -223,7 +223,11 @@ const Payment = () => {
 
                                     <div className="row">
                                         <div className="col-md-12">
-                                            <button className="btn btn-primary w-100" disabled={!amount || !plan || loading} onClick={() => {
+                                            <button className="btn btn-primary w-100" style={
+                                                {
+                                                    backgroundColor: '#C28E27'
+                                                }
+                                            } disabled={!amount || !plan || loading} onClick={() => {
                                                 initializePayment({ onSuccess, onClose })
                                             }}>Pay Now</button>
                                         </div>
