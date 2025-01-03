@@ -50,7 +50,7 @@ const Payment = () => {
             }
 
         } catch (error) {
-            toast.error("Payment Failed")
+            toast.error("Payment Failed", { autoClose: 10000 });
         }
     }
 

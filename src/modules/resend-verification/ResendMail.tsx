@@ -44,7 +44,11 @@ const ResendMail = () => {
                         An email has been sent to your email address. Please click on the link in the email to verify your email address.
                     </div>
                     <div className="col-12-sm text-center text-primary h3-sm mx-auto card-footer">
-                        <button className="p-2 rounded btn btn-primary" onClick={resendNotification}>Resend verification</button>
+                        <button className="p-2 rounded btn btn-primary" style={
+                            {
+                                backgroundColor: '#C28E27'
+                            }
+                        } onClick={resendNotification}>Resend verification</button>
                     </div>
                 </div>
             </div>
