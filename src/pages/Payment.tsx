@@ -144,7 +144,7 @@ const Payment = () => {
 
 
                                     </div>
-                                    <div className='card-footer text-success'>
+                                    <div className='card-footer' style={{color: '#2A2F54'}}>
                                         Please check your email for more information as we send you a mail with your payment details and login credentials
                                     </div>
                                 </div>
