@@ -144,7 +144,7 @@ const Payment = () => {
 
 
                                     </div>
-                                    <div className='card-footer' style={{color: '#2A2F54'}}>
+                                    <div className='card-footer' style={{ color: '#2A2F54' }}>
                                         Please check your email for more information as we send you a mail with your payment details and login credentials
                                     </div>
                                 </div>
@@ -232,6 +232,10 @@ const Payment = () => {
                                                 initializePayment({ onSuccess, onClose })
                                             }}>Pay Now</button>
                                         </div>
+                                    </div>
+                                    <div>
+                                        <p className='text-info'>Regardless of the price being in naira, you can pay with your currency card, the equivalent in naira will be deducted from their card</p>
+                                        <p className='text-info'>For any difficulty in paying, please contact: <strong>+234 903 464 6810</strong></p>
                                     </div>
                                 </div>
                             </div></div>
