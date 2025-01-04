@@ -137,7 +137,7 @@ const Register = () => {
   };
 
   return (
-    <div className="container my-5 bg-almond">
+    <div className="container my-5 bg-almond" style={{ color: '#2A2F54' }}>
       <div className="card-header text-center">
         <span className='px-1'> <Image
           src={"./img/logo1.png"}

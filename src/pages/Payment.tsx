@@ -79,7 +79,7 @@ const Payment = () => {
     return (
         <div>
             {!student ? <div>Loading</div> : (
-                <div className="container">
+                <div className="container" style={{ color: '#2A2F54' }}>
                     {student.payment_complete ? (
                         <div>
                             <div className="card-header text-center">

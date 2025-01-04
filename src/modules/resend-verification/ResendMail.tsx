@@ -19,7 +19,7 @@ const ResendMail = () => {
                 toast.error('An error occurred ');
             }
 
-            
+
         }
         catch (error) {
             toast.error("unable to complete")
@@ -27,7 +27,7 @@ const ResendMail = () => {
     }
 
     return (
-        <div className="container-fluid">
+        <div className="container-fluid" style={{color: '#2A2F54'}}>
             <div className="container my-5">
                 <div className="h-100 pagination-centered card">
                     <div className='col-12-sm text-center mx-auto my-3 card-header'>
@@ -46,7 +46,8 @@ const ResendMail = () => {
                     <div className="col-12-sm text-center text-primary h3-sm mx-auto card-footer">
                         <button className="p-2 rounded btn btn-primary" style={
                             {
-                                backgroundColor: '#C28E27'
+                                backgroundColor: '#C28E27',
+                                borderColor: '#C28E27'
                             }
                         } onClick={resendNotification}>Resend verification</button>
                     </div>
