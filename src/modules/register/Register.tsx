@@ -292,7 +292,7 @@ const Register = () => {
                 </span>
               </label>
               <br />
-              <select name="" id="" className="form-control" value={education} onChange={(e) => setEducation(e.currentTarget.value)}>
+              <select name="" id="" className="form-control" value={education} onChange={(e) => setEducation(e.currentTarget.value)} required>
                 <option selected>--Education--</option>
 
                 <option value="bsc">BSc</option>
