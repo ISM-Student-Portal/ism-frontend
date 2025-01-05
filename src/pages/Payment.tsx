@@ -233,9 +233,10 @@ const Payment = () => {
                                             }}>Pay Now</button>
                                         </div>
                                     </div>
-                                    <div>
-                                        <p className='text-info'>Regardless of the price being in naira, you can pay with your currency card, the equivalent in naira will be deducted from their card</p>
-                                        <p className='text-info'>For any difficulty in paying, please contact: <strong>+234 903 464 6810</strong></p>
+                                    <div className='card-footer' style={{ color: '#2A2F54' }}>
+                                        <p className=''>Regardless of the price being in Naira, you can make payment with your local currency card, the Naira equivalent will be deducted from your card. <br></br>
+
+                                            For any difficulty in paying, please contact: <b>+234 903 464 6810,</b>  <b>+234 903 095 9735</b></p>
                                     </div>
                                 </div>
                             </div></div>
