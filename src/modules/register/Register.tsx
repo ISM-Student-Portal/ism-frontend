@@ -90,7 +90,10 @@ const Register = () => {
         }
       }
       else {
-        toast.error('Something went wrong!!! Try again later');
+        console.log(error)
+        toast.error('All fields are required, Please check the form and try again',{
+          autoClose: 10000
+        });
       }
 
 
@@ -323,6 +326,11 @@ const Register = () => {
             <div className="col-md-6">
               <label className="text-sm">
                 Are You baptized in the Holy Ghost with the evidence of speaking in tongues?
+                <span
+                  style={{ color: "red", fontSize: "20px", fontWeight: "bold" }}
+                >
+                  *
+                </span>
 
               </label>
               <br />
@@ -337,6 +345,11 @@ const Register = () => {
             <div className="col-md-6">
               <label className="text-sm">
                 Have you attended any school of ministry before?
+                <span
+                  style={{ color: "red", fontSize: "20px", fontWeight: "bold" }}
+                >
+                  *
+                </span>
 
               </label>
               <br />
@@ -355,6 +368,11 @@ const Register = () => {
               <div className="row">
                 <label className="text-sm">
                   Tell us where
+                  <span
+                  style={{ color: "red", fontSize: "20px", fontWeight: "bold" }}
+                >
+                  *
+                </span>
 
                 </label>
                 <br />
@@ -370,6 +388,11 @@ const Register = () => {
             <div className="col-md-6">
               <label className="text-sm">
                 Mode of Participation
+                <span
+                  style={{ color: "red", fontSize: "20px", fontWeight: "bold" }}
+                >
+                  *
+                </span>
 
               </label>
               <br />
@@ -383,6 +406,11 @@ const Register = () => {
             <div className="col-md-6">
               <label className="text-sm">
                 Are you a minister?
+                <span
+                  style={{ color: "red", fontSize: "20px", fontWeight: "bold" }}
+                >
+                  *
+                </span>
 
               </label>
               <br />
@@ -401,6 +429,12 @@ const Register = () => {
                 <label className="text-sm">
                   Name of Ministry
 
+                  <span
+                  style={{ color: "red", fontSize: "20px", fontWeight: "bold" }}
+                >
+                  *
+                </span>
+
                 </label>
                 <br />
                 <input
@@ -414,6 +448,11 @@ const Register = () => {
               <div className="col-md-6">
                 <label className="text-sm">
                   Position in Ministry
+                  <span
+                  style={{ color: "red", fontSize: "20px", fontWeight: "bold" }}
+                >
+                  *
+                </span>
 
                 </label>
                 <br />
@@ -432,6 +471,12 @@ const Register = () => {
             <label className="text-sm">
               Tell us about your salvation experience
 
+              <span
+                  style={{ color: "red", fontSize: "20px", fontWeight: "bold" }}
+                >
+                  *
+                </span>
+
             </label>
             <br />
             <textarea name="" id="" cols={30} rows={5} className="form-control" value={salvationExperience} onChange={(e) => setSalvationExperience(e.target.value)}></textarea>
@@ -439,6 +484,12 @@ const Register = () => {
           <div className="row">
             <label className="text-sm">
               What are your expectations?
+
+              <span
+                  style={{ color: "red", fontSize: "20px", fontWeight: "bold" }}
+                >
+                  *
+                </span>
 
             </label>
             <br />
