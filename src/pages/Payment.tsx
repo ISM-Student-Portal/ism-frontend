@@ -212,8 +212,8 @@ const Payment = () => {
                                                 <label>Plan</label>
                                                 <select className="form-control" value={plan} onChange={selectPlan}>
                                                     <option value="">--plan--</option>
-                                                    <option value="basic">Basic</option>
-                                                    <option value="premium">Premium</option>
+                                                    <option value="basic">Basic: Three month training.</option>
+                                                    <option value="premium">Premium : Basic Training  plus weekly Mentorship Sessions with the Principal</option>
                                                 </select>
                                             </div>
                                         </div>
