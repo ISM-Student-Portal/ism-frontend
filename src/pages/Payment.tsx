@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react';
 import { Link, useParams } from "react-router-dom";
 import { toast } from 'react-toastify';
 import { usePaystackPayment } from 'react-paystack';
+import CurrencyInput from 'react-currency-input-field'
 
 
 
@@ -63,10 +64,13 @@ const Payment = () => {
     const selectPlan = (e: any) => {
         setPlan(e.target.value);
         if (e.target.value === "basic") {
-            setAmount(10);
+            setAmount(100);
         }
         else if (e.target.value === "premium") {
-            setAmount(10);
+            setAmount(100);
+        }
+        else {
+            setAmount(null)
         }
     }
 
@@ -216,7 +220,17 @@ const Payment = () => {
                                         <div className="col-md-6">
                                             <div className="form-group">
                                                 <label>Amount</label>
-                                                <input type="text" className="form-control" value={amount} disabled />
+                                                <CurrencyInput
+                                                    id="input-example"
+                                                    name="input-name"
+                                                    prefix='₦'
+                                                    placeholder=""
+                                                    defaultValue={amount}
+                                                    decimalsLimit={2}
+                                                    value={amount}
+                                                    disabled
+                                                    className='form-control'
+                                                />
                                             </div>
                                         </div>
                                     </div>
@@ -233,11 +247,14 @@ const Payment = () => {
                                             }}>Pay Now</button>
                                         </div>
                                     </div>
-                                    <div className='card-footer' style={{ color: '#2A2F54' }}>
-                                        <p className=''>Regardless of the price being in Naira, you can make payment with your local currency card, the Naira equivalent will be deducted from your card. <br></br>
+                                    {amount && (
+                                        <div className='card-footer' style={{ color: '#2A2F54' }}>
+                                            <p className=''>Regardless of the price being in Naira, you can make payment with your local currency card, the Naira equivalent will be deducted from your card. <br></br>
 
-                                            For any difficulty in paying, please contact: <b>+234 903 464 6810,</b>  <b>+234 903 095 9735</b></p>
-                                    </div>
+                                                For any difficulty in paying, please contact: <b>+234 903 464 6810,</b>  <b>+234 903 095 9735</b></p>
+                                        </div>
+                                    )}
+
                                 </div>
                             </div></div>
                     )}
