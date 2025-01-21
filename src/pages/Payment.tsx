@@ -64,10 +64,10 @@ const Payment = () => {
     const selectPlan = (e: any) => {
         setPlan(e.target.value);
         if (e.target.value === "basic") {
-            setAmount(100);
+            setAmount(22500000);
         }
         else if (e.target.value === "premium") {
-            setAmount(100);
+            setAmount(37500000);
         }
         else {
             setAmount(null)
@@ -149,7 +149,7 @@ const Payment = () => {
 
                                     </div>
                                     <div className='card-footer' style={{ color: '#2A2F54' }}>
-                                        Please check your email for more information as we send you a mail with your payment details and login credentials
+                                        Please check your email for further information.
                                     </div>
                                 </div>
                             </div>
@@ -212,8 +212,8 @@ const Payment = () => {
                                                 <label>Plan</label>
                                                 <select className="form-control" value={plan} onChange={selectPlan}>
                                                     <option value="">--plan--</option>
-                                                    <option value="basic">Basic: Three month training.</option>
-                                                    <option value="premium">Premium : Basic Training  plus weekly Mentorship Sessions with the Principal</option>
+                                                    <option value="basic">Basic - $150/₦225,000: Three month training.</option>
+                                                    <option value="premium">Premium - $250/375,000: Basic Training  plus weekly Mentorship Sessions with the Principal</option>
                                                 </select>
                                             </div>
                                         </div>
