@@ -64,10 +64,10 @@ const Payment = () => {
     const selectPlan = (e: any) => {
         setPlan(e.target.value);
         if (e.target.value === "basic") {
-            setAmount(22500000);
+            setAmount(225000);
         }
         else if (e.target.value === "premium") {
-            setAmount(37500000);
+            setAmount(375000);
         }
         else {
             setAmount(null)
@@ -249,6 +249,7 @@ const Payment = () => {
                                     </div>
                                     {amount && (
                                         <div className='card-footer' style={{ color: '#2A2F54' }}>
+                                            <p className='text-bold'>Please note that this payment is non-refundable</p>
                                             <p className=''>Regardless of the price being in Naira, you can make payment with your local currency card, the Naira equivalent will be deducted from your card. <br></br>
 
                                                 For any difficulty in paying, please contact: <b>+234 903 464 6810,</b>  <b>+234 903 095 9735</b></p>
