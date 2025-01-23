@@ -307,7 +307,7 @@ const Register = () => {
               </select>
 
 
-            </div>login
+            </div>
           </div>
 
 
