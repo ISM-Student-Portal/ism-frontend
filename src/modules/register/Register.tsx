@@ -9,6 +9,8 @@ import { Link, useNavigate } from "react-router-dom";
 import { Image } from "@profabric/react-components";
 import { registerStudent } from "@app/utils/oidc-providers";
 import { toast } from 'react-toastify';
+import ReCAPTCHA from 'react-google-recaptcha';
+
 
 
 
@@ -305,7 +307,7 @@ const Register = () => {
               </select>
 
 
-            </div>
+            </div>login
           </div>
 
 
@@ -494,6 +496,13 @@ const Register = () => {
             </label>
             <br />
             <textarea name="" id="" cols={30} rows={5} className="form-control" value={expectation} onChange={(e) => setExpectation(e.target.value)}></textarea>
+          </div>
+
+          <div className="my-3">
+          <ReCAPTCHA
+                      sitekey="6Ld4lKoqAAAAAJKSGNRE-FL0W1gPnKH_LMQXCpGG"
+                      onChange={onChange}
+                    />
           </div>
         </FormWizard.TabContent>
       </FormWizard>
