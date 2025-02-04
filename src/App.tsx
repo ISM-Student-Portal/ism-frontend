@@ -3,6 +3,7 @@ import { Routes, Route, useLocation } from 'react-router-dom';
 import { ToastContainer } from 'react-toastify';
 import Main from '@modules/main/Main';
 import Login from '@modules/login/Login';
+import AdminLogin from '@modules/admin/auth/Login'
 import Register from '@modules/register/Register';
 import ForgetPassword from '@modules/forgot-password/ForgotPassword';
 import RecoverPassword from '@modules/recover-password/RecoverPassword';
@@ -12,39 +13,30 @@ import { useDispatch, useSelector } from 'react-redux';
 import { setWindowSize } from '@app/store/reducers/ui';
 import ReactGA from 'react-ga4';
 import { LocalizationProvider } from '@mui/x-date-pickers';
-import { AdapterMoment } from '@mui/x-date-pickers/AdapterMoment'
+import { AdapterMoment } from '@mui/x-date-pickers/AdapterMoment';
 
-import Dashboard from '@pages/Dashboard';
-import Blank from '@pages/Blank';
-import SubMenu from '@pages/SubMenu';
 import Profile from '@pages/profile/Profile';
 
 import PublicRoute from './routes/PublicRoute';
 import PrivateRoute from './routes/PrivateRoute';
 import { setAuthentication } from './store/reducers/auth';
 import {
-  GoogleProvider,
   getAuthStatus,
-  getFacebookLoginStatus,
   getProfileStatus,
 } from './utils/oidc-providers';
 import { Spinner } from './styles/common';
 import { setProfile } from './store/reducers/profile';
-import AdminRoute from './routes/AdminRoute';
-import Students from './pages/Students';
-import Classroom from './pages/Classroom';
-import Assignment2 from './pages/Assignment'
+
 import Assignment from './pages/student_pages/Assignment';
 import StudentClassroom from './pages/student_pages/StudentClassroom';
 import StudentNotification from './pages/student_pages/StudentNotification';
 import StudentDashboard from './pages/student_pages/StudentDashboard';
 import Submission from './pages/student_pages/Submission';
-import Admins from './pages/Admins';
 import ResetPassword from './modules/reset-password/ResetPassword';
-import AttendanceStats from './pages/AttendanceStats';
 import Mentorship from './pages/student_pages/Mentorship';
 import ResendMail from './modules/resend-verification/ResendMail';
 import Payment from './pages/Payment';
+import Students from './modules/landing/Students';
 
 const { VITE_NODE_ENV } = import.meta.env;
 
@@ -59,8 +51,6 @@ const App = () => {
   const checkSession = async () => {
     try {
       let responses: any = await Promise.all([
-        // getFacebookLoginStatus(),
-        // GoogleProvider.getUser(),
         getAuthStatus(),
       ]);
       let profile: any = await getProfileStatus();
@@ -110,6 +100,16 @@ const App = () => {
           <Route path="/login" element={<PublicRoute />}>
             <Route path="/login" element={<Login />} />
           </Route>
+
+          <Route path="/students" element={<PublicRoute />}>
+            <Route path="/students" element={<Students />} />
+          </Route>
+
+
+          {/* <Route path="/admin" element={<AdminModule/>}>
+              <Route path="/login" element={<AdminLogin />} />
+              <Route path="/dashboard" element={<AdminDashboard />} />
+          </Route> */}
           <Route path="/register" element={<PublicRoute />}>
             <Route path="/register" element={<Register />} />
           </Route>
@@ -129,7 +129,7 @@ const App = () => {
           <Route path="/recover-password" element={<PublicRoute />}>
             <Route path="/recover-password" element={<RecoverPassword />} />
           </Route>
-          <Route path="/" element={<PrivateRoute />}>
+          {/* <Route path="/" element={<PrivateRoute />}>
             <Route path="/" element={<Main />}>
               <Route path="/assignments" element={<Assignment />} />
               <Route path="/classroom" element={<StudentClassroom />} />
@@ -140,9 +140,9 @@ const App = () => {
               <Route path="/profile" element={<Profile />} />
               <Route path="/" element={<StudentDashboard />} />
             </Route>
-          </Route>
+          </Route> */}
 
-          <Route path="/admin" element={<AdminRoute />}>
+          {/* <Route path="/admin" element={<AdminRoute />}>
             <Route path="/admin" element={<Main />}>
               <Route path="admin/sub-menu-2" element={<Blank />} />
               <Route path="admin/sub-menu-1" element={<SubMenu />} />
@@ -156,7 +156,7 @@ const App = () => {
 
               <Route path="/admin/" element={<Dashboard />} />
             </Route>
-          </Route>
+          </Route> */}
 
 
         </Routes>
