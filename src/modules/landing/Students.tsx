@@ -315,6 +315,14 @@ const Students = () => {
                         <Button size='small' startIcon={<UploadIcon />} onClick={handleOpen} className="btn btn-primary btn-sm float-right" type="button">Upload</Button>
                         <Button size='small' startIcon={<AddIcon />} onClick={handleOpenAdd} className="btn btn-primary btn-sm float-right mx-1" type="button">Add</Button>
                     </div>
+                    {
+                        rows.length > 0 && (<div>
+                            <h6>Total Students Registered: {rows.length}</h6>
+                            <h6>Total Students Paid: {(rows.filter(item => item.payment_complete)).length}</h6>
+                        </div>)
+                    }
+
+
                     <DataTable columns={columns(handleButtonClick)} data={filteredItems} progressPending={pending} responsive={true} striped={true} subHeader subHeaderComponent={subHeaderComponent} />
                 </div>
             </section>
