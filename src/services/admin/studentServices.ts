@@ -3,7 +3,7 @@ import axios from '../../utils/axios';
 
 export const fetchAllStudents = async() => {
     try{
-    const students = await axios.get('/students');
+    const students = await axios.get('/admin/students');
     return students.data;
 
     }catch (error: any){
