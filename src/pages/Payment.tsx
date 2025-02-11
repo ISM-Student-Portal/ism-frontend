@@ -65,10 +65,20 @@ const Payment = () => {
     const selectPlan = (e: any) => {
         setPlan(e.target.value);
         if (e.target.value === "basic") {
-            setAmount(225000);
+            if (student.is_alumni) {
+                setAmount(225000 / 2)
+            }
+            else {
+                setAmount(225000);
+            }
         }
         else if (e.target.value === "premium") {
-            setAmount(375000);
+            if (student.is_alumni) {
+                setAmount(375000 / 2)
+            }
+            else {
+                setAmount(375000);
+            }
         }
         else {
             setAmount(null)
