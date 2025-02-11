@@ -230,7 +230,7 @@ const Payment = () => {
                                         </div>
                                         <div className="col-md-6">
                                             <div className="form-group">
-                                                <label>Amount</label>
+                                                <label>{student.is_alumni ? "Discounted Amount (50%)" : "Amount"}</label>
                                                 <CurrencyInput
                                                     id="input-example"
                                                     name="input-name"
