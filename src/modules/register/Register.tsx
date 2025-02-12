@@ -93,7 +93,7 @@ const Register = () => {
       }
       else {
         console.log(error)
-        toast.error('All fields are required, Please check the form and try again',{
+        toast.error(error.message, {
           autoClose: 10000
         });
       }
@@ -371,10 +371,10 @@ const Register = () => {
                 <label className="text-sm">
                   Tell us where
                   <span
-                  style={{ color: "red", fontSize: "20px", fontWeight: "bold" }}
-                >
-                  *
-                </span>
+                    style={{ color: "red", fontSize: "20px", fontWeight: "bold" }}
+                  >
+                    *
+                  </span>
 
                 </label>
                 <br />
@@ -432,10 +432,10 @@ const Register = () => {
                   Name of Ministry
 
                   <span
-                  style={{ color: "red", fontSize: "20px", fontWeight: "bold" }}
-                >
-                  *
-                </span>
+                    style={{ color: "red", fontSize: "20px", fontWeight: "bold" }}
+                  >
+                    *
+                  </span>
 
                 </label>
                 <br />
@@ -451,10 +451,10 @@ const Register = () => {
                 <label className="text-sm">
                   Position in Ministry
                   <span
-                  style={{ color: "red", fontSize: "20px", fontWeight: "bold" }}
-                >
-                  *
-                </span>
+                    style={{ color: "red", fontSize: "20px", fontWeight: "bold" }}
+                  >
+                    *
+                  </span>
 
                 </label>
                 <br />
@@ -474,10 +474,10 @@ const Register = () => {
               Tell us about your salvation experience
 
               <span
-                  style={{ color: "red", fontSize: "20px", fontWeight: "bold" }}
-                >
-                  *
-                </span>
+                style={{ color: "red", fontSize: "20px", fontWeight: "bold" }}
+              >
+                *
+              </span>
 
             </label>
             <br />
@@ -488,10 +488,10 @@ const Register = () => {
               What are your expectations?
 
               <span
-                  style={{ color: "red", fontSize: "20px", fontWeight: "bold" }}
-                >
-                  *
-                </span>
+                style={{ color: "red", fontSize: "20px", fontWeight: "bold" }}
+              >
+                *
+              </span>
 
             </label>
             <br />
@@ -499,10 +499,10 @@ const Register = () => {
           </div>
 
           <div className="my-3">
-          <ReCAPTCHA
-                      sitekey="6Ld4lKoqAAAAAJKSGNRE-FL0W1gPnKH_LMQXCpGG"
-                      onChange={onChange}
-                    />
+            <ReCAPTCHA
+              sitekey="6Ld4lKoqAAAAAJKSGNRE-FL0W1gPnKH_LMQXCpGG"
+              onChange={onChange}
+            />
           </div>
         </FormWizard.TabContent>
       </FormWizard>
