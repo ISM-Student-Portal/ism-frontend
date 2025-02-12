@@ -18,6 +18,7 @@ const Payment = () => {
     const config = {
         reference: (new Date()).getTime().toString(),
         email: student?.email,
+        currency: student?.country === 'Nigeria' ? 'NGN' : 'USD',
         amount: amount * 100, //Amount is in the country's lowest currency. E.g Kobo, so 20000 kobo = N200
         publicKey: process.env.REACT_APP_PAYSTACK_KEY ?? '',
         subaccount: process.env.REACT_APP_SPLIT_ACCOUNT ?? ''
@@ -31,6 +32,7 @@ const Payment = () => {
             let res = await fetchStudent(id);
             console.log(res)
             setStudent(res.student);
+
         }
         catch (error) {
             toast.error("unable to complete")
@@ -66,18 +68,22 @@ const Payment = () => {
         setPlan(e.target.value);
         if (e.target.value === "basic") {
             if (student.is_alumni) {
-                setAmount(225000 / 2)
+                if (student.country !== 'Nigeria') { setAmount(150 / 2) }
+                else setAmount(225000 / 2);
             }
             else {
-                setAmount(225000);
+                if (student.country !== 'Nigeria') { setAmount(150) }
+                else setAmount(225000);
             }
         }
         else if (e.target.value === "premium") {
             if (student.is_alumni) {
-                setAmount(375000 / 2)
+                if (student.country !== 'Nigeria') { setAmount(250 / 2) }
+                else setAmount(375000 / 2);
             }
             else {
-                setAmount(375000);
+                if (student.country !== 'Nigeria') { setAmount(250) }
+                else setAmount(375000);
             }
         }
         else {
@@ -234,7 +240,7 @@ const Payment = () => {
                                                 <CurrencyInput
                                                     id="input-example"
                                                     name="input-name"
-                                                    prefix='₦'
+                                                    prefix={student.country === 'Nigeria' ? '₦' : '$'}
                                                     placeholder=""
                                                     defaultValue={amount}
                                                     decimalsLimit={2}
