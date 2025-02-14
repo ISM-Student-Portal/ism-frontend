@@ -1,9 +1,7 @@
 import { useEffect, useState } from 'react';
 import { Routes, Route, useLocation } from 'react-router-dom';
 import { ToastContainer } from 'react-toastify';
-import Main from '@modules/main/Main';
 import Login from '@modules/login/Login';
-import AdminLogin from '@modules/admin/auth/Login'
 import Register from '@modules/register/Register';
 import ForgetPassword from '@modules/forgot-password/ForgotPassword';
 import RecoverPassword from '@modules/recover-password/RecoverPassword';
@@ -14,11 +12,7 @@ import { setWindowSize } from '@app/store/reducers/ui';
 import ReactGA from 'react-ga4';
 import { LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterMoment } from '@mui/x-date-pickers/AdapterMoment';
-
-import Profile from '@pages/profile/Profile';
-
 import PublicRoute from './routes/PublicRoute';
-import PrivateRoute from './routes/PrivateRoute';
 import { setAuthentication } from './store/reducers/auth';
 import {
   getAuthStatus,
@@ -26,17 +20,11 @@ import {
 } from './utils/oidc-providers';
 import { Spinner } from './styles/common';
 import { setProfile } from './store/reducers/profile';
-
-import Assignment from './pages/student_pages/Assignment';
-import StudentClassroom from './pages/student_pages/StudentClassroom';
-import StudentNotification from './pages/student_pages/StudentNotification';
-import StudentDashboard from './pages/student_pages/StudentDashboard';
-import Submission from './pages/student_pages/Submission';
 import ResetPassword from './modules/reset-password/ResetPassword';
-import Mentorship from './pages/student_pages/Mentorship';
 import ResendMail from './modules/resend-verification/ResendMail';
 import Payment from './pages/Payment';
 import Students from './modules/landing/Students';
+import LandingPage from './pages/landing_page/LandingPage';
 
 const { VITE_NODE_ENV } = import.meta.env;
 
@@ -97,6 +85,9 @@ const App = () => {
     <>
       <LocalizationProvider dateAdapter={AdapterMoment}>
         <Routes>
+          <Route path="/" element={<PublicRoute />}>
+            <Route path="/" element={<LandingPage />} />
+          </Route>
           <Route path="/login" element={<PublicRoute />}>
             <Route path="/login" element={<Login />} />
           </Route>

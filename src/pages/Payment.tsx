@@ -5,6 +5,7 @@ import { Link, useParams } from "react-router-dom";
 import { toast } from 'react-toastify';
 import { usePaystackPayment } from 'react-paystack';
 import CurrencyInput from 'react-currency-input-field'
+import { ColorRing } from 'react-loader-spinner';
 
 
 
@@ -46,6 +47,8 @@ const Payment = () => {
     const onSuccess = async (reference: any) => {
         // Implementation for whatever you want to do with reference and after success call.
         try {
+            setLoading(true);
+
             const response = await studentPay({ reference, amount, plan, id });
             if (response.status === "success") {
                 toast.success("Payment Successful");
@@ -55,6 +58,10 @@ const Payment = () => {
 
         } catch (error) {
             toast.error("Payment Failed", { autoClose: 10000 });
+        }
+        finally {
+            setLoading(false);
+
         }
     }
 
@@ -98,8 +105,17 @@ const Payment = () => {
 
 
     return (
-        <div>
-            {!student ? <div>Loading</div> : (
+        <div className='h-100'>
+            {loading ? <div className='h-100 d-flex align-items-center justify-content-center'><ColorRing
+                visible={true}
+                height="150"
+                width="150"
+                ariaLabel="color-ring-loading"
+                wrapperStyle={{}}
+                wrapperClass="color-ring-wrapper"
+                colors={['#e15b64', '#f47e60', '#f8b26a', '#abbd81', '#849b87']}
+
+            />Loading... Please wait </div> : (
                 <div className="container" style={{ color: '#2A2F54' }}>
                     {student.payment_complete ? (
                         <div>
