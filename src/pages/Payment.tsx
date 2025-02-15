@@ -19,7 +19,6 @@ const Payment = () => {
     const config = {
         reference: (new Date()).getTime().toString(),
         email: student?.email,
-        currency: student?.country === 'Nigeria' ? 'NGN' : 'USD',
         amount: amount * 100, //Amount is in the country's lowest currency. E.g Kobo, so 20000 kobo = N200
         publicKey: process.env.REACT_APP_PAYSTACK_KEY ?? '',
         subaccount: process.env.REACT_APP_SPLIT_ACCOUNT ?? ''
@@ -75,22 +74,18 @@ const Payment = () => {
         setPlan(e.target.value);
         if (e.target.value === "basic") {
             if (student.is_alumni) {
-                if (student.country !== 'Nigeria') { setAmount(150 / 2) }
-                else setAmount(225000 / 2);
+                setAmount(225000 / 2);
             }
             else {
-                if (student.country !== 'Nigeria') { setAmount(150) }
-                else setAmount(225000);
+                setAmount(225000);
             }
         }
         else if (e.target.value === "premium") {
             if (student.is_alumni) {
-                if (student.country !== 'Nigeria') { setAmount(250 / 2) }
-                else setAmount(375000 / 2);
+                setAmount(375000 / 2);
             }
             else {
-                if (student.country !== 'Nigeria') { setAmount(250) }
-                else setAmount(375000);
+                setAmount(375000);
             }
         }
         else {
@@ -256,7 +251,7 @@ const Payment = () => {
                                                 <CurrencyInput
                                                     id="input-example"
                                                     name="input-name"
-                                                    prefix={student.country === 'Nigeria' ? '₦' : '$'}
+                                                    prefix={'₦'}
                                                     placeholder=""
                                                     defaultValue={amount}
                                                     decimalsLimit={2}
