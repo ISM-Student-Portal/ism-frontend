@@ -225,6 +225,7 @@ const Students = () => {
         { name: 'Country', selector: (row: any) => row.country, sortable: true, sortFunction: caseInsensitiveSort },
         { name: 'City', selector: (row: any) => row.city, sortable: true },
         { name: 'Plan', selector: (row: any) => row.plan, sortable: true },
+        { name: 'Participation Mode', selector: (row: any) => row.participation_mode, sortable: true },
         { name: 'Paid', selector: (row: any) => row.payment_complete ? "Paid" : "", grow: 1 },
 
 

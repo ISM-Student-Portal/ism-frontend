@@ -19,6 +19,9 @@ const Register = () => {
   const [firstName, setFirstName] = React.useState<string>("");
   const [lastName, setLastName] = React.useState<string>("");
   const [phone, setPhone] = React.useState<string>('');
+  const [isAlumni, setIsAlumni] = React.useState<string>('');
+  const [alumniMatric, setAlumniMatric] = React.useState<string>('');
+
   const [email, setEmail] = React.useState<string>("");
   const [country, setCountry] = React.useState<{ label: string, value: string }>({ label: 'Nigeria', value: 'NG' });
   const [city, setCity] = React.useState<string>("");
@@ -52,6 +55,8 @@ const Register = () => {
       phone: phone,
       country: country?.label,
       city: city,
+      alumni_matric_no: alumniMatric,
+      is_alumni: isAlumni === 'yes' ? true : false,
       education: education,
       baptized: baptized,
       attended_som_before: attended,
@@ -200,10 +205,59 @@ const Register = () => {
             </div>
           </div>
 
+
+
+
+
+
+
+
+          <div className="row">
+
+            <div className="col-md-6">
+              <label className="text-sm">
+                Are you an Alumni?
+                <span
+                  style={{ color: "red", fontSize: "20px", fontWeight: "bold" }}
+                >
+                  *
+                </span>
+
+              </label>
+              <br />
+              <select name="" id="" className="form-control" value={isAlumni} onChange={(e) => setIsAlumni(e.currentTarget.value)}>
+                <option selected>--select--</option>
+                <option value="yes">Yes</option>
+                <option value="no">No</option>
+              </select>
+            </div>
+
+            {
+              isAlumni === 'yes' && (
+                <div className="col-md-6">
+                  <label className="text-sm">
+                    Alumni Matric No
+                    <span
+                      style={{ color: "red", fontSize: "20px", fontWeight: "bold" }}
+                    >
+                      *
+                    </span>
+
+                  </label>
+                  <br />
+                  <input className="form-control" type="text" value={alumniMatric} onChange={(e) => setAlumniMatric(e.target.value)} />
+
+                </div>
+              )
+            }
+          </div>
+
+
+
           <div className="row">
             <div className="col-md-6">
               <label className="text-sm">
-                Email
+                {isAlumni === 'yes' ? 'Previous ISM Email' : 'Email'}
                 <span
                   style={{ color: "red", fontSize: "20px", fontWeight: "bold" }}
                 >
