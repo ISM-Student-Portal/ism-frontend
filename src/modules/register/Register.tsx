@@ -257,7 +257,7 @@ const Register = () => {
           <div className="row">
             <div className="col-md-6">
               <label className="text-sm">
-                {isAlumni === 'yes' ? 'Previous ISM Email' : 'Email'}
+                {isAlumni === 'yes' ? 'Previous ISM Email to enjoy 50% discount' : 'Email'}
                 <span
                   style={{ color: "red", fontSize: "20px", fontWeight: "bold" }}
                 >
