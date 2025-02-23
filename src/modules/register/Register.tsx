@@ -82,14 +82,14 @@ const Register = () => {
       let response = await registerStudent(dataToSend) as { student: any };
       console.log("Data", response);
       toast.success('Registration was successful');
-      navigate(`/resend-verification?id=${response.student.id}`);
+      navigate(`/resend-verification?id=${response.student.id}`, { state: response });
     }
     catch (error: any) {
       if (error.message === 'Email already exists') {
         console.log('Error', error);
         if (error.student.email_verified_at === null) {
           toast.info('Email already exists but not verified', { autoClose: 10000 });
-          navigate(`/resend-verification?id=${error.student.id}`);
+          navigate(`/resend-verification?id=${error.student.id}`, { state: error });
         }
         else {
           toast.info('Email already exists and verified', { autoClose: 10000 });
