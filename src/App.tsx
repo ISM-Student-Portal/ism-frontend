@@ -2,6 +2,8 @@ import { useEffect, useState } from 'react';
 import { Routes, Route, useLocation } from 'react-router-dom';
 import { ToastContainer } from 'react-toastify';
 import Main from '@modules/main/Main';
+import AdminMain from '@modules/admin/Main';
+import LecturerMain from '@modules/lecturer/Main';
 import Login from '@modules/login/Login';
 import Register from '@modules/register/Register';
 import ForgetPassword from '@modules/forgot-password/ForgotPassword';
@@ -18,7 +20,6 @@ import SubMenu from '@pages/SubMenu';
 import Profile from '@pages/profile/Profile';
 
 import PublicRoute from './routes/PublicRoute';
-import PrivateRoute from './routes/PrivateRoute';
 import { setAuthentication } from './store/reducers/auth';
 import {
   GoogleProvider,
@@ -28,9 +29,10 @@ import {
 } from './utils/oidc-providers';
 import { Spinner } from './styles/common';
 import { setProfile } from './store/reducers/profile';
-import LoginTest from './modules/login/LoginTest';
 import AdminRoute from './routes/AdminRoute';
 import Students from './pages/Students';
+import LecturerRoute from './routes/LecturerRoute';
+import StudentRoute from './routes/StudentRoute';
 
 const { VITE_NODE_ENV } = import.meta.env;
 
@@ -49,7 +51,7 @@ const App = () => {
         GoogleProvider.getUser(),
         getAuthStatus(),
       ]);
-      let profile:any = await getProfileStatus();
+      let profile: any = await getProfileStatus();
       console.log(profile, 'entry')
 
       responses = responses.filter((r: any) => Boolean(r));
@@ -86,7 +88,7 @@ const App = () => {
 
   if (isAppLoading) {
     return <div className='w-100'>
-      <p className='mx-auto my-auto '><h6>Loading <Spinner type='grow'/></h6></p>
+      <p className='mx-auto my-auto '><h6>Loading <Spinner type='grow' /></h6></p>
     </div>;
   }
 
@@ -105,7 +107,7 @@ const App = () => {
         <Route path="/recover-password" element={<PublicRoute />}>
           <Route path="/recover-password" element={<RecoverPassword />} />
         </Route>
-        <Route path="/" element={<PrivateRoute />}>
+        <Route path="/" element={<StudentRoute />}>
           <Route path="/" element={<Main />}>
             <Route path="/sub-menu-2" element={<Blank />} />
             <Route path="/sub-menu-1" element={<SubMenu />} />
@@ -116,7 +118,7 @@ const App = () => {
         </Route>
 
         <Route path="/admin" element={<AdminRoute />}>
-          <Route path="/admin" element={<Main />}>
+          <Route path="/admin" element={<AdminMain />}>
             <Route path="admin/sub-menu-2" element={<Blank />} />
             <Route path="admin/sub-menu-1" element={<SubMenu />} />
             <Route path="/admin/students" element={<Students />} />
@@ -125,7 +127,17 @@ const App = () => {
           </Route>
         </Route>
 
-        
+        <Route path="/lecturer" element={<LecturerRoute />}>
+          <Route path="/lecturer" element={<LecturerMain />}>
+            <Route path="lecturer/sub-menu-2" element={<Blank />} />
+            <Route path="lecturer/sub-menu-1" element={<SubMenu />} />
+            <Route path="/lecturer/students" element={<Students />} />
+            <Route path="lecturer/profile" element={<Profile />} />
+            <Route path="/lecturer/" element={<Dashboard />} />
+          </Route>
+        </Route>
+
+
       </Routes>
       <ToastContainer
         autoClose={3000}

@@ -75,7 +75,6 @@ export const authLogin = (email: string, password: string) => {
       }
     }).then(res => {
       
-        console.log(res);
       localStorage.setItem(
               'authentication',
               JSON.stringify(res.data.token)           
@@ -103,31 +102,7 @@ export const authLogin = (email: string, password: string) => {
     // });
   })
   
-  axios.post(`${process.env.REACT_APP_API_URL}/login`, data, {
-    headers: {
-      "Content-Type": 'application/json',
-      "Accept": 'application/json'
-    }
-  }).then(res => {
-    if(res.data.status === "success"){
-      console.log(res);
-    localStorage.setItem(
-            'token',
-            res.data.token.plainTextToken            
-          );
-    localStorage.setItem(
-            'profile',
-            JSON.stringify({profile: {email: res.data.user.email, ...res.data.profile}  })          
-          );
-          return {profile: {email: res.data.user.email, ...res.data.profile}  };
-    }
-    else{
-
-      // return { message: 'Credentials are wrong!' };
-    }
-    
-  }).catch((err: any) => {
-    return { message: 'Credentials are wrong!' }});
+  
   // return new Promise(async (res, rej) => {
   //   await sleep(500);
   //   if (email === 'admin@example.com' && password === 'admin') {

@@ -29,16 +29,16 @@ const Login = () => {
     try {
       setAuthLoading(true);
       const response: any = await authLogin(email, password);
-      console.log(response);
+      console.log(response, 'beforestore');
       dispatch(setAuthentication(response.authentication));
       dispatch(setProfile(response.profile));
       toast.success('Login is Successful!');
       setAuthLoading(false);
       console.log(response);
-      // dispatch(loginUser(token));
-      if (response.profile.is_admin === 1) {
-        console.log('here')
+      if (response.profile.is_admin) {
         navigate('/admin');
+      } else if (response.profile.is_lecturer) {
+        navigate('/lecturer')
       } else {
         navigate('/');
       }
