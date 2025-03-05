@@ -82,7 +82,7 @@ const Register = () => {
       let response = await registerStudent(dataToSend) as { student: any };
       console.log("Data", response);
       toast.success('Registration was successful');
-      navigate(`/resend-verification?id=${response.student.id}`, { state: response });
+      navigate(`/payment/${response.student.id}`);
     }
     catch (error: any) {
       if (error.message === 'Email already exists') {
