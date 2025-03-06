@@ -170,17 +170,7 @@ const Register = () => {
         color="#C28E27">
 
         <FormWizard.TabContent title="Personal details" icon="ti-user">
-          <div>
-            Please note that this program will cost
-            <ul>
-              <li>
-                <b>$150 (₦225,000) for Basic plan: Three month training</b>
-              </li>
-              <li>
-                <b>$250 (₦375,000) for Premium plan: Basic Training  plus weekly Mentorship Sessions with the Principal</b>
-              </li>
-            </ul>
-          </div>
+
           <div className="row">
 
             <div className="col">
@@ -388,17 +378,7 @@ const Register = () => {
           isValid={checkValidateTab()}
           validationError={errorMessages}
         >
-          <div>
-            Please note that this program will cost
-            <ul>
-              <li>
-                <b>$150 (₦225,000) for Basic plan: Three month training</b>
-              </li>
-              <li>
-                <b>$250 (₦375,000) for Premium plan: Basic Training  plus weekly Mentorship Sessions with the Principal</b>
-              </li>
-            </ul>
-          </div>
+
           <div className="row gap-20">
 
             <div className="col-md-6">
@@ -555,6 +535,7 @@ const Register = () => {
                 <b>$250 (₦375,000) for Premium plan: Basic Training  plus weekly Mentorship Sessions with the Principal</b>
               </li>
             </ul>
+            <p>Submit your registration to get the payment link in your email and you can proceed to make payment on or before 31st March, 2025</p>
           </div>
           <div className="row">
             <label className="text-sm">
