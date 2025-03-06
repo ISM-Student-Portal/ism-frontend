@@ -19,8 +19,10 @@ const Payment = () => {
     const config = {
         reference: (new Date()).getTime().toString(),
         email: student?.email,
+        currency: student?.country === 'Nigeria' ? 'NGN' : 'USD',
         amount: amount * 100, //Amount is in the country's lowest currency. E.g Kobo, so 20000 kobo = N200
         publicKey: process.env.REACT_APP_PAYSTACK_KEY ?? '',
+        subaccount: process.env.REACT_APP_SPLIT_ACCOUNT ?? ''
     };
 
     const initializePayment = usePaystackPayment(config);
@@ -73,18 +75,22 @@ const Payment = () => {
         setPlan(e.target.value);
         if (e.target.value === "basic") {
             if (student.is_alumni) {
-                setAmount(225000 / 2);
+                if (student.country !== 'Nigeria') { setAmount(150 / 2) }
+                else setAmount(225000 / 2);
             }
             else {
-                setAmount(225000);
+                if (student.country !== 'Nigeria') { setAmount(150) }
+                else setAmount(225000);
             }
         }
         else if (e.target.value === "premium") {
             if (student.is_alumni) {
-                setAmount(375000 / 2);
+                if (student.country !== 'Nigeria') { setAmount(250 / 2) }
+                else setAmount(375000 / 2);
             }
             else {
-                setAmount(375000);
+                if (student.country !== 'Nigeria') { setAmount(250) }
+                else setAmount(375000);
             }
         }
         else {
@@ -240,7 +246,7 @@ const Payment = () => {
                                                 <select className="form-control" value={plan} onChange={selectPlan}>
                                                     <option value="">--plan--</option>
                                                     <option value="basic">Basic - $150/₦225,000: Three month training.</option>
-                                                    <option value="premium">Premium - $250/375,000: Basic Training  plus weekly Mentorship Sessions with the Principal</option>
+                                                    <option value="premium">Premium - $250/₦375,000: Basic Training  plus weekly Mentorship Sessions with the Principal</option>
                                                 </select>
                                             </div>
                                         </div>
@@ -250,7 +256,7 @@ const Payment = () => {
                                                 <CurrencyInput
                                                     id="input-example"
                                                     name="input-name"
-                                                    prefix={'₦'}
+                                                    prefix={student.country === 'Nigeria' ? '₦' : '$'}
                                                     placeholder=""
                                                     defaultValue={amount}
                                                     decimalsLimit={2}

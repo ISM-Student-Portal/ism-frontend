@@ -170,6 +170,17 @@ const Register = () => {
         color="#C28E27">
 
         <FormWizard.TabContent title="Personal details" icon="ti-user">
+          <div>
+            Please note that this program will cost
+            <ul>
+              <li>
+                <b>$150 (₦225,000) for Basic plan: Three month training</b>
+              </li>
+              <li>
+                <b>$250 (₦375,000) for Premium plan: Basic Training  plus weekly Mentorship Sessions with the Principal</b>
+              </li>
+            </ul>
+          </div>
           <div className="row">
 
             <div className="col">
@@ -377,6 +388,17 @@ const Register = () => {
           isValid={checkValidateTab()}
           validationError={errorMessages}
         >
+          <div>
+            Please note that this program will cost
+            <ul>
+              <li>
+                <b>$150 (₦225,000) for Basic plan: Three month training</b>
+              </li>
+              <li>
+                <b>$250 (₦375,000) for Premium plan: Basic Training  plus weekly Mentorship Sessions with the Principal</b>
+              </li>
+            </ul>
+          </div>
           <div className="row gap-20">
 
             <div className="col-md-6">
@@ -523,6 +545,17 @@ const Register = () => {
 
         </FormWizard.TabContent>
         <FormWizard.TabContent title="Last step" icon="ti-check">
+          <div>
+            Please note that this program will cost
+            <ul>
+              <li>
+                <b>$150 (₦225,000) for Basic plan: Three month training</b>
+              </li>
+              <li>
+                <b>$250 (₦375,000) for Premium plan: Basic Training  plus weekly Mentorship Sessions with the Principal</b>
+              </li>
+            </ul>
+          </div>
           <div className="row">
             <label className="text-sm">
               Tell us about your salvation experience
