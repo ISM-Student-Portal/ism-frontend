@@ -22,7 +22,7 @@ const Payment = () => {
         currency: student?.country === 'Nigeria' ? 'NGN' : 'USD',
         amount: amount * 100, //Amount is in the country's lowest currency. E.g Kobo, so 20000 kobo = N200
         publicKey: process.env.REACT_APP_PAYSTACK_KEY ?? '',
-        subaccount: process.env.REACT_APP_SPLIT_ACCOUNT ?? ''
+        // subaccount: process.env.REACT_APP_SPLIT_ACCOUNT ?? ''
     };
 
     const initializePayment = usePaystackPayment(config);
