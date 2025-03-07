@@ -23,7 +23,7 @@ const Register = () => {
   const [alumniMatric, setAlumniMatric] = React.useState<string>('');
 
   const [email, setEmail] = React.useState<string>("");
-  const [country, setCountry] = React.useState<{ label: string, value: string }>({ label: 'Nigeria', value: 'NG' });
+  const [country, setCountry] = React.useState<{ label: string, value: string }>();
   const [city, setCity] = React.useState<string>("");
   const [gender, setGender] = React.useState<string>("");
   const [education, setEducation] = React.useState<string>("");
@@ -282,7 +282,6 @@ const Register = () => {
               <PhoneInput
                 international
                 countryCallingCodeEditable={false}
-                defaultCountry="NG"
                 placeholder="Enter phone number"
                 value={phone}
                 //@ts-ignore

@@ -280,12 +280,14 @@ const Payment = () => {
                                             }}>Pay Now</button>
                                         </div>
                                     </div>
-                                    {amount && (
-                                        <div className='card-footer' style={{ color: '#2A2F54' }}>
-                                            <p className=''><br></br>
-                                                For any difficulty in paying, please contact: <b>+234 903 464 6810,</b>  <b>+234 903 095 9735</b></p>
-                                        </div>
-                                    )}
+
+                                    <div className='card-footer' style={{ color: '#2A2F54' }}>
+                                        <p className=''>
+                                            Kindly disregard the currency value as this payment is compatible with your county local currency card, the payment supports all kinds of Mastercard, Visa, Verve, and American Express (Amex) card.
+
+                                            <br></br>The equivalent fee will be deducted in your local currency.<br></br>
+                                            For any difficulty in paying, please contact: <b>+234 903 464 6810,</b>  <b>+234 903 095 9735</b></p>
+                                    </div>
 
                                 </div>
                             </div></div>
