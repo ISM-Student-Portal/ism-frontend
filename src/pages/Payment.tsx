@@ -12,7 +12,8 @@ import { ColorRing } from 'react-loader-spinner';
 const Payment = () => {
     const [student, setStudent] = useState<any>();
     const [amount, setAmount] = useState<any>();
-    const [plan, setPlan] = useState<any>();
+    const [plan, setPlan] = useState<any>(null);
+    const [paymentPlan, setPaymentPlan] = useState<any>(null);
     const [loading, setLoading] = useState(true);
     const { id } = useParams();
 
@@ -96,6 +97,12 @@ const Payment = () => {
         else {
             setAmount(null)
         }
+        setAmount(null);
+        setPaymentPlan(0);
+    }
+
+    const selectPaymentPlan = (e: any) => {
+        setPaymentPlan(e.target.value);
     }
 
     useEffect(() => {
@@ -250,6 +257,19 @@ const Payment = () => {
                                                 </select>
                                             </div>
                                         </div>
+                                        <div className="col-md-6">
+                                            <div className="form-group">
+                                                <label>Payment Plan</label>
+                                                <select className="form-control" value={paymentPlan} onChange={selectPaymentPlan} disabled={plan === null}>
+                                                    <option value="">--Payment-Plan--</option>
+                                                    <option value="full">Full Payment</option>
+                                                    <option value="part">50% Initial Deposit Installment Plan - Balance MUST be made on or before 5th of May, 2025 to avoid removal from the school.</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div className='row'>
                                         <div className="col-md-6">
                                             <div className="form-group">
                                                 <label>{student.is_alumni ? "Discounted Amount (50%)" : "Amount"}</label>
