@@ -2,8 +2,9 @@ import { Navigate, Outlet } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 
 const StudentRoute = () => {
-  const isLoggedIn = useSelector((state: any) => state.auth.authentication);
-  return isLoggedIn ? <Outlet /> : <Navigate to="/login" />;
+  const isLoggedIn = useSelector((state: any) => state.profile.profile);
+  console.log(isLoggedIn, "profile")
+  return isLoggedIn.is_student ? <Outlet /> : <Navigate to="/login" />;
 };
 
 export default StudentRoute;

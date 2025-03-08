@@ -26,27 +26,17 @@ export const MENU: IMenuItem[] = [
   },
 
   {
-    name: i18n.t('menusidebar.label.notifications'),
-    icon: 'fas fa-envelope-square nav-icon',
-    path: '/Notifications',
+    name: 'Lecturers',
+    icon: 'fas fa-chalkboard-teacher nav-icon',
+    path: '/admin/lecturers',
   },
-  {
-    name: i18n.t('menusidebar.label.mainMenu'),
-    icon: 'far fa-caret-square-down nav-icon',
-    children: [
-      {
-        name: i18n.t('menusidebar.label.subMenu'),
-        icon: 'fas fa-hammer nav-icon',
-        path: '/sub-menu-1',
-      },
 
-      {
-        name: i18n.t('menusidebar.label.blank'),
-        icon: 'fas fa-cogs nav-icon',
-        path: '/sub-menu-2',
-      },
-    ],
+  {
+    name: 'Courses',
+    icon: 'fas fa-graduation-cap nav-icon',
+    path: '/admin/courses',
   },
+
 ];
 
 const StyledBrandImage = styled(Image)`

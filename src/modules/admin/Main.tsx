@@ -5,7 +5,7 @@ import { toggleSidebarMenu } from '@app/store/reducers/ui';
 import { addWindowClass, removeWindowClass, sleep } from '@app/utils/helpers';
 import ControlSidebar from '@app/modules/main/control-sidebar/ControlSidebar';
 import Header from '@app/modules/main/header/Header';
-import MenuSidebar from '@app/modules/main/menu-sidebar/MenuSidebar';
+import MenuSidebar from '@app/modules/admin/menu-sidebar/MenuSidebar';
 import Footer from '@app/modules/main/footer/Footer';
 import { Image } from '@profabric/react-components';
 
@@ -96,7 +96,7 @@ const Main = () => {
           id="sidebar-overlay"
           role="presentation"
           onClick={handleToggleMenuSidebar}
-          onKeyDown={() => {}}
+          onKeyDown={() => { }}
         />
       </>
     );
