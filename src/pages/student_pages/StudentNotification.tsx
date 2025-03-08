@@ -9,7 +9,7 @@ interface Stats {
   premiumSub: number
 }
 
-const Dashboard = () => {
+const StudentNotification = () => {
 
   const [stats, setStats] = useState <Stats>();
 
@@ -20,6 +20,7 @@ const Dashboard = () => {
 
     }
     catch(error: any){
+      console.log(error);
     }
   }
 
@@ -43,7 +44,7 @@ const Dashboard = () => {
                 <div className="icon">
                   <i className="ion ion-bag" />
                 </div>
-                <a href="/admin/students" className="small-box-footer">
+                <a href="/" className="small-box-footer">
                   More info <i className="fas fa-arrow-circle-right" />
                 </a>
               </div>
@@ -55,12 +56,12 @@ const Dashboard = () => {
                     {stats?.classes}<sup style={{ fontSize: '20px' }}></sup>
                   </h3>
 
-                  <p>Classes</p>
+                  <p>Courses</p>
                 </div>
                 <div className="icon">
                   <i className="ion ion-stats-bars" />
                 </div>
-                <a href="/admin/classroom" className="small-box-footer">
+                <a href="/" className="small-box-footer">
                   More info <i className="fas fa-arrow-circle-right" />
                 </a>
               </div>
@@ -75,7 +76,7 @@ const Dashboard = () => {
                 <div className="icon">
                   <i className="ion ion-person-add" />
                 </div>
-                <a href="#" className="small-box-footer">
+                <a href="/" className="small-box-footer">
                   More info <i className="fas fa-arrow-circle-right" />
                 </a>
               </div>
@@ -90,7 +91,7 @@ const Dashboard = () => {
                 <div className="icon">
                   <i className="ion ion-pie-graph" />
                 </div>
-                <a href="#" className="small-box-footer">
+                <a href="/" className="small-box-footer">
                   More info <i className="fas fa-arrow-circle-right" />
                 </a>
               </div>
@@ -102,4 +103,4 @@ const Dashboard = () => {
   );
 };
 
-export default Dashboard;
+export default StudentNotification;

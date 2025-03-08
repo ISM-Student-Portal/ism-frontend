@@ -6,9 +6,6 @@ import {
   toggleControlSidebar,
   toggleSidebarMenu,
 } from '@app/store/reducers/ui';
-import MessagesDropdown from '@app/modules/main/header/messages-dropdown/MessagesDropdown';
-import NotificationsDropdown from '@app/modules/main/header/notifications-dropdown/NotificationsDropdown';
-import LanguagesDropdown from '@app/modules/main/header/languages-dropdown/LanguagesDropdown';
 import UserDropdown from '@app/modules/main/header/user-dropdown/UserDropdown';
 
 const Header = () => {
@@ -16,6 +13,8 @@ const Header = () => {
   const dispatch = useDispatch();
   const navbarVariant = useSelector((state: any) => state.ui.navbarVariant);
   const headerBorder = useSelector((state: any) => state.ui.headerBorder);
+  const profile = useSelector((state: any) => state.profile.profile);
+
 
   const handleToggleMenuSidebar = () => {
     dispatch(toggleSidebarMenu());

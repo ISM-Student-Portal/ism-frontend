@@ -36,11 +36,11 @@ const UserDropdown = () => {
   const navigateToProfile = (event: any) => {
     event.preventDefault();
     setDropdownOpen(false);
-    navigate('/profile');
+    profile.is_admin ? navigate('/admin/profile') : navigate('/profile');
   };
 
   return (
-    
+
     <UserMenuDropdown isOpen={dropdownOpen} hideArrow>
       <StyledSmallUserImage
         slot="head"
@@ -63,27 +63,10 @@ const UserDropdown = () => {
           />
           <p>
             {profile?.email}
-            <small>
-              <span>Member since </span>
-              <span>
-                {/* {DateTime.fromISO(user.createdAt).toFormat('dd LLL yyyy')} */}
-              </span>
-            </small>
+
           </p>
         </UserHeader>
-        <UserBody>
-          <div className="row">
-            <div className="col-4 text-center">
-              <Link to="/">{t('header.user.followers')}</Link>
-            </div>
-            <div className="col-4 text-center">
-              <Link to="/">{t('header.user.sales')}</Link>
-            </div>
-            <div className="col-4 text-center">
-              <Link to="/">{t('header.user.friends')}</Link>
-            </div>
-          </div>
-        </UserBody>
+
         <UserFooter>
           <button
             type="button"

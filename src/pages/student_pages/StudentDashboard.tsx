@@ -1,25 +1,27 @@
-import { getDashboardStats } from '@app/services/admin/dashboardService';
+import { getDashboardStats } from '@app/services/student/dashboardService';
 import { ContentHeader } from '@components';
 import { useEffect, useState } from 'react';
 
 interface Stats {
-  students: number,
+  total_assignment: number,
   classes: number,
-  basicSub: number,
-  premiumSub: number
+  assign_sub: number,
+  aggregate_grade: number,
+  percent_grade: number
 }
 
-const Dashboard = () => {
+const StudentDashboard = () => {
 
-  const [stats, setStats] = useState <Stats>();
+  const [stats, setStats] = useState<Stats>();
 
   const getStats = async () => {
-    try{
-    let stats = await getDashboardStats();
-    setStats(stats.stats);
+    try {
+      let stats = await getDashboardStats();
+      setStats(stats.stats);
 
     }
-    catch(error: any){
+    catch (error: any) {
+      console.log(error);
     }
   }
 
@@ -28,7 +30,6 @@ const Dashboard = () => {
   }, []);
   return (
     <div>
-      <ContentHeader title="Dashboard" />
 
       <section className="content">
         <div className="container-fluid">
@@ -36,14 +37,14 @@ const Dashboard = () => {
             <div className="col-lg-3 col-6">
               <div className="small-box bg-info">
                 <div className="inner">
-                  <h3>{stats?.students}</h3>
+                  <h3>{stats?.total_assignment}</h3>
 
-                  <p>Students</p>
+                  <p>Total Assignments</p>
                 </div>
                 <div className="icon">
                   <i className="ion ion-bag" />
                 </div>
-                <a href="/admin/students" className="small-box-footer">
+                <a href="/assignments" className="small-box-footer">
                   More info <i className="fas fa-arrow-circle-right" />
                 </a>
               </div>
@@ -55,12 +56,12 @@ const Dashboard = () => {
                     {stats?.classes}<sup style={{ fontSize: '20px' }}></sup>
                   </h3>
 
-                  <p>Classes</p>
+                  <p>Classes Available</p>
                 </div>
                 <div className="icon">
                   <i className="ion ion-stats-bars" />
                 </div>
-                <a href="/admin/classroom" className="small-box-footer">
+                <a href="/classroom" className="small-box-footer">
                   More info <i className="fas fa-arrow-circle-right" />
                 </a>
               </div>
@@ -68,19 +69,51 @@ const Dashboard = () => {
             <div className="col-lg-3 col-6">
               <div className="small-box bg-warning">
                 <div className="inner">
-                  <h3>{stats?.basicSub}</h3>
+                  <h3>{stats?.assign_sub}</h3>
 
-                  <p>Basic Subscription</p>
+                  <p>Assignments Completed</p>
                 </div>
                 <div className="icon">
                   <i className="ion ion-person-add" />
                 </div>
-                <a href="#" className="small-box-footer">
+                <a href="/" className="small-box-footer">
                   More info <i className="fas fa-arrow-circle-right" />
                 </a>
               </div>
             </div>
+
             <div className="col-lg-3 col-6">
+              <div className="small-box bg-danger">
+                <div className="inner">
+                  <h3>{stats?.aggregate_grade}</h3>
+
+                  <p>Aggregate Grade</p>
+                </div>
+                <div className="icon">
+                  <i className="ion ion-person-add" />
+                </div>
+                <a href="/" className="small-box-footer">
+                  More info <i className="fas fa-arrow-circle-right" />
+                </a>
+              </div>
+            </div>
+
+            <div className="col-lg-3 col-6">
+              <div className="small-box bg-secondary">
+                <div className="inner">
+                  <h3>{stats?.percent_grade}%</h3>
+
+                  <p>Percent Grade</p>
+                </div>
+                <div className="icon">
+                  <i className="ion ion-person-add" />
+                </div>
+                <a href="/" className="small-box-footer">
+                  More info <i className="fas fa-arrow-circle-right" />
+                </a>
+              </div>
+            </div>
+            {/* <div className="col-lg-3 col-6">
               <div className="small-box bg-danger">
                 <div className="inner">
                   <h3>{stats?.premiumSub}</h3>
@@ -90,11 +123,11 @@ const Dashboard = () => {
                 <div className="icon">
                   <i className="ion ion-pie-graph" />
                 </div>
-                <a href="#" className="small-box-footer">
+                <a href="/" className="small-box-footer">
                   More info <i className="fas fa-arrow-circle-right" />
                 </a>
               </div>
-            </div>
+            </div> */}
           </div>
         </div>
       </section>
@@ -102,4 +135,4 @@ const Dashboard = () => {
   );
 };
 
-export default Dashboard;
+export default StudentDashboard;

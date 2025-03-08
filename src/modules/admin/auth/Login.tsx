@@ -32,16 +32,22 @@ const Login = () => {
     try {
       setAuthLoading(true);
       const response: any = await authLogin(email, password);
-      console.log(response, 'beforestore');
-      dispatch(setAuthentication(response.authentication));
-      dispatch(setProfile(response.profile));
+      const authStatus: any = await getAuthStatus();
+      let profile: any = await getProfileStatus();
+
+      if (authStatus) {
+        dispatch(setAuthentication(authStatus));
+        dispatch(setProfile(profile));
+      }
+      // console.log(response);
+
       toast.success('Login is Successful!');
       setAuthLoading(false);
-      console.log(response);
-      if (response.profile.is_admin) {
-        navigate('/admin');
-      } else if (response.profile.is_lecturer) {
-        navigate('/lecturer')
+      // dispatch(loginUser(token));
+      if (response.profile.first_login === 1) {
+        navigate('/recover-password');
+        window.location.reload();
+
       } else {
         if (response.profile.is_admin === 1) {
           console.log('here')
@@ -103,7 +109,7 @@ const Login = () => {
           <div className="card card-outline card-warning">
             <div className="card-header text-center">
               <span className='px-1'> <Image
-                src={"./img/logo1.png"}
+                src={"../img/logo1.png"}
 
                 alt="ISM Logo"
                 height={40}
@@ -127,7 +133,7 @@ const Login = () => {
                       id="email"
                       name="email"
                       type="email"
-                      placeholder="Email"
+                      placeholder="Email or Username"
                       onChange={handleChange}
                       value={values.email}
                       isValid={touched.email && !errors.email}
@@ -192,10 +198,10 @@ const Login = () => {
                     >
                       {t('login.button.signIn.label')}
                     </Button>
-
+                    
                   </div>
                   <div className="col-12">
-                    <ReCAPTCHA
+                  <ReCAPTCHA
                       sitekey="6Ld4lKoqAAAAAJKSGNRE-FL0W1gPnKH_LMQXCpGG"
                       onChange={onChange}
                     />

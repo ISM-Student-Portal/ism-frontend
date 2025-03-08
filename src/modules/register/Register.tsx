@@ -23,7 +23,7 @@ const Register = () => {
   const [alumniMatric, setAlumniMatric] = React.useState<string>('');
 
   const [email, setEmail] = React.useState<string>("");
-  const [country, setCountry] = React.useState<{ label: string, value: string }>({ label: 'Nigeria', value: 'NG' });
+  const [country, setCountry] = React.useState<{ label: string, value: string }>();
   const [city, setCity] = React.useState<string>("");
   const [gender, setGender] = React.useState<string>("");
   const [education, setEducation] = React.useState<string>("");
@@ -82,7 +82,7 @@ const Register = () => {
       let response = await registerStudent(dataToSend) as { student: any };
       console.log("Data", response);
       toast.success('Registration was successful');
-      navigate(`/resend-verification?id=${response.student.id}`, { state: response });
+      navigate(`/payment/${response.student.id}`);
     }
     catch (error: any) {
       if (error.message === 'Email already exists') {
@@ -281,7 +281,6 @@ const Register = () => {
               <PhoneInput
                 international
                 countryCallingCodeEditable={false}
-                defaultCountry="NG"
                 placeholder="Enter phone number"
                 value={phone}
                 //@ts-ignore
@@ -523,6 +522,18 @@ const Register = () => {
 
         </FormWizard.TabContent>
         <FormWizard.TabContent title="Last step" icon="ti-check">
+          <div>
+            Please note that this program will cost
+            <ul>
+              <li>
+                <b>$150 (₦225,000) for Basic plan: Three month training</b>
+              </li>
+              <li>
+                <b>$250 (₦375,000) for Premium plan: Basic Training  plus weekly Mentorship Sessions with the Principal</b>
+              </li>
+            </ul>
+            <p>Submit your registration to get the payment link in your email and you can proceed to make payment on or before 31st March, 2025</p>
+          </div>
           <div className="row">
             <label className="text-sm">
               Tell us about your salvation experience

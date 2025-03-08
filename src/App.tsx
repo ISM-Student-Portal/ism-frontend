@@ -13,18 +13,12 @@ import { calculateWindowSize } from '@app/utils/helpers';
 import { useDispatch, useSelector } from 'react-redux';
 import { setWindowSize } from '@app/store/reducers/ui';
 import ReactGA from 'react-ga4';
-
-import Dashboard from '@pages/Dashboard';
-import Blank from '@pages/Blank';
-import SubMenu from '@pages/SubMenu';
-import Profile from '@pages/profile/Profile';
-
+import { LocalizationProvider } from '@mui/x-date-pickers';
+import { AdapterMoment } from '@mui/x-date-pickers/AdapterMoment';
 import PublicRoute from './routes/PublicRoute';
 import { setAuthentication } from './store/reducers/auth';
 import {
-  GoogleProvider,
   getAuthStatus,
-  getFacebookLoginStatus,
   getProfileStatus,
 } from './utils/oidc-providers';
 import { Spinner } from './styles/common';
@@ -47,8 +41,6 @@ const App = () => {
   const checkSession = async () => {
     try {
       let responses: any = await Promise.all([
-        getFacebookLoginStatus(),
-        GoogleProvider.getUser(),
         getAuthStatus(),
       ]);
       let profile: any = await getProfileStatus();
@@ -125,17 +117,16 @@ const App = () => {
             <Route path="admin/profile" element={<Profile />} />
             <Route path="/admin/" element={<Dashboard />} />
           </Route>
-        </Route>
 
-        <Route path="/lecturer" element={<LecturerRoute />}>
-          <Route path="/lecturer" element={<LecturerMain />}>
-            <Route path="lecturer/sub-menu-2" element={<Blank />} />
-            <Route path="lecturer/sub-menu-1" element={<SubMenu />} />
-            <Route path="/lecturer/students" element={<Students />} />
-            <Route path="lecturer/profile" element={<Profile />} />
-            <Route path="/lecturer/" element={<Dashboard />} />
+          <Route path="/lecturer" element={<LecturerRoute />}>
+            <Route path="/lecturer" element={<LecturerMain />}>
+              <Route path="lecturer/sub-menu-2" element={<Blank />} />
+              <Route path="lecturer/sub-menu-1" element={<SubMenu />} />
+              <Route path="/lecturer/students" element={<Students />} />
+              <Route path="lecturer/profile" element={<Profile />} />
+              <Route path="/lecturer/" element={<Dashboard />} />
+            </Route>
           </Route>
-        </Route>
 
 
       </Routes>

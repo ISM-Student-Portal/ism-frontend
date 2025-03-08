@@ -1,5 +1,5 @@
 import { useState, useEffect, useCallback } from 'react';
-import { Outlet } from 'react-router-dom';
+import { Outlet, useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { toggleSidebarMenu } from '@app/store/reducers/ui';
 import { addWindowClass, removeWindowClass, sleep } from '@app/utils/helpers';
@@ -8,6 +8,8 @@ import Header from '@app/modules/main/header/Header';
 import MenuSidebar from '@app/modules/main/menu-sidebar/MenuSidebar';
 import Footer from '@app/modules/main/footer/Footer';
 import { Image } from '@profabric/react-components';
+import useIdle from '../../utils/useIdleTimeout';
+import { getProfileStatus } from '@app/utils/oidc-providers';
 
 const Main = () => {
   const dispatch = useDispatch();
@@ -17,9 +19,24 @@ const Main = () => {
   const controlSidebarCollapsed = useSelector(
     (state: any) => state.ui.controlSidebarCollapsed
   );
+  const navigate = useNavigate();
+
+  const profile = useSelector((state: any) => state.profile.profile);
+
+
+  const handleIdle = () => {
+    console.log(true);
+  }
+  if (profile.first_login === 1) {
+    navigate('/recover-password');
+
+  }
+
   const screenSize = useSelector((state: any) => state.ui.screenSize);
   const authentication = useSelector((state: any) => state.auth.authentication);
   const [isAppLoaded, setIsAppLoaded] = useState(false);
+
+  const { idleTimer } = useIdle({ onIdle: handleIdle, idleTime: 300 })
 
   const handleToggleMenuSidebar = () => {
     dispatch(toggleSidebarMenu());
@@ -96,7 +113,7 @@ const Main = () => {
           id="sidebar-overlay"
           role="presentation"
           onClick={handleToggleMenuSidebar}
-          onKeyDown={() => {}}
+          onKeyDown={() => { }}
         />
       </>
     );

@@ -1,30 +1,30 @@
-import { toast } from 'react-toastify';
 import { Link, useNavigate } from 'react-router-dom';
+import { toast } from 'react-toastify';
 import { useTranslation } from 'react-i18next';
 import { setWindowClass } from '@app/utils/helpers';
-import { useFormik } from 'formik';
 import * as Yup from 'yup';
+import { useFormik } from 'formik';
 import { Form, InputGroup } from 'react-bootstrap';
-import { Button } from '@app/styles/common';
-import { Image } from '@profabric/react-components';
-import { changepass } from '@app/services/authServices';
+import { Button } from '@profabric/react-components';
+import { useSearchParams } from 'react-router-dom';
 import { useState } from 'react';
-import ReCAPTCHA from 'react-google-recaptcha';
+import { resetPassword } from '@app/services/authServices';
 
-
-const RecoverPassword = () => {
+const ResetPassword = () => {
+  const [t] = useTranslation();
+  const [params] = useSearchParams();
+  const [showPassword, setShowPassword] = useState(false);
   const [isAuthLoading, setAuthLoading] = useState(false);
   const navigate = useNavigate();
-  const [showPassword, setShowPassword] = useState(false);
+  const [data, setData] = useState(Object.fromEntries([...params]));
 
-
-
-  const [t] = useTranslation();
-  const changePassword = async (password: any) => {
+  const resetPass = async (password: string) => {
     setAuthLoading(true);
     try {
-      let res = await changepass({
+      let res = await resetPassword({
+        email: data.email,
         password: password,
+        token: data.token
       });
       if (res.status === 'success') {
         toast.success('password changed successfully');
@@ -42,15 +42,14 @@ const RecoverPassword = () => {
 
     setAuthLoading(false);
 
-  }
-  const onChange = () => {
-    console.log('Key is working')
-  }
 
+  }
   const { handleChange, values, handleSubmit, touched, errors } = useFormik({
     initialValues: {
       password: '',
       confirmPassword: '',
+
+
     },
     validationSchema: Yup.object({
       password: Yup.string()
@@ -61,36 +60,32 @@ const RecoverPassword = () => {
         .min(5, 'Must be 5 characters or more')
         .max(30, 'Must be 30 characters or less')
         .required('Required'),
+      // email: Yup.string().email('Invalid email address').required('Required'),
     }),
     onSubmit: (values) => {
-      changePassword(values.password);
+      resetPass(values.password);
       console.log('values', values);
     },
   });
 
   setWindowClass('hold-transition login-page');
+
   return (
     <div className="login-box">
       <div className="card card-outline card-warning">
         <div className="card-header text-center">
-          <span className='px-1'> <Image
-            src={"./img/logo1.png"}
-
-            alt="AdminLTELogo"
-            height={40}
-            width={30}
-          /></span>
+          <div className="card-header text-center">
 
 
-          <Link to="/" className="h1">
+            <Link to="/" className="h1">
 
-
-            <b>ISM</b>
-            <span> Portal</span>
-          </Link>
+              <b>ISM</b>
+              <span> Portal</span>
+            </Link>
+          </div>
         </div>
         <div className="card-body">
-          <p className="login-box-msg">You are only one step away. Kindly change your password</p>
+          <p className="login-box-msg">Enter new password</p>
           <form onSubmit={handleSubmit}>
             <div className="mb-3">
               <InputGroup className="mb-3">
@@ -104,6 +99,7 @@ const RecoverPassword = () => {
                   isValid={touched.password && !errors.password}
                   isInvalid={touched.password && !!errors.password}
                 />
+
                 {touched.password && errors.password ? (
                   <Form.Control.Feedback type="invalid">
                     {errors.password}
@@ -117,21 +113,20 @@ const RecoverPassword = () => {
                 )}
               </InputGroup>
             </div>
+
             <div className="mb-3">
               <InputGroup className="mb-3">
                 <Form.Control
                   id="confirmPassword"
                   name="confirmPassword"
                   type={showPassword ? "text" : "password"}
-
-                  placeholder="Confirm password"
+                  placeholder="Repeat Password"
                   onChange={handleChange}
                   value={values.confirmPassword}
                   isValid={touched.confirmPassword && !errors.confirmPassword}
-                  isInvalid={
-                    touched.confirmPassword && !!errors.confirmPassword
-                  }
+                  isInvalid={touched.confirmPassword && !!errors.confirmPassword}
                 />
+
                 {touched.confirmPassword && errors.confirmPassword ? (
                   <Form.Control.Feedback type="invalid">
                     {errors.confirmPassword}
@@ -146,27 +141,21 @@ const RecoverPassword = () => {
               </InputGroup>
             </div>
             <div className="row">
-              <div className="col-12">
-                <Button
-                  disabled={isAuthLoading}
+              <Button
+                disabled={isAuthLoading}
+                onClick={handleSubmit as any}
+                variant='warning'
 
-                  onClick={handleSubmit as any}>{t('recover.changePassword')}</Button>
-              </div>
-            </div>
-            <div className="col-12">
-              <ReCAPTCHA
-                sitekey="6Ld4lKoqAAAAAJKSGNRE-FL0W1gPnKH_LMQXCpGG"
-                onChange={onChange}
-              />
+              >
+                Reset Password
+              </Button>
             </div>
           </form>
-          <p className="mt-3 mb-1">
-            <Link to="/login">{t('login.button.signIn.label')}</Link>
-          </p>
+
         </div>
       </div>
     </div>
   );
 };
 
-export default RecoverPassword;
+export default ResetPassword;

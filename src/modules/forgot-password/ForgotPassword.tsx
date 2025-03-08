@@ -1,4 +1,4 @@
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import { useTranslation } from 'react-i18next';
 import { setWindowClass } from '@app/utils/helpers';
@@ -6,9 +6,42 @@ import * as Yup from 'yup';
 import { useFormik } from 'formik';
 import { Form, InputGroup } from 'react-bootstrap';
 import { Button } from '@profabric/react-components';
+import { forgotPasswordAction } from '@app/services/authServices';
+import { useState } from 'react';
+import ReCAPTCHA from 'react-google-recaptcha';
 
 const ForgotPassword = () => {
   const [t] = useTranslation();
+  const [isAuthLoading, setAuthLoading] = useState(false);
+  const [emailSent, setEmailSent] = useState(false);
+  const navigate = useNavigate();
+
+
+
+  const forgotPass = async (email: string) => {
+    setAuthLoading(true);
+    try {
+      let res = await forgotPasswordAction({
+        email: email
+      });
+      if (res.status === 'success') {
+        toast.success('Check your mail for Instructions');
+        setEmailSent(true);
+      }
+      else {
+        toast.error('An error occurred ');
+
+      }
+
+    }
+    catch (error) {
+      toast.error("unable to complete")
+    }
+
+    setAuthLoading(false);
+
+
+  }
 
   const { handleChange, values, handleSubmit, touched, errors } = useFormik({
     initialValues: {
@@ -18,56 +51,87 @@ const ForgotPassword = () => {
       email: Yup.string().email('Invalid email address').required('Required'),
     }),
     onSubmit: (values) => {
-      toast.warn('Not yet functional');
+      forgotPass(values.email);
       console.log('values', values);
     },
   });
+  const onChange = () => {
+    console.log('Key is working')
+  }
 
   setWindowClass('hold-transition login-page');
 
   return (
     <div className="login-box">
-      <div className="card card-outline card-primary">
+      <div className="card card-outline card-warning">
         <div className="card-header text-center">
-          <Link to="/" className="h1">
-            <b>Admin</b>
-            <span>LTE</span>
-          </Link>
+          <div className="card-header text-center">
+
+
+            <Link to="/" className="h1">
+
+              <b>ISM</b>
+              <span> Portal</span>
+            </Link>
+          </div>
         </div>
         <div className="card-body">
-          <p className="login-box-msg">{t('recover.forgotYourPassword')}</p>
-          <form onSubmit={handleSubmit}>
-            <div className="mb-3">
-              <InputGroup className="mb-3">
-                <Form.Control
-                  id="email"
-                  name="email"
-                  type="email"
-                  placeholder="Email"
-                  onChange={handleChange}
-                  value={values.email}
-                  isValid={touched.email && !errors.email}
-                  isInvalid={touched.email && !!errors.email}
-                />
-                {touched.email && errors.email ? (
-                  <Form.Control.Feedback type="invalid">
-                    {errors.email}
-                  </Form.Control.Feedback>
-                ) : (
-                  <InputGroup.Append>
-                    <InputGroup.Text>
-                      <i className="fas fa-envelope" />
-                    </InputGroup.Text>
-                  </InputGroup.Append>
-                )}
-              </InputGroup>
+          {emailSent ? (
+            <div>
+              <p className="login-box-msg">The instructions for password reset has been sent to your mail. Kindly go and check</p>
+
             </div>
-            <div className="row">
-              <div className="col-12">
-                <Button>{t('recover.requestNewPassword')}</Button>
-              </div>
+          ) : (
+            <div>
+              <p className="login-box-msg">{t('recover.forgotYourPassword')}</p>
+              <form onSubmit={handleSubmit}>
+                <div className="mb-3">
+                  <InputGroup className="mb-3">
+                    <Form.Control
+                      id="email"
+                      name="email"
+                      type="email"
+                      placeholder="Email"
+                      onChange={handleChange}
+                      value={values.email}
+                      isValid={touched.email && !errors.email}
+                      isInvalid={touched.email && !!errors.email}
+                    />
+                    {touched.email && errors.email ? (
+                      <Form.Control.Feedback type="invalid">
+                        {errors.email}
+                      </Form.Control.Feedback>
+                    ) : (
+                      <InputGroup.Append>
+                        <InputGroup.Text>
+                          <i className="fas fa-envelope" />
+                        </InputGroup.Text>
+                      </InputGroup.Append>
+                    )}
+                  </InputGroup>
+                </div>
+                <div className="row">
+                  <Button
+
+                    onClick={handleSubmit as any}
+                    variant='warning'
+                    loading={isAuthLoading}
+
+                  >
+                    {t('recover.requestNewPassword')}
+                  </Button>
+
+                  <div className="col-12">
+                    <ReCAPTCHA
+                      sitekey="6Ld4lKoqAAAAAJKSGNRE-FL0W1gPnKH_LMQXCpGG"
+                      onChange={onChange}
+                    />
+                  </div>
+                </div>
+              </form>
             </div>
-          </form>
+          )}
+
           <p className="mt-3 mb-1">
             <Link to="/login">{t('login.button.signIn.label')}</Link>
           </p>

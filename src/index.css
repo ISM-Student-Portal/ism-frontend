@@ -20,3 +20,10 @@
   outline: none;
   cursor: pointer;
 }
+
+.auth-bg {
+  background: url('./img/logo1.png');
+  background-size: 35%;
+  background-position: center;
+  background-repeat: no-repeat;
+}

@@ -3,7 +3,6 @@ import { Link } from 'react-router-dom';
 import { MenuItem } from '@components';
 import { Image } from '@profabric/react-components';
 import styled from 'styled-components';
-import { SidebarSearch } from '@app/components/sidebar-search/SidebarSearch';
 import i18n from '@app/utils/i18n';
 
 export interface IMenuItem {
@@ -26,27 +25,64 @@ export const MENU: IMenuItem[] = [
   },
 
   {
-    name: i18n.t('menusidebar.label.notifications'),
-    icon: 'fas fa-envelope-square nav-icon',
-    path: '/Notifications',
+    name: 'Classrooms',
+    icon: 'fas fa-graduation-cap nav-icon',
+    path: '/admin/classroom',
   },
   {
-    name: i18n.t('menusidebar.label.mainMenu'),
-    icon: 'far fa-caret-square-down nav-icon',
-    children: [
-      {
-        name: i18n.t('menusidebar.label.subMenu'),
-        icon: 'fas fa-hammer nav-icon',
-        path: '/sub-menu-1',
-      },
-
-      {
-        name: i18n.t('menusidebar.label.blank'),
-        icon: 'fas fa-cogs nav-icon',
-        path: '/sub-menu-2',
-      },
-    ],
+    name: 'Assignments',
+    icon: 'fas fa-briefcase nav-icon',
+    path: '/admin/assignment',
   },
+  {
+    name: 'Admins',
+    icon: 'fas fa-user-shield nav-icon',
+    path: '/admin/admins',
+  },
+  {
+    name: 'Report',
+    icon: 'fas fa-user-shield nav-icon',
+    path: '/admin/attendance-report',
+  },
+
+
+  // {
+  //   name: i18n.t('menusidebar.label.notifications'),
+  //   icon: 'fas fa-envelope-square nav-icon',
+  //   path: '/Notifications',
+  // },
+
+];
+
+export const STUDENT_MENU: IMenuItem[] = [
+  {
+    name: 'Dashboard',
+    icon: 'fas fa-tachometer-alt nav-icon',
+    path: '/',
+  },
+  {
+    name: 'Assignments',
+    icon: 'fas fa-briefcase nav-icon',
+    path: '/assignments',
+  },
+
+  {
+    name: 'Classrooms',
+    icon: 'fas fa-graduation-cap nav-icon',
+    path: '/classroom',
+  },
+  // {
+  //   name: 'Submissions',
+  //   icon: 'fas fa-plane nav-icon',
+  //   path: '/submissions',
+  // },
+
+  // {
+  //   name: i18n.t('menusidebar.label.notifications'),
+  //   icon: 'fas fa-envelope-square nav-icon',
+  //   path: '/notifications',
+  // },
+
 ];
 
 const StyledBrandImage = styled(Image)`
@@ -66,13 +102,21 @@ const MenuSidebar = () => {
   const authentication = useSelector((state: any) => state.auth.authentication);
   const profile = useSelector((state: any) => state.profile.profile);
 
+  if (profile?.profile?.subscription === 'premium' && STUDENT_MENU.length < 4) {
+    STUDENT_MENU.push({
+      name: 'Mentorship',
+      icon: 'fas fa-chalkboard-teacher nav-icon',
+      path: '/mentorship',
+    })
+  }
+
   const sidebarSkin = useSelector((state: any) => state.ui.sidebarSkin);
   const menuItemFlat = useSelector((state: any) => state.ui.menuItemFlat);
   const menuChildIndent = useSelector((state: any) => state.ui.menuChildIndent);
 
   return (
     <aside className={`main-sidebar elevation-4 ${sidebarSkin}`}>
-      <Link to="/" className="brand-link">
+      <Link to={profile.is_admin ? "/admin" : "/"} className="brand-link">
         <StyledBrandImage
           src="/img/logo1.png"
           alt="ISM Logo"
@@ -86,7 +130,7 @@ const MenuSidebar = () => {
         <div className="user-panel mt-3 pb-3 mb-3 d-flex">
           <div className="image">
             <StyledUserImage
-              src={profile?.picture}
+              src={profile?.profile?.profile_pix_url}
               fallbackSrc="/img/default-profile.png"
               alt="User"
               width={34}
@@ -95,7 +139,7 @@ const MenuSidebar = () => {
             />
           </div>
           <div className="info">
-            <Link to="/profile" className="d-block">
+            <Link to={profile.is_admin ? '/admin/profile' : '/profile'} className="d-block">
               {profile?.email}
             </Link>
           </div>
@@ -107,12 +151,25 @@ const MenuSidebar = () => {
               }${menuChildIndent ? ' nav-child-indent' : ''}`}
             role="menu"
           >
-            {MENU.map((menuItem: IMenuItem) => (
+            {profile.is_admin ? (MENU.map((menuItem: IMenuItem) => (
               <MenuItem
                 key={menuItem.name + menuItem.path}
                 menuItem={menuItem}
               />
-            ))}
+            ))) : (
+              STUDENT_MENU.map((menuItem: IMenuItem) => (
+                <MenuItem
+                  key={menuItem.name + menuItem.path}
+                  menuItem={menuItem}
+                />
+              ))
+            )}
+            {/* {!profile.is_admin && STUDENT_MENU.map((menuItem: IMenuItem) => (
+              <MenuItem
+                key={menuItem.name + menuItem.path}
+                menuItem={menuItem}
+              />
+            ))} */}
           </ul>
         </nav>
       </div>
