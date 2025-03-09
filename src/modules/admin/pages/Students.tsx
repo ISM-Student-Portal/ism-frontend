@@ -1,9 +1,9 @@
 import Footer from '@app/modules/main/footer/Footer';
 import { ContentHeader } from '@components';
-import DataTable from '../components/data-table/DataTableBase'
+import DataTable from '../../../components/data-table/DataTableBase'
 import Button from '@mui/material/Button';
 import Modal from '@mui/material/Modal';
-import React, { useEffect } from 'react';
+import React, { useEffect, useMemo } from 'react';
 import Box from '@mui/material/Box';
 import Container from '@mui/material/Container'
 import TextField from '@mui/material/TextField';
@@ -12,16 +12,16 @@ import AddIcon from '@mui/icons-material/Add'
 import UploadIcon from '@mui/icons-material/Upload'
 
 import { toast } from 'react-toastify';
-import axios from '../utils/axios';
+import axios from '../../../utils/axios';
 import memoize from 'memoize-one';
 
 import { ChangeEvent, useState } from "react";
-import { createStudent, updateStudentStatus, deleteStudent, fetchAllAdmins, createAdmin } from '@app/services/admin/studentServices';
+import { fetchAllStudents, createStudent, updateStudentStatus, deleteStudent, changeStudentPass } from '@app/services/admin/studentServices';
 import { Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, FormControlLabel, FormGroup, Switch } from '@mui/material';
-import { useSelector } from 'react-redux';
+import FilterComponent from '@app/components/data-table/FilterComponent';
 
 
-const Admins = () => {
+const Students = () => {
 
   const [open, setOpen] = React.useState(false);
   const [pending, setpending] = React.useState(true);
@@ -31,6 +31,11 @@ const Admins = () => {
   const [openDelete, setOpenDelete] = React.useState(false);
   const [editStudentStatus, setEditStudentStatus] = React.useState(false);
   const [editStudentSub, setEditStudentSub] = React.useState(false);
+  const [filterText, setFilterText] = React.useState("");
+  const [resetPaginationToggle, setResetPaginationToggle] = React.useState(
+    false
+  );
+
 
 
   const [selectedStudent, setSelectedStudent] = React.useState<any>();
@@ -40,11 +45,9 @@ const Admins = () => {
   const [email, setEmail] = React.useState('');
   const [firstName, setFirstName] = React.useState('');
   const [lastName, setLastName] = React.useState('');
+  const [regNo, setRegNo] = React.useState('');
   const [phoneNumber, setPhoneNumber] = React.useState('');
   const [rows, setRows] = React.useState([]);
-
-  const profile = useSelector((state: any) => state.profile.profile);
-
 
   const handleOpen = () => {
     setOpen(true);
@@ -60,6 +63,30 @@ const Admins = () => {
     setOpenEdit(false);
   };
 
+  const filteredItems = rows.filter(
+    (item: any) =>
+      JSON.stringify(item)
+        .toLowerCase()
+        .indexOf(filterText.toLowerCase()) !== -1
+  );
+
+  const subHeaderComponent = useMemo(() => {
+    const handleClear = () => {
+      if (filterText) {
+        setResetPaginationToggle(!resetPaginationToggle);
+        setFilterText("");
+      }
+    };
+
+    return (
+      <FilterComponent
+        onFilter={(e: any) => setFilterText(e.target.value)}
+        onClear={handleClear}
+        filterText={filterText}
+      />
+    );
+  }, [filterText, resetPaginationToggle]);
+
   const handleOpenDelete = () => {
     setOpenDelete(true);
   };
@@ -73,9 +100,12 @@ const Admins = () => {
   const handleCloseAdd = () => {
     setOpenAdd(false);
   }
-  const handleButtonClick = (type: any, student: any) => {
+  const handleButtonClick = async (type: any, student: any) => {
     setSelectedStudent(student);
     if (type === 'edit') {
+      // await changeStudentPass(student.id);
+      // toast.success('Student updated Successfully!');
+
       setEditStudentStatus(student.is_admin);
       setEditStudentSub(student.profile.subscription === 'premium')
       handleOpenEdit();
@@ -90,7 +120,7 @@ const Admins = () => {
     if (res.status === 'success') {
       toast.success('Student updated Successfully!');
       handleCloseEdit();
-      getAdmins();
+      getStudents();
     }
     setLoading(false);
   }
@@ -101,13 +131,13 @@ const Admins = () => {
     if (res.status === 'success') {
       toast.success('Student Deleted Successfully!');
       handleCloseDelete();
-      getAdmins();
+      getStudents();
     }
     setLoading(false);
   }
 
-  const getAdmins = async () => {
-    const students = await fetchAllAdmins();
+  const getStudents = async () => {
+    const students = await fetchAllStudents();
     setRows(students.students);
     setpending(false);
   }
@@ -118,13 +148,14 @@ const Admins = () => {
       first_name: firstName,
       last_name: lastName,
       email: email,
-      phone_number: phoneNumber
+      phone_number: phoneNumber,
+      reg_no: regNo
     }
-    const student = await createAdmin(data);
+    const student = await createStudent(data);
     if (student.message === 'successful') {
-      toast.success('Admin Created Successfully!');
+      toast.success('Student Created Successfully!');
       handleCloseAdd();
-      getAdmins();
+      getStudents();
       setLoading(false);
     }
     else {
@@ -135,9 +166,7 @@ const Admins = () => {
 
 
   }
-  const handleChangeStat = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setEditStudentStatus(event.target.checked);
-  };
+
 
   const handleChangeSub = (event: React.ChangeEvent<HTMLInputElement>) => {
     setEditStudentSub(event.target.checked);
@@ -167,7 +196,7 @@ const Admins = () => {
     });
     if (res) {
       toast.success('Upload done');
-      getAdmins();
+      await getStudents();
       handleClose();
     }
     setLoading(false);
@@ -189,10 +218,13 @@ const Admins = () => {
     pb: 3,
   };
   const columns = memoize(clickHandler => [
-    { name: 'First Name', selector: (row: any) => row.profile?.first_name, sortable: true, reorder: true },
-    { name: 'Last Name', selector: (row: any) => row.profile?.last_name, sortable: true, reorder: true },
-    { name: 'Email', selector: (row: any) => row.email },
-    { name: 'Phone', selector: (row: any) => row.profile?.phone },
+    { name: 'First Name', selector: (row: any) => row.first_name, sortable: true, sortFunction: caseInsensitiveFirstSort },
+    { name: 'Last Name', selector: (row: any) => row.last_name, sortable: true, sortFunction: caseInsensitiveLastSort },
+    { name: 'Email', selector: (row: any) => row.email, sortable: true, sortFunction: caseInsensitiveSort },
+    { name: 'Country', selector: (row: any) => row.country, sortable: true, sortFunction: caseInsensitiveSort },
+    { name: 'Phone', selector: (row: any) => row.phone, sortable: true },
+    { name: 'Subscription', selector: (row: any) => row.plan, sortable: true },
+    { name: 'Reg No', selector: (row: any) => row.reg_no, grow: 1, sortable: true, sortFunction: caseInsensitiveRegSort },
     { name: 'Status', selector: (row: any) => row.is_active ? "Active" : "Inactive", grow: 1 },
 
 
@@ -200,7 +232,7 @@ const Admins = () => {
     {
       name: 'Action',
 
-      cell: (row: any) => profile.is_superadmin ? (<div><button className='btn btn-primary btn-sm' onClick={() => { clickHandler('edit', row) }}>Edit</button> <button className='btn btn-danger btn-sm' onClick={() => { clickHandler('delete', row) }}>Deact</button></div>) : (<span></span>),
+      cell: (row: any) => (<div><button className='btn btn-primary btn-sm' onClick={() => { clickHandler('edit', row) }}>Edit</button> <button className='btn btn-danger btn-sm' onClick={() => { clickHandler('delete', row) }}>Deact</button></div>),
       ignoreRowClick: true,
       allowOverflow: true,
       button: true,
@@ -210,20 +242,107 @@ const Admins = () => {
 
   ]);
 
+  const caseInsensitiveSort = (rowA: any, rowB: any) => {
+    const a = rowA.email?.toLowerCase();
+    const b = rowB.email?.toLowerCase();
+
+    if (a > b) {
+      return 1;
+    }
+
+    if (b > a) {
+      return -1;
+    }
+
+    return 0;
+  };
+  const caseInsensitiveRegSort = (rowA: any, rowB: any) => {
+    const a = rowA.reg_no?.toLowerCase();
+    const b = rowB.reg_no?.toLowerCase();
+
+    if (a > b) {
+      return 1;
+    }
+
+    if (b > a) {
+      return -1;
+    }
+
+    return 0;
+  };
+
+  const caseInsensitiveLastSort = (rowA: any, rowB: any) => {
+    const a = rowA.profile?.last_name?.toLowerCase();
+    const b = rowB.profile?.last_name?.toLowerCase();
+
+    if (a > b) {
+      return 1;
+    }
+
+    if (b > a) {
+      return -1;
+    }
+
+    return 0;
+  };
+
+  const customStyles = {
+    headRow: {
+      style: {
+        border: 'none',
+      },
+    },
+    headCells: {
+      style: {
+        color: '#202124',
+        fontSize: '14px',
+      },
+    },
+    rows: {
+      highlightOnHoverStyle: {
+        backgroundColor: 'rgb(230, 244, 244)',
+        borderBottomColor: '#FFFFFF',
+        borderRadius: '25px',
+        outline: '1px solid #FFFFFF',
+      },
+    },
+    pagination: {
+      style: {
+        border: 'none',
+      },
+    },
+  };
+
+  const caseInsensitiveFirstSort = (rowA: any, rowB: any) => {
+    const a = rowA.profile?.first_name?.toLowerCase();
+    const b = rowB.profile?.first_name?.toLowerCase();
+
+    if (a > b) {
+      return 1;
+    }
+
+    if (b > a) {
+      return -1;
+    }
+
+    return 0;
+  };
+
 
   useEffect(() => {
-    getAdmins();
+    getStudents();
   }, [])
   return (
     <div>
-      <ContentHeader title="Admins" />
+      <ContentHeader title="Students" />
       <section className="content">
 
         <div className="container-fluid">
           <div className="d-grid gap-2 d-md-block py-2">
-            <Button size='small' startIcon={<AddIcon />} onClick={handleOpenAdd} className="btn btn-primary btn-sm float-right mx-1" title='Add Admin' type="button">Add</Button>
+            <Button size='small' startIcon={<UploadIcon />} onClick={handleOpen} className="btn btn-primary btn-sm float-right" type="button">Upload</Button>
+            <Button size='small' startIcon={<AddIcon />} onClick={handleOpenAdd} className="btn btn-primary btn-sm float-right mx-1" type="button">Add</Button>
           </div>
-          <DataTable columns={columns(handleButtonClick)} data={rows} progressPending={pending} responsive={true} striped={true} />
+          <DataTable customStyles={customStyles} columns={columns(handleButtonClick)} data={filteredItems} progressPending={pending} responsive={true} striped={true} subHeader subHeaderComponent={subHeaderComponent} />
         </div>
       </section>
       <Footer />
@@ -257,7 +376,7 @@ const Admins = () => {
             <Button variant='outlined' size='small' sx={{
               marginRight: ".2rem"
             }} onClick={handleClose}>Cancel</Button>
-            <Button variant='contained' size='small' onClick={submitBatchStudents}>Submit</Button>
+            <Button variant='contained' disabled={loading} size='small' onClick={submitBatchStudents}>Submit</Button>
           </div>
         </Box>
       </Modal>
@@ -270,7 +389,7 @@ const Admins = () => {
         <Container sx={{
           ...style, borderRadius: '5px', paddingY: '1.5rem'
         }} maxWidth="lg" component="form" noValidate>
-          <h5 id="child-modal-title" className='text-center my-3'>Create Admin Form</h5>
+          <h5 id="child-modal-title" className='text-center my-3'>Create Student Form</h5>
           <Container
             sx={{ marginTop: '1rem', marginBottom: '1rem', display: 'flex' }}>
 
@@ -323,6 +442,24 @@ const Admins = () => {
             />
           </Container>
 
+          <Container
+            sx={{ marginTop: '1rem', marginBottom: '1rem', display: 'flex' }}>
+
+            <TextField
+              id="outlined-controlled"
+              label="Reg No"
+              size='small'
+              sx={{ marginRight: '1rem' }}
+
+
+              value={regNo}
+              onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
+                setRegNo(event.target.value);
+              }}
+            />
+
+          </Container>
+
 
           <br />
           <Box sx={{
@@ -370,7 +507,7 @@ const Admins = () => {
             sx={{ marginTop: '1rem', marginBottom: '1rem', display: 'flex' }}>
 
             <FormGroup>
-              <FormControlLabel control={<Switch inputProps={{ 'aria-label': 'controlled' }} onChange={handleChangeStat} checked={editStudentStatus} />} label="Admin Status" />
+              {/* <FormControlLabel control={<Switch inputProps={{ 'aria-label': 'controlled' }} onChange={handleChangeStat} checked={editStudentStatus} />} label="Admin Status" /> */}
               <FormControlLabel control={<Switch inputProps={{ 'aria-label': 'controlled' }} onChange={handleChangeSub} checked={editStudentSub} />} label="Premium Subscription" />
             </FormGroup>
           </Container>
@@ -416,4 +553,4 @@ const Admins = () => {
   );
 };
 
-export default Admins;
+export default Students;

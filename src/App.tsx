@@ -24,9 +24,15 @@ import {
 import { Spinner } from './styles/common';
 import { setProfile } from './store/reducers/profile';
 import AdminRoute from './routes/AdminRoute';
-import Students from './pages/Students';
+import Students from './modules/admin/pages/Students';
 import LecturerRoute from './routes/LecturerRoute';
 import StudentRoute from './routes/StudentRoute';
+import Dashboard from './modules/admin/pages/Dashboard';
+import Payments from './modules/admin/pages/Payments';
+import Courses from './modules/admin/pages/Courses';
+import Admins from './modules/admin/pages/Admins';
+import Lecturers from './modules/admin/pages/Lecturers';
+import { ColorRing } from 'react-loader-spinner';
 
 const { VITE_NODE_ENV } = import.meta.env;
 
@@ -79,9 +85,16 @@ const App = () => {
   }, [location]);
 
   if (isAppLoading) {
-    return <div className='w-100'>
-      <p className='mx-auto my-auto '><h6>Loading <Spinner type='grow' /></h6></p>
-    </div>;
+    return <div className='h-100 d-flex align-items-center justify-content-center'><ColorRing
+      visible={true}
+      height="150"
+      width="150"
+      ariaLabel="color-ring-loading"
+      wrapperStyle={{}}
+      wrapperClass="color-ring-wrapper"
+      colors={['#e15b64', '#f47e60', '#f8b26a', '#abbd81', '#849b87']}
+
+    />Loading... Please wait </div>;
   }
 
   return (
@@ -99,34 +112,31 @@ const App = () => {
         <Route path="/recover-password" element={<PublicRoute />}>
           <Route path="/recover-password" element={<RecoverPassword />} />
         </Route>
+
         <Route path="/" element={<StudentRoute />}>
           <Route path="/" element={<Main />}>
-            <Route path="/sub-menu-2" element={<Blank />} />
-            <Route path="/sub-menu-1" element={<SubMenu />} />
-            <Route path="/blank" element={<Blank />} />
-            <Route path="/profile" element={<Profile />} />
-            <Route path="/" element={<Dashboard />} />
+
           </Route>
         </Route>
 
         <Route path="/admin" element={<AdminRoute />}>
           <Route path="/admin" element={<AdminMain />}>
-            <Route path="admin/sub-menu-2" element={<Blank />} />
-            <Route path="admin/sub-menu-1" element={<SubMenu />} />
-            <Route path="/admin/students" element={<Students />} />
-            <Route path="admin/profile" element={<Profile />} />
-            <Route path="/admin/" element={<Dashboard />} />
-          </Route>
+            <Route path='' element={<Dashboard />} />
+            <Route path='students' element={<Students />} />
+            <Route path='payments' element={<Payments />} />
+            <Route path='courses' element={<Courses />} />
+            <Route path='admins' element={<Admins />} />
+            <Route path='lecturers' element={<Lecturers />} />
 
-          <Route path="/lecturer" element={<LecturerRoute />}>
-            <Route path="/lecturer" element={<LecturerMain />}>
-              <Route path="lecturer/sub-menu-2" element={<Blank />} />
-              <Route path="lecturer/sub-menu-1" element={<SubMenu />} />
-              <Route path="/lecturer/students" element={<Students />} />
-              <Route path="lecturer/profile" element={<Profile />} />
-              <Route path="/lecturer/" element={<Dashboard />} />
-            </Route>
+
           </Route>
+        </Route>
+
+        <Route path="/lecturer" element={<LecturerRoute />}>
+          <Route path="/lecturer" element={<LecturerMain />}>
+
+          </Route>
+        </Route>
 
 
       </Routes>

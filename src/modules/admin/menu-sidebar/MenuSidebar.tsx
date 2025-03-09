@@ -37,6 +37,17 @@ export const MENU: IMenuItem[] = [
     path: '/admin/courses',
   },
 
+  {
+    name: 'Payments',
+    icon: 'fas fa-graduation-cap nav-icon',
+    path: '/admin/payments',
+  },
+  {
+    name: 'Admins',
+    icon: 'fas fa-graduation-cap nav-icon',
+    path: '/admin/admins',
+  },
+
 ];
 
 const StyledBrandImage = styled(Image)`
