@@ -102,7 +102,52 @@ const Payment = () => {
     }
 
     const selectPaymentPlan = (e: any) => {
+        console.log(e.target.value);
         setPaymentPlan(e.target.value);
+        if (e.target.value === 'part') {
+            if (plan === "basic") {
+                if (student.is_alumni) {
+                    if (student.country !== 'Nigeria') { setAmount(150 / 4) }
+                    else setAmount(225000 / 4);
+                }
+                else {
+                    if (student.country !== 'Nigeria') { setAmount(150 / 2) }
+                    else setAmount(225000 / 2);
+                }
+            }
+            else if (plan === "premium") {
+                if (student.is_alumni) {
+                    if (student.country !== 'Nigeria') { setAmount(250 / 4) }
+                    else setAmount(375000 / 4);
+                }
+                else {
+                    if (student.country !== 'Nigeria') { setAmount(250 / 2) }
+                    else setAmount(375000 / 2);
+                }
+            }
+        }
+        else {
+            if (plan === "basic") {
+                if (student.is_alumni) {
+                    if (student.country !== 'Nigeria') { setAmount(150 / 2) }
+                    else setAmount(225000 / 2);
+                }
+                else {
+                    if (student.country !== 'Nigeria') { setAmount(150) }
+                    else setAmount(225000);
+                }
+            }
+            else if (plan === "premium") {
+                if (student.is_alumni) {
+                    if (student.country !== 'Nigeria') { setAmount(250 / 2) }
+                    else setAmount(375000 / 2);
+                }
+                else {
+                    if (student.country !== 'Nigeria') { setAmount(250) }
+                    else setAmount(375000);
+                }
+            }
+        }
     }
 
     useEffect(() => {
