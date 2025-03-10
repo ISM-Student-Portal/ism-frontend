@@ -23,7 +23,7 @@ const Payment = () => {
         currency: student?.country === 'Nigeria' ? 'NGN' : 'USD',
         amount: amount * 100, //Amount is in the country's lowest currency. E.g Kobo, so 20000 kobo = N200
         publicKey: process.env.REACT_APP_PAYSTACK_KEY ?? '',
-        subaccount: process.env.REACT_APP_SPLIT_ACCOUNT ?? ''
+        // subaccount: process.env.REACT_APP_SPLIT_ACCOUNT ?? ''
     };
 
     const initializePayment = usePaystackPayment(config);
@@ -345,12 +345,40 @@ const Payment = () => {
                                             }}>Pay Now</button>
                                         </div>
                                     </div>
-                                    {amount && (
-                                        <div className='card-footer' style={{ color: '#2A2F54' }}>
-                                            <p className=''><br></br>
-                                                For any difficulty in paying, please contact: <b>+234 903 464 6810,</b>  <b>+234 903 095 9735</b></p>
-                                        </div>
-                                    )}
+
+                                    <div className='card-footer' style={{ color: '#2A2F54' }}>
+                                        <p className=''>
+                                            Kindly disregard the currency as this payment is compatible with your county local currency card, the payment supports all kinds of Mastercard, Visa, Verve, and American Express (Amex) card.
+
+                                            <br></br>The equivalent fee will be deducted in your local currency.<br></br>
+                                            <br></br>
+                                            <br></br>
+                                            For any difficulty in using the payment method above, kindly make a transfer to any of these account details.<br></br> <span className='text-danger'>
+                                                Please send your name, email, phone number and payment receipt used for registration to this email address femilazarusschoolofministry@gmail.com
+                                            </span>
+
+                                            <ul>
+                                                <li>
+                                                    Naira Account <br></br>
+                                                    Femi Lazarus Ministries: <b>1917548968</b> Access Bank
+                                                </li>
+                                                <li>
+                                                    Dollar Account<br></br>
+                                                    Femi Lazarus Ministries <b>2324428894</b> Swift Code - UNAFNGLA UBA
+                                                </li>
+                                                <li>
+                                                    Cedis Account<br></br>
+                                                    Sphere of Light, Church <b>6013101078</b> Zenith Bank
+                                                </li>
+                                                <li>
+                                                    PayPal Account <br></br>
+                                                    Email Address - <b>FLAME@FEMILAZARUS.COM</b><br></br> Name - Femi Lazarus Ministries
+                                                </li>
+                                            </ul>
+                                            <br></br>
+                                            For any other difficulty in paying or for further enquiries please contact: <b>+234 903 464 6810, +234 903 095 9735</b>
+                                        </p>
+                                    </div>
 
                                 </div>
                             </div></div>
