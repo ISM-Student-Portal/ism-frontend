@@ -353,28 +353,31 @@ const Payment = () => {
                                             <br></br>The equivalent fee will be deducted in your local currency.<br></br>
                                             <br></br>
                                             <br></br>
-                                            For any difficulty in using the payment method above, kindly make a transfer to any of these account details.<br></br> <span className='text-danger'>
-                                                Please send your name, email, phone number and payment receipt used for registration to this email address femilazarusschoolofministry@gmail.com
+                                            For any difficulty in using the payment method above, kindly make a transfer to any of these account details below.<br></br> <span className='text-danger'>
+                                                Please send your name, email, phone number and payment receipt used for registration to this email address femilazarusschoolofministry@gmail.com<br></br>
+                                                You will receive a payment confirmation email within three (3) working days.
                                             </span>
 
                                             <ul>
                                                 <li>
                                                     Naira Account <br></br>
-                                                    Femi Lazarus Ministries: <b>1917548968</b> Access Bank
+                                                    Femi Lazarus Ministries:<br></br> <b>1917548968</b><br></br> Access Bank
                                                 </li>
                                                 <li>
                                                     Dollar Account<br></br>
-                                                    Femi Lazarus Ministries <b>2324428894</b> Swift Code - UNAFNGLA UBA
+                                                    Femi Lazarus Ministries <br></br><b>2324428894</b><br></br> Swift Code - UNAFNGLA UBA
                                                 </li>
                                                 <li>
                                                     Cedis Account<br></br>
-                                                    Sphere of Light, Church <b>6013101078</b> Zenith Bank
+                                                    Sphere of Light, Church<br></br> <b>6013101078</b> <br></br>Zenith Bank
                                                 </li>
                                                 <li>
                                                     PayPal Account <br></br>
                                                     Email Address - <b>FLAME@FEMILAZARUS.COM</b><br></br> Name - Femi Lazarus Ministries
                                                 </li>
                                             </ul>
+                                            <br></br>
+                                            For payment in installment, only 50% payment is allowed, and the balance must be paid on or before the 5th of May, 2025. Any amount paid outside this will not be accepted and it is non-refundable.
                                             <br></br>
                                             For any other difficulty in paying or for further enquiries please contact: <b>+234 903 464 6810, +234 903 095 9735</b>
                                         </p>
