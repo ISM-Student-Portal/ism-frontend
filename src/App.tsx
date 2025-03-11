@@ -106,6 +106,9 @@ const App = () => {
         <Route path="/register" element={<PublicRoute />}>
           <Route path="/register" element={<Register />} />
         </Route>
+        <Route path="/payment" element={<PublicRoute />}>
+          <Route path="/payment" element={<Register />} />
+        </Route>
         <Route path="/forgot-password" element={<PublicRoute />}>
           <Route path="/forgot-password" element={<ForgetPassword />} />
         </Route>
