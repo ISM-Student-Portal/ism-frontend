@@ -143,6 +143,7 @@ const Register = () => {
   };
 
   const handleChange = (selectedOption: any) => {
+    console.log(selectedOption)
     setCountry(selectedOption);
   };
 
@@ -205,6 +206,39 @@ const Register = () => {
             </div>
           </div>
 
+          <div className="row">
+            <div className="col-md-6">
+              <label className="text-sm">
+                {isAlumni === 'yes' ? 'Previous ISM Email to enjoy 50% discount' : 'Email'}
+                <span
+                  style={{ color: "red", fontSize: "20px", fontWeight: "bold" }}
+                >
+                  *
+                </span>
+              </label>
+              <br />
+              <input className="form-control" type="email" value={email} onChange={(e) => setEmail(e.target.value)} />
+            </div>
+
+            <div className="col-md-6">
+              <label className="text-sm">
+                Country of residence
+                <span
+                  style={{ color: "red", fontSize: "20px", fontWeight: "bold" }}
+                >
+                  *
+                </span>
+              </label>
+              <br />
+              <Select
+                //@ts-ignore 
+                options={options}
+                value={country} onChange={handleChange} />
+            </div>
+
+
+          </div>
+
 
 
 
@@ -254,20 +288,9 @@ const Register = () => {
 
 
 
-          <div className="row">
-            <div className="col-md-6">
-              <label className="text-sm">
-                {isAlumni === 'yes' ? 'Previous ISM Email to enjoy 50% discount' : 'Email'}
-                <span
-                  style={{ color: "red", fontSize: "20px", fontWeight: "bold" }}
-                >
-                  *
-                </span>
-              </label>
-              <br />
-              <input className="form-control" type="email" value={email} onChange={(e) => setEmail(e.target.value)} />
-            </div>
 
+
+          <div className="row">
             <div className="col-md-6">
               <label className="text-sm">
                 Phone
@@ -280,30 +303,15 @@ const Register = () => {
               <br />
               <PhoneInput
                 international
-                countryCallingCodeEditable={false}
+                countryCallingCodeEditable={true}
                 placeholder="Enter phone number"
                 value={phone}
                 //@ts-ignore
+
+                defaultCountry={country?.value}
+                //@ts-ignore
                 onChange={setPhone} />
 
-            </div>
-          </div>
-
-          <div className="row">
-            <div className="col-md-6">
-              <label className="text-sm">
-                Country of residence
-                <span
-                  style={{ color: "red", fontSize: "20px", fontWeight: "bold" }}
-                >
-                  *
-                </span>
-              </label>
-              <br />
-              <Select
-                //@ts-ignore 
-                options={options}
-                value={country} onChange={handleChange} />
             </div>
 
             <div className="col-md-6">

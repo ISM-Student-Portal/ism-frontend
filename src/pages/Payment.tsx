@@ -12,7 +12,8 @@ import { ColorRing } from 'react-loader-spinner';
 const Payment = () => {
     const [student, setStudent] = useState<any>();
     const [amount, setAmount] = useState<any>();
-    const [plan, setPlan] = useState<any>();
+    const [plan, setPlan] = useState<any>(null);
+    const [paymentPlan, setPaymentPlan] = useState<any>(null);
     const [loading, setLoading] = useState(true);
     const { id } = useParams();
 
@@ -22,7 +23,7 @@ const Payment = () => {
         currency: student?.country === 'Nigeria' ? 'NGN' : 'USD',
         amount: amount * 100, //Amount is in the country's lowest currency. E.g Kobo, so 20000 kobo = N200
         publicKey: process.env.REACT_APP_PAYSTACK_KEY ?? '',
-        // subaccount: process.env.REACT_APP_SPLIT_ACCOUNT ?? ''
+        subaccount: process.env.REACT_APP_SPLIT_ACCOUNT ?? ''
     };
 
     const initializePayment = usePaystackPayment(config);
@@ -95,6 +96,57 @@ const Payment = () => {
         }
         else {
             setAmount(null)
+        }
+        setAmount(null);
+        setPaymentPlan(0);
+    }
+
+    const selectPaymentPlan = (e: any) => {
+        console.log(e.target.value);
+        setPaymentPlan(e.target.value);
+        if (e.target.value === 'part') {
+            if (plan === "basic") {
+                if (student.is_alumni) {
+                    if (student.country !== 'Nigeria') { setAmount(150 / 4) }
+                    else setAmount(225000 / 4);
+                }
+                else {
+                    if (student.country !== 'Nigeria') { setAmount(150 / 2) }
+                    else setAmount(225000 / 2);
+                }
+            }
+            else if (plan === "premium") {
+                if (student.is_alumni) {
+                    if (student.country !== 'Nigeria') { setAmount(250 / 4) }
+                    else setAmount(375000 / 4);
+                }
+                else {
+                    if (student.country !== 'Nigeria') { setAmount(250 / 2) }
+                    else setAmount(375000 / 2);
+                }
+            }
+        }
+        else {
+            if (plan === "basic") {
+                if (student.is_alumni) {
+                    if (student.country !== 'Nigeria') { setAmount(150 / 2) }
+                    else setAmount(225000 / 2);
+                }
+                else {
+                    if (student.country !== 'Nigeria') { setAmount(150) }
+                    else setAmount(225000);
+                }
+            }
+            else if (plan === "premium") {
+                if (student.is_alumni) {
+                    if (student.country !== 'Nigeria') { setAmount(250 / 2) }
+                    else setAmount(375000 / 2);
+                }
+                else {
+                    if (student.country !== 'Nigeria') { setAmount(250) }
+                    else setAmount(375000);
+                }
+            }
         }
     }
 
@@ -252,6 +304,19 @@ const Payment = () => {
                                         </div>
                                         <div className="col-md-6">
                                             <div className="form-group">
+                                                <label>Payment Plan</label>
+                                                <select className="form-control" value={paymentPlan} onChange={selectPaymentPlan} disabled={plan === null}>
+                                                    <option value="">--Payment-Plan--</option>
+                                                    <option value="full">Full Payment</option>
+                                                    <option value="part">50% Initial Deposit Installment Plan - Balance MUST be made on or before 5th of May, 2025 to avoid removal from the school.</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div className='row'>
+                                        <div className="col-md-6">
+                                            <div className="form-group">
                                                 <label>{student.is_alumni ? "Discounted Amount (50%)" : "Amount"}</label>
                                                 <CurrencyInput
                                                     id="input-example"
@@ -286,7 +351,36 @@ const Payment = () => {
                                             Kindly disregard the currency as this payment is compatible with your county local currency card, the payment supports all kinds of Mastercard, Visa, Verve, and American Express (Amex) card.
 
                                             <br></br>The equivalent fee will be deducted in your local currency.<br></br>
-                                            For any difficulty in paying, please contact: <b>+234 903 464 6810,</b>  <b>+234 903 095 9735</b></p>
+                                            <br></br>
+                                            <br></br>
+                                            For any difficulty in using the payment method above, kindly make a transfer to any of these account details below.<br></br> <span className='text-danger'>
+                                                Please send your name, email, phone number and payment receipt used for registration to this email address femilazarusschoolofministry@gmail.com<br></br>
+                                                You will receive a payment confirmation email within three (3) working days.
+                                            </span>
+
+                                            <ul>
+                                                <li>
+                                                    Naira Account <br></br>
+                                                    Femi Lazarus Ministries:<br></br> <b>1917548968</b><br></br> Access Bank
+                                                </li>
+                                                <li>
+                                                    Dollar Account<br></br>
+                                                    Femi Lazarus Ministries <br></br><b>2324428894</b><br></br> Swift Code - UNAFNGLA UBA
+                                                </li>
+                                                <li>
+                                                    Cedis Account<br></br>
+                                                    Sphere of Light, Church<br></br> <b>6013101078</b> <br></br>Zenith Bank
+                                                </li>
+                                                <li>
+                                                    PayPal Account <br></br>
+                                                    Email Address - <b>FLAME@FEMILAZARUS.COM</b><br></br> Name - Femi Lazarus Ministries
+                                                </li>
+                                            </ul>
+                                            <br></br>
+                                            For payment in installment, only 50% payment is allowed, and the balance must be paid on or before the 5th of May, 2025. Any amount paid outside this will not be accepted and it is non-refundable.
+                                            <br></br>
+                                            For any other difficulty in paying or for further enquiries please contact: <b>+234 903 464 6810, +234 903 095 9735</b>
+                                        </p>
                                     </div>
 
                                 </div>
