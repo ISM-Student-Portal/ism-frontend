@@ -46,7 +46,7 @@ const Header = () => {
         </li>
         <li className="nav-item d-none d-sm-inline-block">
           <Link to="/" className="nav-link">
-            {'Admin Portal'}
+            {'Student Portal'}
           </Link>
         </li>
 

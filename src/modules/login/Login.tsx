@@ -37,11 +37,12 @@ const Login = () => {
       dispatch(setProfile(response.profile));
       toast.success('Login is Successful!');
       setAuthLoading(false);
-      console.log(response);
       if (response.profile.is_admin) {
         navigate('/admin');
+
       } else if (response.profile.is_lecturer) {
         navigate('/lecturer')
+
       } else {
         if (response.profile.is_admin === 1) {
           console.log('here')
@@ -49,8 +50,9 @@ const Login = () => {
         } else {
           navigate('/');
         }
-        window.location.reload();
       }
+      window.location.reload();
+
 
     } catch (error: any) {
       setAuthLoading(false);

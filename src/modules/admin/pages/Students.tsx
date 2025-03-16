@@ -1,6 +1,6 @@
 import Footer from '@app/modules/main/footer/Footer';
 import { ContentHeader } from '@components';
-import DataTable from '../../../components/data-table/DataTableBase'
+import DataTable from '../../../components/datatable-original/Datatable';
 import Button from '@mui/material/Button';
 import Modal from '@mui/material/Modal';
 import React, { useEffect, useMemo } from 'react';
@@ -10,19 +10,22 @@ import TextField from '@mui/material/TextField';
 import UploadFileIcon from "@mui/icons-material/UploadFile";
 import AddIcon from '@mui/icons-material/Add'
 import UploadIcon from '@mui/icons-material/Upload'
+import VisibilityIcon from '@mui/icons-material/Visibility';
+import EditIcon from '@mui/icons-material/Edit';
+import DeleteIcon from '@mui/icons-material/Delete';
 
 import { toast } from 'react-toastify';
 import axios from '../../../utils/axios';
 import memoize from 'memoize-one';
 
-import { ChangeEvent, useState } from "react";
+import { ChangeEvent, } from "react";
 import { fetchAllStudents, createStudent, updateStudentStatus, deleteStudent, changeStudentPass } from '@app/services/admin/studentServices';
 import { Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, FormControlLabel, FormGroup, Switch } from '@mui/material';
 import FilterComponent from '@app/components/data-table/FilterComponent';
+import { ColorRing } from 'react-loader-spinner';
 
 
 const Students = () => {
-
   const [open, setOpen] = React.useState(false);
   const [pending, setpending] = React.useState(true);
   const [loading, setLoading] = React.useState(false);
@@ -35,11 +38,7 @@ const Students = () => {
   const [resetPaginationToggle, setResetPaginationToggle] = React.useState(
     false
   );
-
-
-
   const [selectedStudent, setSelectedStudent] = React.useState<any>();
-
   const [filename, setFilename] = React.useState("");
   const [file, setFile] = React.useState(null);
   const [email, setEmail] = React.useState('');
@@ -100,7 +99,7 @@ const Students = () => {
   const handleCloseAdd = () => {
     setOpenAdd(false);
   }
-  const handleButtonClick = async (type: any, student: any) => {
+  const handleButtonClick = (type: any, student: any) => {
     setSelectedStudent(student);
     if (type === 'edit') {
       // await changeStudentPass(student.id);
@@ -286,32 +285,7 @@ const Students = () => {
     return 0;
   };
 
-  const customStyles = {
-    headRow: {
-      style: {
-        border: 'none',
-      },
-    },
-    headCells: {
-      style: {
-        color: '#202124',
-        fontSize: '14px',
-      },
-    },
-    rows: {
-      highlightOnHoverStyle: {
-        backgroundColor: 'rgb(230, 244, 244)',
-        borderBottomColor: '#FFFFFF',
-        borderRadius: '25px',
-        outline: '1px solid #FFFFFF',
-      },
-    },
-    pagination: {
-      style: {
-        border: 'none',
-      },
-    },
-  };
+
 
   const caseInsensitiveFirstSort = (rowA: any, rowB: any) => {
     const a = rowA.profile?.first_name?.toLowerCase();
@@ -338,11 +312,41 @@ const Students = () => {
       <section className="content">
 
         <div className="container-fluid">
-          <div className="d-grid gap-2 d-md-block py-2">
-            <Button size='small' startIcon={<UploadIcon />} onClick={handleOpen} className="btn btn-primary btn-sm float-right" type="button">Upload</Button>
-            <Button size='small' startIcon={<AddIcon />} onClick={handleOpenAdd} className="btn btn-primary btn-sm float-right mx-1" type="button">Add</Button>
-          </div>
-          <DataTable customStyles={customStyles} columns={columns(handleButtonClick)} data={filteredItems} progressPending={pending} responsive={true} striped={true} subHeader subHeaderComponent={subHeaderComponent} />
+          {rows.length > 0 ? (
+            <div>
+              <div className="d-grid gap-2 d-md-block py-2 my-5">
+                <Button size='small' startIcon={<UploadIcon />} onClick={handleOpen} className="btn btn-primary btn-sm float-right" type="button">Upload</Button>
+                <Button size='small' startIcon={<AddIcon />} onClick={handleOpenAdd} className="btn btn-primary btn-sm float-right mx-1" type="button">Add</Button>
+              </div>
+              <div></div>
+              <DataTable slots={{
+                5: (data: any, row: any) => (
+                  <div className='d-flex justify-content-center'>
+                    <span onClick={() => handleButtonClick('edit', row)} ><VisibilityIcon className='text-success mx-2 cursor-pointer' /></span>
+                    <EditIcon onClick={() => handleButtonClick('edit', row)} className='text-warning mx-2 cursor-pointer' />
+                    <DeleteIcon onClick={() => handleButtonClick('delete', row)} className='text-danger mx-2 cursor-pointer' />
+                  </div>
+
+                )
+              }} className='table table-striped table-bordered order-column' options={{
+                buttons: {
+                  buttons: ['copy', 'csv']
+                }
+              }} data={rows} columns={[{ data: 'first_name', title: 'First Name' }, { data: 'last_name', title: 'Last Name' }, { data: 'email', title: 'Email' }, { data: 'country', title: 'Country' }, { data: 'phone', title: 'Phone' }, { title: 'Action' }]}>
+
+              </DataTable></div>
+          ) : (<div className='h-100 d-flex align-items-center justify-content-center'><ColorRing
+            visible={true}
+            height="150"
+            width="150"
+            ariaLabel="color-ring-loading"
+            wrapperStyle={{}}
+            wrapperClass="color-ring-wrapper"
+            colors={['#e15b64', '#f47e60', '#f8b26a', '#abbd81', '#849b87']}
+
+          />Loading... Please wait </div>)}
+
+
         </div>
       </section>
       <Footer />

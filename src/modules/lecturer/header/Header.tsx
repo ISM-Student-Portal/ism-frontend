@@ -46,20 +46,14 @@ const Header = () => {
           </button>
         </li>
         <li className="nav-item d-none d-sm-inline-block">
-          <Link to="/" className="nav-link">
-            {t('header.label.home')}
+          <Link to="/lecturer" className="nav-link">
+            Lecturer Portal
           </Link>
         </li>
-        <li className="nav-item d-none d-sm-inline-block">
-          <Link to="/" className="nav-link">
-            {t('header.label.contact')}
-          </Link>
-        </li>
+
       </ul>
       <ul className="navbar-nav ml-auto">
-        <MessagesDropdown />
-        <NotificationsDropdown />
-        <LanguagesDropdown />
+
         <UserDropdown />
         <li className="nav-item">
           <button

@@ -1,9 +1,8 @@
 import axios from 'axios';
-import { useSelector } from 'react-redux';
-import { Link, useNavigate } from 'react-router-dom';
 const authentication = localStorage.getItem('authentication');
+console.log(authentication, 'auth')
 let token: any = null;
-if(authentication){
+if (authentication) {
     token = JSON.parse(authentication).plainTextToken;
 }
 
@@ -21,14 +20,15 @@ const instance = axios.create({
 
 instance.interceptors.request.use(
     config => {
-        if(token){
+        if (token) {
             config.headers['Authorization'] = 'Bearer ' + token;
         }
-        return config;},
+        return config;
+    },
 
-        error => {
-            Promise.reject(error)
-        }
+    error => {
+        Promise.reject(error)
+    }
 );
 
 instance.interceptors.response.use(
@@ -36,15 +36,15 @@ instance.interceptors.response.use(
         return response;
     },
     function (error) {
-        if(error.response.status === 401){
+        if (error.response.status === 401) {
             console.log('got here')
-            localStorage.removeItem("authentication");
-            localStorage.removeItem("profile");
-            window.location.reload();
+            // localStorage.removeItem("authentication");
+            // localStorage.removeItem("profile");
+            // window.location.reload();
 
         }
-        else if(error.response.status === 404){
-            
+        else if (error.response.status === 404) {
+
         }
         return Promise.reject(error)
 

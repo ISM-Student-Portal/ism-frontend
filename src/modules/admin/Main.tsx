@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { toggleSidebarMenu } from '@app/store/reducers/ui';
 import { addWindowClass, removeWindowClass, sleep } from '@app/utils/helpers';
 import ControlSidebar from '@app/modules/main/control-sidebar/ControlSidebar';
-import Header from '@app/modules/main/header/Header';
+import Header from '@app/modules/admin/header/Header';
 import MenuSidebar from '@app/modules/admin/menu-sidebar/MenuSidebar';
 import Footer from '@app/modules/main/footer/Footer';
 import { Image } from '@profabric/react-components';

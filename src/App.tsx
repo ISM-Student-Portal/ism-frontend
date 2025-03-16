@@ -13,15 +13,13 @@ import { calculateWindowSize } from '@app/utils/helpers';
 import { useDispatch, useSelector } from 'react-redux';
 import { setWindowSize } from '@app/store/reducers/ui';
 import ReactGA from 'react-ga4';
-import { LocalizationProvider } from '@mui/x-date-pickers';
-import { AdapterMoment } from '@mui/x-date-pickers/AdapterMoment';
+import LecturerDashboard from '@app/modules/lecturer/pages/Dashboard';
 import PublicRoute from './routes/PublicRoute';
 import { setAuthentication } from './store/reducers/auth';
 import {
   getAuthStatus,
   getProfileStatus,
 } from './utils/oidc-providers';
-import { Spinner } from './styles/common';
 import { setProfile } from './store/reducers/profile';
 import AdminRoute from './routes/AdminRoute';
 import Students from './modules/admin/pages/Students';
@@ -32,7 +30,20 @@ import Payments from './modules/admin/pages/Payments';
 import Courses from './modules/admin/pages/Courses';
 import Admins from './modules/admin/pages/Admins';
 import Lecturers from './modules/admin/pages/Lecturers';
+import LecturerCourses from './modules/lecturer/pages/Courses';
+import LecturerClasses from './modules/lecturer/pages/Classes';
+import LecturerClass from './modules/lecturer/pages/Class';
+import LecturerAssignment from './modules/lecturer/pages/Assignment';
+import LecturerAssignments from './modules/lecturer/pages/Assignments';
+
+import LecturerCourse from './modules/lecturer/pages/Course';
 import { ColorRing } from 'react-loader-spinner';
+import Payment from './pages/Payment';
+import StudentDashboard from './pages/student_pages/StudentDashboard';
+import Profile from './pages/profile/Profile';
+import StudentClassroom from './pages/student_pages/StudentClassroom';
+import Assignment from './pages/student_pages/Assignment';
+import Submission from './pages/student_pages/Submission';
 
 const { VITE_NODE_ENV } = import.meta.env;
 
@@ -106,8 +117,8 @@ const App = () => {
         <Route path="/register" element={<PublicRoute />}>
           <Route path="/register" element={<Register />} />
         </Route>
-        <Route path="/payment" element={<PublicRoute />}>
-          <Route path="/payment" element={<Register />} />
+        <Route path="/payment/:id" element={<PublicRoute />}>
+          <Route path="/payment/:id" element={<Payment />} />
         </Route>
         <Route path="/forgot-password" element={<PublicRoute />}>
           <Route path="/forgot-password" element={<ForgetPassword />} />
@@ -118,6 +129,12 @@ const App = () => {
 
         <Route path="/" element={<StudentRoute />}>
           <Route path="/" element={<Main />}>
+            <Route path='' element={<StudentDashboard />} />
+            <Route path="assignments" element={<Assignment />} />
+            <Route path="classroom" element={<StudentClassroom />} />
+            <Route path="profile" element={<Profile />} />
+            <Route path="submissions" element={<Submission />} />
+
 
           </Route>
         </Route>
@@ -130,6 +147,7 @@ const App = () => {
             <Route path='courses' element={<Courses />} />
             <Route path='admins' element={<Admins />} />
             <Route path='lecturers' element={<Lecturers />} />
+            <Route path="profile" element={<Profile />} />
 
 
           </Route>
@@ -137,7 +155,14 @@ const App = () => {
 
         <Route path="/lecturer" element={<LecturerRoute />}>
           <Route path="/lecturer" element={<LecturerMain />}>
-
+            <Route path='' element={<LecturerDashboard />} />
+            <Route path='courses' element={<LecturerCourses />} />
+            <Route path='courses/:id' element={<LecturerCourse />} />
+            <Route path='classes' element={<LecturerClasses />} />
+            <Route path='class/:id' element={<LecturerClass />} />
+            <Route path='assignments' element={<LecturerAssignments />} />
+            <Route path='assignment/:id' element={<LecturerAssignment />} />
+            <Route path="profile" element={<Profile />} />
           </Route>
         </Route>
 

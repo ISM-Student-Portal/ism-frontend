@@ -1,28 +1,28 @@
 import Footer from '@app/modules/main/footer/Footer';
 import { ContentHeader } from '@components';
-import DataTable from '../../../components/data-table/DataTableBase'
+import DataTable from '../../../components/datatable-original/Datatable';
 import Button from '@mui/material/Button';
 import Modal from '@mui/material/Modal';
-import React, { useEffect } from 'react';
+import React, { useEffect, useMemo } from 'react';
 import Box from '@mui/material/Box';
 import Container from '@mui/material/Container'
 import TextField from '@mui/material/TextField';
-import UploadFileIcon from "@mui/icons-material/UploadFile";
 import AddIcon from '@mui/icons-material/Add'
 import UploadIcon from '@mui/icons-material/Upload'
+import VisibilityIcon from '@mui/icons-material/Visibility';
+import EditIcon from '@mui/icons-material/Edit';
+import DeleteIcon from '@mui/icons-material/Delete';
 
 import { toast } from 'react-toastify';
-import axios from '../../../utils/axios';
-import memoize from 'memoize-one';
 
-import { ChangeEvent, useState } from "react";
-import { createStudent, updateStudentStatus, deleteStudent, fetchAllAdmins, createAdmin } from '@app/services/admin/studentServices';
+import { createStudent, updateStudentStatus, deleteStudent, fetchAllAdmins } from '@app/services/admin/studentServices';
 import { Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, FormControlLabel, FormGroup, Switch } from '@mui/material';
-import { useSelector } from 'react-redux';
+import FilterComponent from '@app/components/data-table/FilterComponent';
+import { ColorRing } from 'react-loader-spinner';
+import { fetchAllLecturers } from '@app/services/admin/lecturerServices';
 
 
 const Admins = () => {
-
   const [open, setOpen] = React.useState(false);
   const [pending, setpending] = React.useState(true);
   const [loading, setLoading] = React.useState(false);
@@ -31,20 +31,19 @@ const Admins = () => {
   const [openDelete, setOpenDelete] = React.useState(false);
   const [editStudentStatus, setEditStudentStatus] = React.useState(false);
   const [editStudentSub, setEditStudentSub] = React.useState(false);
-
-
+  const [filterText, setFilterText] = React.useState("");
+  const [resetPaginationToggle, setResetPaginationToggle] = React.useState(
+    false
+  );
   const [selectedStudent, setSelectedStudent] = React.useState<any>();
-
   const [filename, setFilename] = React.useState("");
   const [file, setFile] = React.useState(null);
   const [email, setEmail] = React.useState('');
   const [firstName, setFirstName] = React.useState('');
   const [lastName, setLastName] = React.useState('');
+  const [regNo, setRegNo] = React.useState('');
   const [phoneNumber, setPhoneNumber] = React.useState('');
   const [rows, setRows] = React.useState([]);
-
-  const profile = useSelector((state: any) => state.profile.profile);
-
 
   const handleOpen = () => {
     setOpen(true);
@@ -59,6 +58,30 @@ const Admins = () => {
   const handleCloseEdit = () => {
     setOpenEdit(false);
   };
+
+  const filteredItems = rows.filter(
+    (item: any) =>
+      JSON.stringify(item)
+        .toLowerCase()
+        .indexOf(filterText.toLowerCase()) !== -1
+  );
+
+  const subHeaderComponent = useMemo(() => {
+    const handleClear = () => {
+      if (filterText) {
+        setResetPaginationToggle(!resetPaginationToggle);
+        setFilterText("");
+      }
+    };
+
+    return (
+      <FilterComponent
+        onFilter={(e: any) => setFilterText(e.target.value)}
+        onClear={handleClear}
+        filterText={filterText}
+      />
+    );
+  }, [filterText, resetPaginationToggle]);
 
   const handleOpenDelete = () => {
     setOpenDelete(true);
@@ -76,6 +99,9 @@ const Admins = () => {
   const handleButtonClick = (type: any, student: any) => {
     setSelectedStudent(student);
     if (type === 'edit') {
+      // await changeStudentPass(student.id);
+      // toast.success('Student updated Successfully!');
+
       setEditStudentStatus(student.is_admin);
       setEditStudentSub(student.profile.subscription === 'premium')
       handleOpenEdit();
@@ -107,8 +133,8 @@ const Admins = () => {
   }
 
   const getAdmins = async () => {
-    const students = await fetchAllAdmins();
-    setRows(students.students);
+    const admins = await fetchAllAdmins();
+    setRows(admins.admins);
     setpending(false);
   }
 
@@ -118,11 +144,12 @@ const Admins = () => {
       first_name: firstName,
       last_name: lastName,
       email: email,
-      phone_number: phoneNumber
+      phone_number: phoneNumber,
+      reg_no: regNo
     }
-    const student = await createAdmin(data);
+    const student = await createStudent(data);
     if (student.message === 'successful') {
-      toast.success('Admin Created Successfully!');
+      toast.success('Student Created Successfully!');
       handleCloseAdd();
       getAdmins();
       setLoading(false);
@@ -131,50 +158,16 @@ const Admins = () => {
       toast.error('Something went wrong!');
     }
 
-
-
-
   }
-  const handleChangeStat = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setEditStudentStatus(event.target.checked);
-  };
+
 
   const handleChangeSub = (event: React.ChangeEvent<HTMLInputElement>) => {
     setEditStudentSub(event.target.checked);
   };
 
-  const handleFileUpload = async (e: ChangeEvent<HTMLInputElement>) => {
-    if (!e.target.files) {
-      return;
-    }
-
-    const file: any = e.target.files[0];
-    setFile(file);
-    const { name } = file;
-
-    setFilename(name);
-  };
-
-  const submitBatchStudents = async () => {
-    setLoading(true);
-    let formData = new FormData();
-    //@ts-ignore
-    formData.append("file", file);
-    let res = await axios.post('/batch-create', formData, {
-      headers: {
-        'Content-Type': 'multipart/form-data'
-      }
-    });
-    if (res) {
-      toast.success('Upload done');
-      getAdmins();
-      handleClose();
-    }
-    setLoading(false);
 
 
 
-  }
   const style = {
     position: 'absolute' as 'absolute',
     top: '50%',
@@ -188,27 +181,8 @@ const Admins = () => {
     px: 4,
     pb: 3,
   };
-  const columns = memoize(clickHandler => [
-    { name: 'First Name', selector: (row: any) => row.profile?.first_name, sortable: true, reorder: true },
-    { name: 'Last Name', selector: (row: any) => row.profile?.last_name, sortable: true, reorder: true },
-    { name: 'Email', selector: (row: any) => row.email },
-    { name: 'Phone', selector: (row: any) => row.profile?.phone },
-    { name: 'Status', selector: (row: any) => row.is_active ? "Active" : "Inactive", grow: 1 },
 
 
-
-    {
-      name: 'Action',
-
-      cell: (row: any) => profile.is_superadmin ? (<div><button className='btn btn-primary btn-sm' onClick={() => { clickHandler('edit', row) }}>Edit</button> <button className='btn btn-danger btn-sm' onClick={() => { clickHandler('delete', row) }}>Deact</button></div>) : (<span></span>),
-      ignoreRowClick: true,
-      allowOverflow: true,
-      button: true,
-
-    },
-
-
-  ]);
 
 
   useEffect(() => {
@@ -216,51 +190,49 @@ const Admins = () => {
   }, [])
   return (
     <div>
-      <ContentHeader title="Admins" />
+      <ContentHeader title="Lecturers" />
       <section className="content">
 
         <div className="container-fluid">
-          <div className="d-grid gap-2 d-md-block py-2">
-            <Button size='small' startIcon={<AddIcon />} onClick={handleOpenAdd} className="btn btn-primary btn-sm float-right mx-1" title='Add Admin' type="button">Add</Button>
-          </div>
-          <DataTable columns={columns(handleButtonClick)} data={rows} progressPending={pending} responsive={true} striped={true} />
+          {rows.length > 0 ? (
+            <div>
+              <div className="d-grid gap-2 d-md-block py-2 my-5">
+                <Button size='small' startIcon={<UploadIcon />} onClick={handleOpen} className="btn btn-primary btn-sm float-right" type="button">Upload</Button>
+                <Button size='small' startIcon={<AddIcon />} onClick={handleOpenAdd} className="btn btn-primary btn-sm float-right mx-1" type="button">Add</Button>
+              </div>
+              <div></div>
+              <DataTable slots={{
+                3: (data: any, row: any) => (
+                  <div className='d-flex justify-content-center'>
+                    <span onClick={() => handleButtonClick('edit', row)} ><VisibilityIcon className='text-success mx-2 cursor-pointer' /></span>
+                    <EditIcon onClick={() => handleButtonClick('edit', row)} className='text-warning mx-2 cursor-pointer' />
+                    <DeleteIcon onClick={() => handleButtonClick('delete', row)} className='text-danger mx-2 cursor-pointer' />
+                  </div>
+
+                )
+              }} className='table table-striped table-bordered order-column dt-head-center' options={{
+                buttons: {
+                  buttons: ['copy', 'csv']
+                }
+              }} data={rows} columns={[{ data: 'email', title: 'Email' }, { data: 'username', title: 'Username' }, { data: 'phone_number', title: 'Phone' }, { title: 'Action' }]}>
+
+              </DataTable></div>
+          ) : (<div className='h-100 d-flex align-items-center justify-content-center'><ColorRing
+            visible={true}
+            height="150"
+            width="150"
+            ariaLabel="color-ring-loading"
+            wrapperStyle={{}}
+            wrapperClass="color-ring-wrapper"
+            colors={['#e15b64', '#f47e60', '#f8b26a', '#abbd81', '#849b87']}
+
+          />Loading... Please wait </div>)}
+
+
         </div>
       </section>
       <Footer />
-      <Modal
-        open={open}
-        onClose={handleClose}
-        aria-labelledby="child-modal-title"
-        aria-describedby="child-modal-description">
-        <Box sx={{ ...style, width: '50%', borderRadius: '5px' }}>
-          <h4 id="child-modal-title" className='text-center text-'>Upload sheet</h4>
 
-          <Button
-            component="label"
-            variant="outlined"
-            startIcon={<UploadFileIcon />}
-            sx={{ marginRight: "1rem" }}
-            disabled={loading}
-          >
-            Upload File
-            <input
-              type="file"
-              hidden
-              onChange={handleFileUpload}
-            />
-          </Button>
-          <span>{filename}</span>
-          <br />
-
-          {/* <Button variant="outlined" onClick={handleClose}>Close Child Modal</Button> */}
-          <div className='text-right my-2'>
-            <Button variant='outlined' size='small' sx={{
-              marginRight: ".2rem"
-            }} onClick={handleClose}>Cancel</Button>
-            <Button variant='contained' size='small' onClick={submitBatchStudents}>Submit</Button>
-          </div>
-        </Box>
-      </Modal>
 
       <Modal
         open={openAdd}
@@ -270,7 +242,7 @@ const Admins = () => {
         <Container sx={{
           ...style, borderRadius: '5px', paddingY: '1.5rem'
         }} maxWidth="lg" component="form" noValidate>
-          <h5 id="child-modal-title" className='text-center my-3'>Create Admin Form</h5>
+          <h5 id="child-modal-title" className='text-center my-3'>Create Student Form</h5>
           <Container
             sx={{ marginTop: '1rem', marginBottom: '1rem', display: 'flex' }}>
 
@@ -323,6 +295,24 @@ const Admins = () => {
             />
           </Container>
 
+          <Container
+            sx={{ marginTop: '1rem', marginBottom: '1rem', display: 'flex' }}>
+
+            <TextField
+              id="outlined-controlled"
+              label="Reg No"
+              size='small'
+              sx={{ marginRight: '1rem' }}
+
+
+              value={regNo}
+              onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
+                setRegNo(event.target.value);
+              }}
+            />
+
+          </Container>
+
 
           <br />
           <Box sx={{
@@ -370,7 +360,7 @@ const Admins = () => {
             sx={{ marginTop: '1rem', marginBottom: '1rem', display: 'flex' }}>
 
             <FormGroup>
-              <FormControlLabel control={<Switch inputProps={{ 'aria-label': 'controlled' }} onChange={handleChangeStat} checked={editStudentStatus} />} label="Admin Status" />
+              {/* <FormControlLabel control={<Switch inputProps={{ 'aria-label': 'controlled' }} onChange={handleChangeStat} checked={editStudentStatus} />} label="Admin Status" /> */}
               <FormControlLabel control={<Switch inputProps={{ 'aria-label': 'controlled' }} onChange={handleChangeSub} checked={editStudentSub} />} label="Premium Subscription" />
             </FormGroup>
           </Container>

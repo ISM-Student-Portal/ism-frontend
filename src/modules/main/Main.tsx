@@ -27,10 +27,7 @@ const Main = () => {
   const handleIdle = () => {
     console.log(true);
   }
-  if (profile.first_login === 1) {
-    navigate('/recover-password');
-
-  }
+  
 
   const screenSize = useSelector((state: any) => state.ui.screenSize);
   const authentication = useSelector((state: any) => state.auth.authentication);

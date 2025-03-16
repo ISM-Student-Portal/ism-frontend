@@ -4,9 +4,9 @@ import { useDispatch, useSelector } from 'react-redux';
 import { toggleSidebarMenu } from '@app/store/reducers/ui';
 import { addWindowClass, removeWindowClass, sleep } from '@app/utils/helpers';
 import ControlSidebar from '@app/modules/main/control-sidebar/ControlSidebar';
-import Header from '@app/modules/main/header/Header';
-import MenuSidebar from '@app/modules/main/menu-sidebar/MenuSidebar';
-import Footer from '@app/modules/main/footer/Footer';
+import Header from '@app/modules/lecturer/header/Header';
+import MenuSidebar from '@app/modules/lecturer/menu-sidebar/MenuSidebar';
+import Footer from '@app/modules/lecturer/footer/Footer';
 import { Image } from '@profabric/react-components';
 
 const Main = () => {
@@ -90,13 +90,13 @@ const Main = () => {
             <Outlet />
           </section>
         </div>
-        {/* <Footer /> */}
+        <Footer />
         <ControlSidebar />
         <div
           id="sidebar-overlay"
           role="presentation"
           onClick={handleToggleMenuSidebar}
-          onKeyDown={() => {}}
+          onKeyDown={() => { }}
         />
       </>
     );

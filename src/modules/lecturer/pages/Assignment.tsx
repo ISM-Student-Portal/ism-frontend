@@ -15,15 +15,15 @@ import DeleteIcon from '@mui/icons-material/Delete';
 
 import { toast } from 'react-toastify';
 
-import { createStudent, updateStudentStatus, deleteStudent, fetchAllPayments } from '@app/services/admin/studentServices';
+import { createStudent, updateStudentStatus, deleteStudent } from '@app/services/admin/studentServices';
 import { Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, FormControlLabel, FormGroup, Switch } from '@mui/material';
 import FilterComponent from '@app/components/data-table/FilterComponent';
 import { ColorRing } from 'react-loader-spinner';
 import { fetchAllLecturers } from '@app/services/admin/lecturerServices';
-import { fetchAllCourses } from '@app/services/admin/courseServices';
+import { fetchAllCourses } from '@app/services/admin/lecturerServices';
 
 
-const Payments = () => {
+const Assignment = () => {
     const [open, setOpen] = React.useState(false);
     const [pending, setpending] = React.useState(true);
     const [loading, setLoading] = React.useState(false);
@@ -32,12 +32,8 @@ const Payments = () => {
     const [openDelete, setOpenDelete] = React.useState(false);
     const [editStudentStatus, setEditStudentStatus] = React.useState(false);
     const [editStudentSub, setEditStudentSub] = React.useState(false);
-    const [filterText, setFilterText] = React.useState("");
-    const [resetPaginationToggle, setResetPaginationToggle] = React.useState(
-        false
-    );
+   
     const [selectedStudent, setSelectedStudent] = React.useState<any>();
-    const [filename, setFilename] = React.useState("");
     const [file, setFile] = React.useState(null);
     const [email, setEmail] = React.useState('');
     const [firstName, setFirstName] = React.useState('');
@@ -97,7 +93,7 @@ const Payments = () => {
         if (res.status === 'success') {
             toast.success('Student updated Successfully!');
             handleCloseEdit();
-            getPayments();
+            getCourses();
         }
         setLoading(false);
     }
@@ -108,14 +104,14 @@ const Payments = () => {
         if (res.status === 'success') {
             toast.success('Student Deleted Successfully!');
             handleCloseDelete();
-            getPayments();
+            getCourses();
         }
         setLoading(false);
     }
 
-    const getPayments = async () => {
-        const payments = await fetchAllPayments();
-        setRows(payments.payments);
+    const getCourses = async () => {
+        const courses = await fetchAllCourses();
+        setRows(courses.courses);
         setpending(false);
     }
 
@@ -132,7 +128,7 @@ const Payments = () => {
         if (student.message === 'successful') {
             toast.success('Student Created Successfully!');
             handleCloseAdd();
-            getPayments();
+            getCourses();
             setLoading(false);
         }
         else {
@@ -167,23 +163,20 @@ const Payments = () => {
 
 
     useEffect(() => {
-        getPayments();
+        getCourses();
     }, [])
     return (
         <div>
-            <ContentHeader title="Payments" />
+            <ContentHeader title="Courses" />
             <section className="content">
 
                 <div className="container-fluid">
                     {rows.length > 0 ? (
                         <div>
-                            <div className="d-grid gap-2 d-md-block py-2 my-5">
-                                <Button size='small' startIcon={<UploadIcon />} onClick={handleOpen} className="btn btn-primary btn-sm float-right" type="button">Upload</Button>
-                                <Button size='small' startIcon={<AddIcon />} onClick={handleOpenAdd} className="btn btn-primary btn-sm float-right mx-1" type="button">Add</Button>
-                            </div>
+
                             <div></div>
                             <DataTable slots={{
-                                7: (data: any, row: any) => (
+                                2: (data: any, row: any) => (
                                     <div className='d-flex justify-content-center'>
                                         <span onClick={() => handleButtonClick('edit', row)} ><VisibilityIcon className='text-success mx-2 cursor-pointer' /></span>
                                         <EditIcon onClick={() => handleButtonClick('edit', row)} className='text-warning mx-2 cursor-pointer' />
@@ -195,15 +188,7 @@ const Payments = () => {
                                 buttons: {
                                     buttons: ['copy', 'csv']
                                 }
-                            }} data={rows} columns={[{ data: 'student.first_name', title: 'First Name' }, { data: 'student.last_name', title: 'Last Name' },{ data: 'student.email', title: 'Email' } ,{
-                                data: 'amount', title: 'Amount', render: function (data, type, row) {
-                                    return data < 100 ? Intl.NumberFormat('USD').format(data) : '₦' + Intl.NumberFormat('NGN').format(data);
-                                },
-                            }, { data: 'reference', title: 'Reference' }, { data: 'status', title: 'Status' }, {
-                                data: 'created_at', title: 'Date', render(data, type, row, meta) {
-                                    return new Date(data).toLocaleDateString()
-                                },
-                            }, { title: 'Action' }]}>
+                            }} data={rows} columns={[{ data: 'title', title: 'Title' }, { data: 'description', title: 'Description' }, { title: 'Action' }]}>
 
                             </DataTable></div>
                     ) : (<div className='h-100 d-flex align-items-center justify-content-center'><ColorRing
@@ -291,6 +276,7 @@ const Payments = () => {
                             id="outlined-controlled"
                             label="Reg No"
                             size='small'
+                            sx={{ marginRight: '1rem' }}
 
 
                             value={regNo}
@@ -394,4 +380,4 @@ const Payments = () => {
     );
 };
 
-export default Payments;
+export default Assignment;
