@@ -1,164 +1,193 @@
 import Footer from '@app/modules/main/footer/Footer';
-import { ContentHeader } from '@components';
 import DataTable from '../../../components/datatable-original/Datatable';
-import Button from '@mui/material/Button';
-import Modal from '@mui/material/Modal';
-import React, { useEffect } from 'react';
-import Box from '@mui/material/Box';
-import Container from '@mui/material/Container'
-import TextField from '@mui/material/TextField';
+
+import React, { ChangeEvent, useEffect, useState } from 'react';
+
 
 import VisibilityIcon from '@mui/icons-material/Visibility';
-import EditIcon from '@mui/icons-material/Edit';
-import DeleteIcon from '@mui/icons-material/Delete';
 
 import { toast } from 'react-toastify';
+import axios from '../../../utils/axios';
 
-import { createStudent, updateStudentStatus, deleteStudent } from '@app/services/admin/studentServices';
-import { Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, FormControlLabel, FormGroup, Switch } from '@mui/material';
+
+
+
+
 import { ColorRing } from 'react-loader-spinner';
 import { fetchCourseById } from '@app/services/admin/lecturerServices';
 import { useParams } from 'react-router-dom';
+import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
+import 'react-tabs/style/react-tabs.css';
+import { Button, Form, Modal, OverlayTrigger, Tooltip } from 'react-bootstrap';
+import { createClassroom } from '@app/services/admin/classServices';
+import DatePicker from 'react-date-picker';
+import 'react-date-picker/dist/DatePicker.css';
+import 'react-calendar/dist/Calendar.css';
+
 
 
 const Course = () => {
-    const [open, setOpen] = React.useState(false);
-    const [pending, setpending] = React.useState(true);
-    const [loading, setLoading] = React.useState(false);
-    const [openAdd, setOpenAdd] = React.useState(false);
-    const [openEdit, setOpenEdit] = React.useState(false);
-    const [openDelete, setOpenDelete] = React.useState(false);
-    const [editStudentStatus, setEditStudentStatus] = React.useState(false);
-    const [editStudentSub, setEditStudentSub] = React.useState(false);
-    const { id } = useParams();
 
-    const [selectedStudent, setSelectedStudent] = React.useState<any>();
+    const { id } = useParams();
+    const [pending, setPending] = useState(false)
+    const [loading, setLoading] = useState(false)
+    const [open, setOpen] = useState(false)
+    const [openAssignment, setOpenAssignment] = useState(false)
+    const [openSubmission, setOpenSubmission] = useState(false)
+    const [openAttendance, setOpenAttendance] = useState(false)
+
+    const [title, setTitle] = React.useState('');
+    const [errors, setErrors] = React.useState<any>('');
+    const [link, setLink] = React.useState('');
+    const [description, setDescription] = React.useState('');
+    const [file, setFile] = React.useState<any>();
     const [filename, setFilename] = React.useState("");
-    const [file, setFile] = React.useState(null);
-    const [email, setEmail] = React.useState('');
-    const [firstName, setFirstName] = React.useState('');
-    const [lastName, setLastName] = React.useState('');
-    const [regNo, setRegNo] = React.useState('');
-    const [phoneNumber, setPhoneNumber] = React.useState('');
+    const [selectedAssignment, setSelectedAssignment] = React.useState<any>();
+    const [selectedAttendance, setSelectedAttendance] = React.useState<any>();
+
+    const [expiresOn, setExpiresOn] = React.useState<any>();
+
+
     const [course, setCourse] = React.useState<any>();
+
+
+
 
     const handleOpen = () => {
         setOpen(true);
-    };
+    }
     const handleClose = () => {
         setOpen(false);
-    };
-
-    const handleOpenEdit = () => {
-        setOpenEdit(true);
-    };
-    const handleCloseEdit = () => {
-        setOpenEdit(false);
-    };
-
-
-
-
-
-    const handleOpenDelete = () => {
-        setOpenDelete(true);
-    };
-    const handleCloseDelete = () => {
-        setOpenDelete(false);
-    };
-    const handleOpenAdd = () => {
-        setOpenAdd(true);
+    }
+    const handleOpenAssignment = () => {
+        setOpenAssignment(true);
     }
 
-    const handleCloseAdd = () => {
-        setOpenAdd(false);
-    }
-    const handleButtonClick = (type: any, student: any) => {
-        setSelectedStudent(student);
-        if (type === 'edit') {
-            // await changeStudentPass(student.id);
-            // toast.success('Student updated Successfully!');
+    const downloadAttendance = async () => {
+        setLoading(true)
+        axios.get('/attendance-export/' + selectedAttendance.id, { responseType: 'blob' }).then((res: any) => {
+            const url = window.URL.createObjectURL(new Blob([res.data]));
+            const link = document.createElement('a');
+            link.href = url;
+            link.setAttribute('download', 'Attendance.xlsx'); //or any other extension
+            document.body.appendChild(link);
+            link.click();
+            toast.success("Request was successful");
 
-            setEditStudentStatus(student.is_admin);
-            setEditStudentSub(student.profile.subscription === 'premium')
-            handleOpenEdit();
-        } else {
-            handleOpenDelete();
-        }
-    }
-
-    const performActionEdit = async () => {
-        setLoading(true);
-        const res = await updateStudentStatus(selectedStudent?.id, { is_admin: editStudentStatus, subscription: editStudentSub ? 'premium' : 'basic' });
-        if (res.status === 'success') {
-            toast.success('Student updated Successfully!');
-            handleCloseEdit();
-            getCourse();
-        }
-        setLoading(false);
+        }).finally(() => {
+            setLoading(false);
+        })
     }
 
-    const performActionDelete = async () => {
-        setLoading(true);
-        const res = await deleteStudent(selectedStudent?.id, selectedStudent?.is_active);
-        if (res.status === 'success') {
-            toast.success('Student Deleted Successfully!');
-            handleCloseDelete();
-            getCourse();
-        }
-        setLoading(false);
+    const handleOpenSubmissions = (data: any) => {
+        console.log(data, 'here')
+
+        setOpenSubmission(true);
+        setSelectedAssignment(data);
+    }
+    const handleCloseSubmissions = () => {
+        setOpenSubmission(false);
+    }
+    const handleCloseAssignment = () => {
+        setOpenAssignment(false);
+    }
+
+    const handleOpenAttendance = (data: any) => {
+
+        setSelectedAttendance(data);
+
+        setOpenAttendance(true);
+    }
+    const handleCloseAttendance = () => {
+        setOpenAttendance(false);
     }
 
     const getCourse = async () => {
         const courses = await fetchCourseById(id);
-        console.log(courses);
         setCourse(courses.course);
-        setpending(false);
+        setPending(false);
     }
 
-    const createStudentAction = async () => {
+    const createClass = async () => {
         setLoading(true);
-        const data = {
-            first_name: firstName,
-            last_name: lastName,
-            email: email,
-            phone_number: phoneNumber,
-            reg_no: regNo
-        }
-        const student = await createStudent(data);
-        if (student.message === 'successful') {
-            toast.success('Student Created Successfully!');
-            handleCloseAdd();
-            getCourse();
-            setLoading(false);
-        }
-        else {
-            toast.error('Something went wrong!');
-        }
+        try {
+            let classroom = await createClassroom({
+                title,
+                description,
+                link,
+                course_id: id,
+                expires_on: expiresOn
+            })
+            console.log(classroom)
+            toast.success('Class created');
 
+            getCourse();
+        } catch (error) {
+
+        }
+        finally {
+            setLoading(false)
+        }
+    }
+    const handleFileUpload = async (e: ChangeEvent<HTMLInputElement>) => {
+        if (!e.target.files) {
+            return;
+        }
+        const file: any = e.target.files[0];
+        setFile(file);
+        const { name } = file;
+
+        setFilename(name);
     }
 
 
-    const handleChangeSub = (event: React.ChangeEvent<HTMLInputElement>) => {
-        setEditStudentSub(event.target.checked);
-    };
+    const createAssignmentAction = async () => {
+        setLoading(true);
+        try {
+            setLoading(true);
+            let formData = new FormData();
+
+            let cloudName = 'ded69cslb';
+            formData.append('upload_preset', 'ml_default');
+            //@ts-ignore
+            formData.append("file", file);
+            let url = `https://api.cloudinary.com/v1_1/${cloudName}/upload`;
+            fetch(url, {
+                method: 'POST',
+                body: formData
+            }).then((response) => response.json()).then((data) => {
+                let res = axios.post('/assignments', {
+                    file_url: data.url,
+                    title: title,
+                    link: link,
+                    description: description,
+                    deadline: expiresOn,
+                    course_id: id
+                }).then((res: any) => {
+                    if (res) {
+                        toast.success('Assignment created');
+                    }
+                    setLoading(false);
+                    handleCloseAssignment();
+                    getCourse();
+
+                }).catch((error) => {
+                    toast.error('An error occured')
+                })
 
 
 
+            }).catch((error) => {
+                toast.error('Error uploading Document')
+            })
+        } catch (error) {
 
-    const style = {
-        position: 'absolute' as 'absolute',
-        top: '50%',
-        left: '50%',
-        transform: 'translate(-50%, -50%)',
-        width: 600,
-        bgcolor: 'background.paper',
-        border: '2px solid #000',
-        boxShadow: 24,
-        pt: 2,
-        px: 4,
-        pb: 3,
-    };
+        }
+        finally {
+            setLoading(false)
+        }
+    }
+
 
 
 
@@ -172,56 +201,81 @@ const Course = () => {
                 <div>
                     <h1 className='text-center'>{course.title}</h1>
                     <section className="content">
-                        <h3>Description</h3>
                         <p>{course.description}</p>
                     </section>
-                    <section className="content">
+                    <Tabs>
+                        <TabList >
+                            <Tab>Classes</Tab>
+                            <Tab>Assignments</Tab>
 
-                        <div className="container-fluid card">
+                        </TabList>
 
-                            <h3 className='card-header'>Classrooms</h3>
+
+
+                        <TabPanel >
+                            <div className=''>
+                                <Button variant='warning' className='float-right d-inline-block my-3' onClick={() => handleOpen()}>Create Class</Button>
+                            </div><br />
+
                             <DataTable slots={{
-                                4: (data: any, row: any) => (
-                                    <div className='d-flex justify-content-center'>
-                                        <span onClick={() => handleButtonClick('edit', row)} ><VisibilityIcon className='text-success mx-2 cursor-pointer' /></span>
+                                5: (data: any, row: any) => (
+                                    <OverlayTrigger placement='top' overlay={<Tooltip id={row.id}>View Attendance</Tooltip>}>
+                                        <Button disabled={row.attendance?.students.length < 1} as="span" variant='outline-light' size='sm' onClick={() => handleOpenAttendance(row)}><VisibilityIcon className='text-success mx-2 pointer' /></Button>
 
-                                    </div>
+                                    </OverlayTrigger>
 
                                 )
                             }} className='table table-striped table-bordered order-column dt-head-center' options={{
                                 buttons: {
                                     buttons: ['copy', 'csv']
                                 }
-                            }} data={course.classrooms} columns={[{ data: 'title', title: 'Title' }, { data: 'link', title: 'Link' }, { data: 'description', title: 'Description' }, { data: 'expires_on', title: 'Expiry' }, { title: 'Action' }]}>
+                            }} data={course.classrooms} columns={[{ data: 'title', title: 'Title' }, { data: 'link', title: 'Link' }, { data: 'description', title: 'Description' }, {
+                                data: 'attendance', title: 'No. Attendances', render(data, type, row, meta) {
+                                    return data ? data?.students.length : 0
+                                },
+                            }, { data: 'expires_on', title: 'Expiry' }, { title: 'Action' }]}>
 
                             </DataTable>
 
-                        </div>
-
-                        <br /><br />
+                        </TabPanel>
 
 
-                        <div className="container-fluid card">
 
-                            <h3 className='card-header'>Assignments</h3>
+
+                        <TabPanel >
+                            <div className=''>
+                                <Button variant='warning' className='float-right d-inline-block my-3' onClick={() => handleOpenAssignment()}>Create Assignment</Button>
+
+                            </div><br />
+
                             <DataTable slots={{
-                                4: (data: any, row: any) => (
-                                    <div className='d-flex justify-content-center'>
-                                        <span onClick={() => handleButtonClick('edit', row)} ><VisibilityIcon className='text-success mx-2 cursor-pointer' /></span>
+                                6: (data: any, row: any) => (
+                                    <OverlayTrigger placement='top' overlay={<Tooltip id={row.id}>View Submissions</Tooltip>}>
+                                        <Button as="span" variant='outline-light' size='sm' onClick={() => handleOpenSubmissions(row)}><VisibilityIcon className='text-success mx-2 pointer' /></Button>
 
-                                    </div>
+                                    </OverlayTrigger>
 
                                 )
                             }} className='table table-striped table-bordered order-column dt-head-center' options={{
                                 buttons: {
                                     buttons: ['copy', 'csv']
                                 }
-                            }} data={course.assignments} columns={[{ data: 'title', title: 'Title' }, { data: 'link', title: 'Link' }, { data: 'description', title: 'Description' }, { data: 'expires_on', title: 'Expiry' }, { title: 'Action' }]}>
+                            }} data={course.assignments} columns={[{ data: 'title', title: 'Title' }, { data: 'link', title: 'Link' }, { data: 'description', title: 'Description' }, { data: 'deadline', title: 'Expiry' }, {
+                                data: 'file_url', title: 'file', render(data, type, row, meta) {
+                                    return data ? `<a href=${data} target='_blank'>View</a>` : 'No file'
+                                },
+                            }, {
+                                data: 'submissions', title: 'No. Submissions', render(data, type, row, meta) {
+                                    return data ? data.length : 0
+                                },
+                            }, { title: 'Action' }]}>
 
                             </DataTable>
 
-                        </div>
-                    </section>
+                        </TabPanel>
+
+
+                    </Tabs>
                     <Footer />
 
                 </div>
@@ -236,176 +290,153 @@ const Course = () => {
 
             />Loading... Please wait </div>)}
 
+            <Modal show={open} onHide={handleClose} size='lg' centered>
+                <Modal.Header closeButton>
+                    <Modal.Title>Create Class</Modal.Title>
+                </Modal.Header>
+                <Modal.Body>
+                    <Form>
+                        <Form.Group controlId='classform.title'>
+                            <Form.Label>Title</Form.Label>
+                            <Form.Control type='text' placeholder='Title' value={title} onChange={(e) => setTitle(e.target.value)}></Form.Control>
+                        </Form.Group>
 
+                        <Form.Group controlId='classform.description'>
+                            <Form.Label>Description</Form.Label>
+                            <Form.Control as='textarea' placeholder='Description' value={description} onChange={(e) => setDescription(e.target.value)}></Form.Control>
+                        </Form.Group>
 
-            <Modal
-                open={openAdd}
-                onClose={handleCloseAdd}
-                aria-labelledby="child-modal-title"
-                aria-describedby="child-modal-description">
-                <Container sx={{
-                    ...style, borderRadius: '5px', paddingY: '1.5rem'
-                }} maxWidth="lg" component="form" noValidate>
-                    <h5 id="child-modal-title" className='text-center my-3'>Create Student Form</h5>
-                    <Container
-                        sx={{ marginTop: '1rem', marginBottom: '1rem', display: 'flex' }}>
-
-                        <TextField
-                            id="outlined-controlled"
-                            size='small'
-                            label="Email"
-                            value={email}
-                            sx={{ marginRight: '1rem' }}
-                            onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
-                                setEmail(event.target.value);
-                            }}
-                        />
-                        <TextField
-                            id="outlined-controlled"
-                            label="First Name"
-                            size='small'
-
-                            value={firstName}
-                            onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
-                                setFirstName(event.target.value);
-                            }}
-                        />
-                    </Container>
-
-                    <Container
-                        sx={{ marginTop: '1rem', marginBottom: '1rem', display: 'flex' }}>
-
-                        <TextField
-                            id="outlined-controlled"
-                            label="Last Name"
-                            size='small'
-                            sx={{ marginRight: '1rem' }}
-
-
-                            value={lastName}
-                            onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
-                                setLastName(event.target.value);
-                            }}
-                        />
-                        <TextField
-                            id="outlined-controlled"
-                            label="Phone Number"
-                            size='small'
-
-                            value={phoneNumber}
-                            onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
-                                setPhoneNumber(event.target.value);
-                            }}
-                        />
-                    </Container>
-
-                    <Container
-                        sx={{ marginTop: '1rem', marginBottom: '1rem', display: 'flex' }}>
-
-                        <TextField
-                            id="outlined-controlled"
-                            label="Reg No"
-                            size='small'
-                            sx={{ marginRight: '1rem' }}
-
-
-                            value={regNo}
-                            onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
-                                setRegNo(event.target.value);
-                            }}
-                        />
-
-                    </Container>
-
-
-                    <br />
-                    <Box sx={{
-                        marginRight: "1rem",
-                        float: 'right'
-                    }}>
-                        <Button variant='outlined' size='small' sx={{
-                            marginRight: ".2rem"
-                        }} onClick={handleCloseAdd}>Cancel</Button>
-                        <Button variant='contained' size='small' onClick={createStudentAction} disabled={loading}>Submit</Button>
-                    </Box>
-
-                    {/* <Button variant="outlined" onClick={handleClose}>Close Child Modal</Button> */}
-                </Container>
+                        <Form.Group controlId='classform.link'>
+                            <Form.Label>Link</Form.Label>
+                            <Form.Control type='text' placeholder='Link' value={link} onChange={(e) => setLink(e.target.value)}></Form.Control>
+                        </Form.Group>
+                        <Form.Group controlId='classform.link'>
+                            <Form.Label>Expiry</Form.Label>
+                            <Form.Control as={'input'} type="date" placeholder='Link' value={expiresOn} onChange={(e) => setExpiresOn(e.target.value)}></Form.Control>
+                        </Form.Group>
+                    </Form>
+                </Modal.Body>
+                <Modal.Footer>
+                    <Button variant="secondary" onClick={handleClose}>
+                        Close
+                    </Button>
+                    <Button variant="warning" onClick={createClass} disabled={loading} >
+                        Save Changes
+                    </Button>
+                </Modal.Footer>
             </Modal>
 
+            <Modal show={openAssignment} onHide={handleCloseAssignment} size='lg' centered>
+                <Modal.Header closeButton>
+                    <Modal.Title>Create Assignment</Modal.Title>
+                </Modal.Header>
+                <Modal.Body>
+                    <Form>
+                        <Form.Group controlId='classform.title'>
+                            <Form.Label>Title</Form.Label>
+                            <Form.Control type='text' placeholder='Title' value={title} onChange={(e) => setTitle(e.target.value)}></Form.Control>
+                        </Form.Group>
 
-            <Modal
-                open={openEdit}
-                onClose={handleCloseEdit}
-                aria-labelledby="child-modal-title"
-                aria-describedby="child-modal-description">
-                <Container sx={{
-                    ...style, borderRadius: '5px', paddingY: '1.5rem'
-                }} maxWidth="lg" component="form" noValidate>
-                    <h5 id="child-modal-title" className='text-center my-3'>Edit Student Status</h5>
-                    <Container
-                        sx={{ marginTop: '1rem', marginBottom: '1rem', display: 'flex' }}>
+                        <Form.Group controlId='classform.description'>
+                            <Form.Label>Description</Form.Label>
+                            <Form.Control as='textarea' placeholder='Description' value={description} onChange={(e) => setDescription(e.target.value)}></Form.Control>
+                        </Form.Group>
 
-                        <TextField
-                            id="outlined-controlled"
-                            size='small'
-                            label="Email"
-                            value={selectedStudent?.email}
-                            sx={{ marginRight: '1rem' }}
-                            onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
-                                setEmail(event.target.value);
-                            }}
-                            disabled
-                        />
+                        <Form.Group controlId='classform.link'>
+                            <Form.Label>Link</Form.Label>
+                            <Form.Control type='text' placeholder='Link' value={link} onChange={(e) => setLink(e.target.value)}></Form.Control>
+                        </Form.Group>
+                        <Form.Group controlId='classform.deadline'>
+                            <DatePicker
+                                value={expiresOn}
+                                onChange={(newValue) => setExpiresOn(newValue)}></DatePicker>
+                        </Form.Group>
 
-                    </Container>
+                        <Form.Group controlId='classform.link'>
+                            <Form.File
+                                className="position-relative"
+                                required
+                                name="file"
+                                label="File"
+                                onChange={handleFileUpload}
+                                isInvalid={!!errors.file}
+                                feedback={errors.file}
+                                id="validationFormik107"
+                                feedbackTooltip
+                            />
+                        </Form.Group>
+                    </Form>
+                </Modal.Body>
+                <Modal.Footer>
+                    <Button variant="secondary" onClick={handleCloseAssignment}>
+                        Close
+                    </Button>
+                    <Button variant="warning" onClick={createAssignmentAction} disabled={loading} >
+                        Save Changes
+                    </Button>
+                </Modal.Footer>
+            </Modal>
 
-                    <Container
-                        sx={{ marginTop: '1rem', marginBottom: '1rem', display: 'flex' }}>
+            <Modal show={openSubmission} onHide={handleCloseSubmissions} size='lg' centered>
+                <Modal.Header closeButton>
+                    <Modal.Title>Submissions</Modal.Title>
+                </Modal.Header>
+                <Modal.Body>
+                    <DataTable className='table table-striped table-bordered order-column dt-head-center' options={{
+                        buttons: {
+                            buttons: ['copy', 'csv']
+                        }
+                    }} data={selectedAssignment?.submissions} columns={[{ data: 'student.matric_no', title: 'Matric No' },
+                    {
+                        data: 'link', title: 'Link', render(data, type, row, meta) {
+                            return data ? `<a href=${data} target='_blank'>View</a>` : 'No file'
+                        }
+                    }, { data: 'feedbacks', title: 'Feedback' }, {
+                        data: 'created_at', title: 'Date Submitted', render(data, type, row, meta) {
+                            return new Date(data).toLocaleString()
+                        },
+                    }]}>
 
-                        <FormGroup>
-                            {/* <FormControlLabel control={<Switch inputProps={{ 'aria-label': 'controlled' }} onChange={handleChangeStat} checked={editStudentStatus} />} label="Admin Status" /> */}
-                            <FormControlLabel control={<Switch inputProps={{ 'aria-label': 'controlled' }} onChange={handleChangeSub} checked={editStudentSub} />} label="Premium Subscription" />
-                        </FormGroup>
-                    </Container>
+                    </DataTable>
+                </Modal.Body>
+                <Modal.Footer>
 
+                </Modal.Footer>
+            </Modal>
 
-                    <br />
-                    <Box sx={{
-                        marginRight: "1rem",
-                        float: 'right'
-                    }}>
-                        <Button variant='outlined' size='small' sx={{
-                            marginRight: ".2rem"
-                        }} onClick={handleCloseEdit}>Cancel</Button>
-                        <Button variant='contained' size='small' onClick={performActionEdit} disabled={loading}>Submit</Button>
-                    </Box>
+            <Modal show={openAttendance} onHide={handleCloseAttendance} size='lg' centered>
+                <Modal.Header closeButton>
+                    <Modal.Title>Attendance</Modal.Title>
+                </Modal.Header>
+                <Modal.Body>
+                    <div className=''>
+                        <Button variant='warning' className='float-right d-inline-block my-3' disabled={selectedAttendance?.attendance?.students.length < 1} onClick={() => downloadAttendance()}>Download</Button>
+                    </div><br />
+                    <DataTable className='table table-striped table-bordered order-column dt-head-center' options={{
+                        buttons: {
+                            buttons: ['copy', 'csv']
+                        }
+                    }} data={selectedAttendance?.attendance?.students} columns={[{ data: 'matric_no', title: 'Matric No' }, {
+                        data: 'first_name', title: 'Name', render(data, type, row, meta) {
+                            return `${row.first_name} ${row.last_name}`
+                        },
+                    }, {
+                        data: 'created_at', title: 'Time Clocked', render(data, type, row, meta) {
+                            return new Date(data).toLocaleString()
+                        },
+                    }]}>
 
-                    {/* <Button variant="outlined" onClick={handleClose}>Close Child Modal</Button> */}
-                </Container>
+                    </DataTable>
+                </Modal.Body>
+                <Modal.Footer>
+
+                </Modal.Footer>
             </Modal>
 
 
 
 
-            <Dialog
-                open={openDelete}
-                onClose={handleCloseDelete}
-                aria-labelledby="child-modal-title"
-                aria-describedby="child-modal-description">
 
-                <DialogTitle align='center' variant='h5'>Set Student Inactive</DialogTitle>
-                <DialogContent>
-                    <DialogContentText>Are you sure you want to <b>{selectedStudent?.is_active ? 'deactivate' : 'reactivate'}</b> student <b>{selectedStudent?.profile?.first_name}</b>?</DialogContentText>
-                </DialogContent>
-
-                <DialogActions>
-                    <Button variant='outlined' size='small' sx={{
-                        marginRight: ".2rem"
-                    }} onClick={handleCloseDelete}>Cancel</Button>
-                    <Button variant='contained' size='small' color='error' onClick={performActionDelete} disabled={loading}>Submit</Button>
-                </DialogActions>
-            </Dialog>
         </div>
     );
 };

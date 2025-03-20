@@ -35,11 +35,7 @@ export const MENU: IMenuItem[] = [
     icon: 'fas fa-envelope-square nav-icon',
     path: '/lecturer/assignments',
   },
-  {
-    name: 'Submissions',
-    icon: 'fas fa-envelope-square nav-icon',
-    path: '/lecturer/submissions',
-  },
+
 
 ];
 

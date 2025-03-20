@@ -32,6 +32,26 @@ export const fetchAllCourses = async () => {
     }
 }
 
+export const fetchAllClasses = async () => {
+    try {
+        const courses = await axios.get('/lecturer/all-classrooms');
+        return courses.data;
+
+    } catch (error: any) {
+        return error.message
+    }
+}
+
+export const fetchAllAssignments = async () => {
+    try {
+        const courses = await axios.get('/lecturer/all-assignments');
+        return courses.data;
+
+    } catch (error: any) {
+        return error.message
+    }
+}
+
 export const fetchCourseById = async (id: any) => {
     try {
         const course = await axios.get('/lecturer/courses/' + id);
