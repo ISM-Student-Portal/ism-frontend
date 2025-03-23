@@ -71,9 +71,18 @@ const Admins = () => {
 
 
   const getAdmins = async () => {
-    const admins = await fetchAllAdmins();
-    setRows(admins.admins);
-    setpending(false);
+    try {
+      setLoading(true)
+      const admins = await fetchAllAdmins();
+      setRows(admins.admins);
+      setpending(false);
+    } catch (error) {
+      
+    }
+    finally{
+      setLoading(false)
+    }
+   
   }
 
   const deactivateAdminAction = async () => {
@@ -136,7 +145,7 @@ const Admins = () => {
       <section className="content">
 
         <div className="container-fluid">
-          {rows.length > 0 ? (
+          {!loading ? (
             <div>
               <div className="d-grid gap-2 d-md-block py-2 my-5">
                 <Button size='sm' variant='warning' onClick={handleOpenAdd} className="float-right mx-1" type="button">Invite Admin</Button>
