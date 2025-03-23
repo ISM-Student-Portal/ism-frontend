@@ -70,9 +70,18 @@ const Courses = () => {
 
 
     const getCourses = async () => {
-        const courses = await fetchAllCourses();
-        setRows(courses.courses);
-        setpending(false);
+        try {
+
+            setLoading(true);
+            const courses = await fetchAllCourses();
+            setRows(courses.courses);
+            setpending(false);
+        } catch (error) {
+
+        }
+        finally {
+            setLoading(false);
+        }
     }
 
     const createCourseAction = async () => {
@@ -149,7 +158,7 @@ const Courses = () => {
             <section className="content">
 
                 <div className="container-fluid">
-                    {rows.length > 0 ? (
+                    {!loading ? (
                         <div>
                             <div className="d-grid gap-2 d-md-block py-2 my-5">
                                 <Button size='sm' variant='warning' onClick={handleOpenAdd} className="float-right mx-1" type="button">Create Course</Button>

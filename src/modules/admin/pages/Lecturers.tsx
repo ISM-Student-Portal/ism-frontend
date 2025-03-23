@@ -95,9 +95,18 @@ const Lecturers = () => {
 
 
     const getLecturers = async () => {
-        const lecturers = await fetchAllLecturers();
-        setRows(lecturers.lecturers);
-        setpending(false);
+        try {
+            setLoading(true)
+            const lecturers = await fetchAllLecturers();
+            setRows(lecturers.lecturers);
+        }
+        catch (error) {
+
+        }
+        finally {
+            setLoading(false)
+        }
+
     }
 
     const createLecturer = async () => {
@@ -143,7 +152,7 @@ const Lecturers = () => {
             <section className="content">
 
                 <div className="container-fluid">
-                    {rows.length > 0 ? (
+                    {!loading ? (
                         <div>
                             <div className="d-grid gap-2 d-md-block py-2 my-5">
                                 <Button size='sm' variant='warning' onClick={handleOpenAdd} className="float-right mx-1" type="button">Invite Lecturer</Button>
