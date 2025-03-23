@@ -22,6 +22,28 @@ export const getDashboardStats = async () => {
     }
 }
 
+export const inviteLecturer = async (data: any) => {
+    try {
+        const stats = await axios.post('/admin/add-lecturer', data);
+        return stats.data;
+
+    } catch (error: any) {
+        return error.message
+    }
+}
+
+export const inviteAdmin = async (data: any) => {
+    try {
+        const stats = await axios.post('/admin/add-admin', data);
+        return stats.data;
+
+    } catch (error: any) {
+        return error.message
+    }
+}
+
+
+
 export const fetchAllCourses = async () => {
     try {
         const courses = await axios.get('/lecturer/courses');

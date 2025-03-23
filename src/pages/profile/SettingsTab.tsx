@@ -15,16 +15,12 @@ import { useDispatch } from 'react-redux';
 
 const SettingsTab = ({ isActive, profile }: { isActive: boolean, profile: any }) => {
   const [value, setValue] = useState();
-  const [country, setCountry] = useState(profile?.profile?.country);
-  const [city, setCity] = useState(profile?.profile?.city);
-  const [address, setAddress] = useState(profile?.profile?.address);
-  const [firstName, setFirstName] = useState(profile?.profile?.first_name);
-  const [lastName, setLastName] = useState(profile?.profile?.last_name);
-  const [middleName, setMiddleName] = useState(profile?.profile?.middle_name);
-  const [altEmail, setAltEmail] = useState(profile?.profile?.alt_email);
-  const [altPhone, setAltPhone] = useState(profile?.profile?.alt_phone);
-  const [phone, setPhone] = useState(profile?.profile?.phone);
-  const [nameCert, setNameCert] = useState(profile?.profile?.name_on_cert);
+  const [country, setCountry] = useState(profile?.country);
+  const [city, setCity] = useState(profile?.city);
+  const [firstName, setFirstName] = useState(profile?.first_name);
+  const [lastName, setLastName] = useState(profile?.last_name);
+  const [phone, setPhone] = useState(profile?.phone);
+  const [nameCert, setNameCert] = useState(profile?.name_on_cert);
 
   const [email, setEmail] = useState(profile?.email);
   const [loading, setLoading] = useState(false);
@@ -48,10 +44,7 @@ const SettingsTab = ({ isActive, profile }: { isActive: boolean, profile: any })
         last_name: lastName,
         country: country?.label,
         city: city,
-        address: address,
-        alt_email: altEmail,
-        alt_phone: altPhone,
-        middle_name: middleName,
+
         name_on_cert: nameCert
       });
       if (pCh.status === 'success') {
@@ -59,7 +52,7 @@ const SettingsTab = ({ isActive, profile }: { isActive: boolean, profile: any })
         dispatch(setProfile(pCh.user_profile));
         localStorage.setItem(
           'profile',
-          JSON.stringify({...pCh.user_profile  })          
+          JSON.stringify({ ...pCh.user_profile })
         );
 
       }
@@ -96,23 +89,7 @@ const SettingsTab = ({ isActive, profile }: { isActive: boolean, profile: any })
           </div>
         </div>
 
-        <div className="form-group row">
-          <label htmlFor="inputName" className="col-sm-2 col-form-label">
-            Middle Name
-          </label>
-          <div className="col-sm-10">
-            <input
-              type="text"
-              className="form-control"
-              id="inputName"
-              placeholder=""
-              value={middleName}
-              onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
-                setMiddleName(event.target.value);
-              }}
-            />
-          </div>
-        </div>
+
 
         <div className="form-group row">
           <label htmlFor="inputName" className="col-sm-2 col-form-label">
@@ -147,23 +124,7 @@ const SettingsTab = ({ isActive, profile }: { isActive: boolean, profile: any })
           </div>
         </div>
 
-        <div className="form-group row">
-          <label htmlFor="inputEmail" className="col-sm-2 col-form-label">
-            Alt Email
-          </label>
-          <div className="col-sm-10">
-            <input
-              type="email"
-              className="form-control"
-              id="inputEmail"
-              placeholder="Email"
-              value={altEmail}
-              onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
-                setAltEmail(event.target.value);
-              }}
-            />
-          </div>
-        </div>
+
         <div className="form-group row">
           <label htmlFor="inputName2" className="col-sm-2 col-form-label">
             Phone
@@ -180,20 +141,7 @@ const SettingsTab = ({ isActive, profile }: { isActive: boolean, profile: any })
           </div>
         </div>
 
-        <div className="form-group row">
-          <label htmlFor="inputName2" className="col-sm-2 col-form-label">
-            Alt Phone
-          </label>
-          <div className="col-sm-10">
-            <PhoneInput
 
-              initialValueFormat='national'
-              placeholder="Enter phone number"
-              value={altPhone}
-              //@ts-ignore
-              onChange={setAltPhone} />
-          </div>
-        </div>
         <div className="form-group row">
           <div className=" offset-sm-2 col-sm-3">
 
@@ -213,18 +161,7 @@ const SettingsTab = ({ isActive, profile }: { isActive: boolean, profile: any })
               }}
             />
           </div>
-          <div className="col-sm-3">
-            <input
-              type="text"
-              className="form-control"
-              id="inputAddress"
-              placeholder="Address"
-              value={address}
-              onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
-                setAddress(event.target.value);
-              }}
-            />
-          </div>
+
         </div>
         <div className="form-group row">
           <label htmlFor="inputSkills" className="col-sm-3 col-form-label">

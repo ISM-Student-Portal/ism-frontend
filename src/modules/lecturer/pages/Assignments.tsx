@@ -47,9 +47,16 @@ const Assignments = () => {
         })
     }
     const getClasses = async () => {
-        const courses = await fetchAllAssignments();
-        setRows(courses.assignments);
-        setpending(false);
+        try {
+            setLoading(true);
+            const courses = await fetchAllAssignments();
+            setRows(courses.assignments);
+        }
+        catch (error) { }
+        finally {
+            setLoading(false);
+        }
+
     }
     const handleCloseSubmissions = () => {
         setOpenSubmission(false);
@@ -60,11 +67,11 @@ const Assignments = () => {
     }, [])
     return (
         <div>
-            <ContentHeader title="Classrooms" />
+            <ContentHeader title="Assignments" />
             <section className="content">
 
                 <div className="container-fluid">
-                    {rows.length > 0 ? (
+                    {!loading ? (
                         <div>
 
                             <div></div>

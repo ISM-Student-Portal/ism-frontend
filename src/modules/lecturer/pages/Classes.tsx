@@ -47,8 +47,17 @@ const Classes = () => {
         })
     }
     const getClasses = async () => {
-        const courses = await fetchAllClasses();
-        setRows(courses.classrooms);
+        try {
+            setLoading(true);
+            const courses = await fetchAllClasses();
+            setRows(courses.classrooms);
+        } catch (error) {
+
+        }
+        finally {
+            setLoading(false);
+        }
+
         setpending(false);
     }
     const handleCloseAttendance = () => {
@@ -64,7 +73,7 @@ const Classes = () => {
             <section className="content">
 
                 <div className="container-fluid">
-                    {rows.length > 0 ? (
+                    {!loading ? (
                         <div>
 
                             <div></div>

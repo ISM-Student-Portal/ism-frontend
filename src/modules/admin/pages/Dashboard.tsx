@@ -8,7 +8,8 @@ interface Stats {
   classes: number,
   basicSub: number,
   premiumSub: number,
-  paidStudent: number
+  paidStudent: number,
+  partPaymentStudent: number
 }
 
 const Dashboard = () => {
@@ -115,6 +116,25 @@ const Dashboard = () => {
                   </a>
                 </div>
               </div>
+              <div className="col-lg-3 col-6">
+                <div className="small-box bg-light">
+                  <div className="inner">
+                    <h3>{stats?.partPaymentStudent}</h3>
+
+                    <p>Students Paid Part</p>
+                  </div>
+                  <div className="icon">
+                    <i className="ion ion-bag" />
+                  </div>
+                  <a href="/admin/payments" className="small-box-footer">
+                    More info <i className="fas fa-arrow-circle-right" />
+                  </a>
+                </div>
+              </div>
+            </div>
+
+            <div className="row">
+
             </div>
           </div>
         </section>

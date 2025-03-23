@@ -44,6 +44,7 @@ import Profile from './pages/profile/Profile';
 import StudentClassroom from './pages/student_pages/StudentClassroom';
 import Assignment from './pages/student_pages/Assignment';
 import Submission from './pages/student_pages/Submission';
+import Student from './modules/admin/pages/Student';
 
 const { VITE_NODE_ENV } = import.meta.env;
 
@@ -143,7 +144,9 @@ const App = () => {
           <Route path="/admin" element={<AdminMain />}>
             <Route path='' element={<Dashboard />} />
             <Route path='students' element={<Students />} />
+            <Route path='students/:id' element={<Student />} />
             <Route path='payments' element={<Payments />} />
+            <Route path='courses/:id' element={<LecturerCourse />} />
             <Route path='courses' element={<Courses />} />
             <Route path='admins' element={<Admins />} />
             <Route path='lecturers' element={<Lecturers />} />

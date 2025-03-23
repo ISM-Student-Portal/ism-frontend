@@ -31,9 +31,49 @@ export const fetchAllPayments = async () => {
     }
 }
 
+export const deactivateAdmin = async (id: any) => {
+    try {
+        const student = await axios.patch('/admin/deactivate-admin/' + id);
+        return student.data;
+
+    } catch (error: any) {
+        return error.message
+    }
+}
+
+export const deactivateStudent = async (id: any) => {
+    try {
+        const student = await axios.patch('/admin/deactivate-student/' + id);
+        return student.data;
+
+    } catch (error: any) {
+        return error.message
+    }
+}
+export const deactivateLecturer = async (id: any) => {
+    try {
+        const student = await axios.patch('/admin/deactivate-lecturer/' + id);
+        return student.data;
+
+    } catch (error: any) {
+        return error.message
+    }
+}
+
+
 export const createStudent = async (data: any) => {
     try {
         const student = await axios.post('/create-user', data);
+        return student.data;
+
+    } catch (error: any) {
+        return error.message
+    }
+}
+
+export const fetchStudentById = async (id: any) => {
+    try {
+        const student = await axios.get('/admin/student/' + id);
         return student.data;
 
     } catch (error: any) {

@@ -46,6 +46,7 @@ const Profile = () => {
     setUploadOpen(false);
   };
   const dispatch = useDispatch();
+  console.log(profile)
 
 
   const style = {
@@ -167,12 +168,12 @@ const Profile = () => {
                       width={100}
                       height={100}
                       className='ro'
-                      src={profile?.profile?.profile_pix_url ? profile?.profile?.profile_pix_url : "/img/default-profile.png"}
+                      src={profile?.profile_pix_url ? profile?.profile_pix_url : "/img/default-profile.png"}
                       alt="User profile"
                     />
                   </div>
                   <h3 className="profile-username text-center">
-                    {profile?.profile?.first_name} {profile?.profile?.last_name}
+                    {profile?.first_name} {profile?.last_name}
                   </h3>
 
                 </div>
@@ -191,20 +192,14 @@ const Profile = () => {
                     {profile?.email}
                   </p>
                   <hr />
-                  <strong>
-                    <i className="fas fa-book mr-1" />
-                    Alternate Email
-                  </strong>
-                  <p className="text-muted">
-                    {profile?.profile?.alt_email}
-                  </p>
-                  <hr />
+
+
                   <strong>
                     <i className="fas fa-book mr-1" />
                     Subscription
                   </strong>
                   <p className="text-muted">
-                    {profile?.profile?.subscription}
+                    {profile?.plan}
                   </p>
                   <hr />
                   <strong>
@@ -212,22 +207,16 @@ const Profile = () => {
                     Phone
                   </strong>
                   <p className="text-muted">
-                    {profile?.profile?.phone}
+                    {profile?.phone}
                   </p>
                   <hr />
-                  <strong>
-                    <i className="fas fa-book mr-1" />
-                    Alternate Phone
-                  </strong>
-                  <p className="text-muted">
-                    {profile?.profile?.alt_phone}
-                  </p>
-                  <hr />
+
+
                   <strong>
                     <i className="fas fa-map-marker-alt mr-1" />
                     {t('main.label.location')}
                   </strong>
-                  <p className="text-muted">{profile?.profile?.country} {profile?.profile?.address} {profile?.profile?.city}</p>
+                  <p className="text-muted">{profile?.country}, {profile?.city}</p>
                   <hr />
 
                 </div>

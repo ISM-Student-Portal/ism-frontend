@@ -55,6 +55,7 @@ const Login = () => {
 
 
     } catch (error: any) {
+      console.log(error, 'error');
       setAuthLoading(false);
       toast.error(error.message || 'Failed');
     }
