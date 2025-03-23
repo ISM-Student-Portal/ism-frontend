@@ -171,7 +171,6 @@ const Register = () => {
         color="#C28E27">
 
         <FormWizard.TabContent title="Personal details" icon="ti-user">
-
           <div className="row">
 
             <div className="col">
@@ -385,7 +384,6 @@ const Register = () => {
           isValid={checkValidateTab()}
           validationError={errorMessages}
         >
-
           <div className="row gap-20">
 
             <div className="col-md-6">

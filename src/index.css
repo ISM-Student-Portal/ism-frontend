@@ -8,6 +8,9 @@
 
 @import 'react-toastify/dist/ReactToastify.min.css';
 
+@import url('datatables.net-dt');
+@import url('datatables.net-buttons-dt');
+
 #root {
   width: 100vw;
   height: 100vh;

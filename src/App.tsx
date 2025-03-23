@@ -1,6 +1,9 @@
 import { useEffect, useState } from 'react';
 import { Routes, Route, useLocation } from 'react-router-dom';
 import { ToastContainer } from 'react-toastify';
+import Main from '@modules/main/Main';
+import AdminMain from '@modules/admin/Main';
+import LecturerMain from '@modules/lecturer/Main';
 import Login from '@modules/login/Login';
 import Register from '@modules/register/Register';
 import ForgetPassword from '@modules/forgot-password/ForgotPassword';
@@ -10,21 +13,38 @@ import { calculateWindowSize } from '@app/utils/helpers';
 import { useDispatch, useSelector } from 'react-redux';
 import { setWindowSize } from '@app/store/reducers/ui';
 import ReactGA from 'react-ga4';
-import { LocalizationProvider } from '@mui/x-date-pickers';
-import { AdapterMoment } from '@mui/x-date-pickers/AdapterMoment';
+import LecturerDashboard from '@app/modules/lecturer/pages/Dashboard';
 import PublicRoute from './routes/PublicRoute';
 import { setAuthentication } from './store/reducers/auth';
 import {
   getAuthStatus,
   getProfileStatus,
 } from './utils/oidc-providers';
-import { Spinner } from './styles/common';
 import { setProfile } from './store/reducers/profile';
-import ResetPassword from './modules/reset-password/ResetPassword';
-import ResendMail from './modules/resend-verification/ResendMail';
+import AdminRoute from './routes/AdminRoute';
+import Students from './modules/admin/pages/Students';
+import LecturerRoute from './routes/LecturerRoute';
+import StudentRoute from './routes/StudentRoute';
+import Dashboard from './modules/admin/pages/Dashboard';
+import Payments from './modules/admin/pages/Payments';
+import Courses from './modules/admin/pages/Courses';
+import Admins from './modules/admin/pages/Admins';
+import Lecturers from './modules/admin/pages/Lecturers';
+import LecturerCourses from './modules/lecturer/pages/Courses';
+import LecturerClasses from './modules/lecturer/pages/Classes';
+import LecturerClass from './modules/lecturer/pages/Class';
+import LecturerAssignment from './modules/lecturer/pages/Assignment';
+import LecturerAssignments from './modules/lecturer/pages/Assignments';
+
+import LecturerCourse from './modules/lecturer/pages/Course';
+import { ColorRing } from 'react-loader-spinner';
 import Payment from './pages/Payment';
-import Students from './modules/landing/Students';
-import LandingPage from './pages/landing_page/LandingPage';
+import StudentDashboard from './pages/student_pages/StudentDashboard';
+import Profile from './pages/profile/Profile';
+import StudentClassroom from './pages/student_pages/StudentClassroom';
+import Assignment from './pages/student_pages/Assignment';
+import Submission from './pages/student_pages/Submission';
+import Student from './modules/admin/pages/Student';
 
 const { VITE_NODE_ENV } = import.meta.env;
 
@@ -42,6 +62,7 @@ const App = () => {
         getAuthStatus(),
       ]);
       let profile: any = await getProfileStatus();
+      console.log(profile, 'entry')
 
       responses = responses.filter((r: any) => Boolean(r));
 
@@ -76,92 +97,90 @@ const App = () => {
   }, [location]);
 
   if (isAppLoading) {
-    return <div className='w-100'>
-      <p className='mx-auto my-auto '><h6>Loading <Spinner type='grow' /></h6></p>
-    </div>;
+    return <div className='h-100 d-flex align-items-center justify-content-center'><ColorRing
+      visible={true}
+      height="150"
+      width="150"
+      ariaLabel="color-ring-loading"
+      wrapperStyle={{}}
+      wrapperClass="color-ring-wrapper"
+      colors={['#e15b64', '#f47e60', '#f8b26a', '#abbd81', '#849b87']}
+
+    />Loading... Please wait </div>;
   }
 
   return (
     <>
-      <LocalizationProvider dateAdapter={AdapterMoment}>
-        <Routes>
-          <Route path="/" element={<PublicRoute />}>
-            <Route path="/" element={<LandingPage />} />
+      <Routes>
+        <Route path="/login" element={<PublicRoute />}>
+          <Route path="/login" element={<Login />} />
+        </Route>
+        <Route path="/register" element={<PublicRoute />}>
+          <Route path="/register" element={<Register />} />
+        </Route>
+        <Route path="/payment/:id" element={<PublicRoute />}>
+          <Route path="/payment/:id" element={<Payment />} />
+        </Route>
+        <Route path="/forgot-password" element={<PublicRoute />}>
+          <Route path="/forgot-password" element={<ForgetPassword />} />
+        </Route>
+        <Route path="/recover-password" element={<PublicRoute />}>
+          <Route path="/recover-password" element={<RecoverPassword />} />
+        </Route>
+
+        <Route path="/" element={<StudentRoute />}>
+          <Route path="/" element={<Main />}>
+            <Route path='' element={<StudentDashboard />} />
+            <Route path="assignments" element={<Assignment />} />
+            <Route path="classroom" element={<StudentClassroom />} />
+            <Route path="profile" element={<Profile />} />
+            <Route path="submissions" element={<Submission />} />
+
+
           </Route>
-          <Route path="/login" element={<PublicRoute />}>
-            <Route path="/login" element={<Login />} />
+        </Route>
+
+        <Route path="/admin" element={<AdminRoute />}>
+          <Route path="/admin" element={<AdminMain />}>
+            <Route path='' element={<Dashboard />} />
+            <Route path='students' element={<Students />} />
+            <Route path='students/:id' element={<Student />} />
+            <Route path='payments' element={<Payments />} />
+            <Route path='courses/:id' element={<LecturerCourse />} />
+            <Route path='courses' element={<Courses />} />
+            <Route path='admins' element={<Admins />} />
+            <Route path='lecturers' element={<Lecturers />} />
+            <Route path="profile" element={<Profile />} />
+
+
           </Route>
+        </Route>
 
-          <Route path="/students" element={<PublicRoute />}>
-            <Route path="/students" element={<Students />} />
+        <Route path="/lecturer" element={<LecturerRoute />}>
+          <Route path="/lecturer" element={<LecturerMain />}>
+            <Route path='' element={<LecturerDashboard />} />
+            <Route path='courses' element={<LecturerCourses />} />
+            <Route path='courses/:id' element={<LecturerCourse />} />
+            <Route path='classes' element={<LecturerClasses />} />
+            <Route path='class/:id' element={<LecturerClass />} />
+            <Route path='assignments' element={<LecturerAssignments />} />
+            <Route path='assignment/:id' element={<LecturerAssignment />} />
+            <Route path="profile" element={<Profile />} />
           </Route>
+        </Route>
 
 
-          {/* <Route path="/admin" element={<AdminModule/>}>
-              <Route path="/login" element={<AdminLogin />} />
-              <Route path="/dashboard" element={<AdminDashboard />} />
-          </Route> */}
-          <Route path="/register" element={<PublicRoute />}>
-            <Route path="/register" element={<Register />} />
-          </Route>
-          <Route path="/payment/:id" element={<PublicRoute />}>
-            <Route path="/payment/:id" element={<Payment />} />
-          </Route>
-
-          <Route path="/resend-verification" element={<PublicRoute />}>
-            <Route path="/resend-verification" element={<ResendMail />} />
-          </Route>
-          <Route path="/forgot-password" element={<PublicRoute />}>
-            <Route path="/forgot-password" element={<ForgetPassword />} />
-          </Route>
-          <Route path="/password/reset" element={<PublicRoute />}>
-            <Route path="/password/reset" element={<ResetPassword />} />
-          </Route>
-          <Route path="/recover-password" element={<PublicRoute />}>
-            <Route path="/recover-password" element={<RecoverPassword />} />
-          </Route>
-          {/* <Route path="/" element={<PrivateRoute />}>
-            <Route path="/" element={<Main />}>
-              <Route path="/assignments" element={<Assignment />} />
-              <Route path="/classroom" element={<StudentClassroom />} />
-              <Route path="/notification" element={<StudentNotification />} />
-              <Route path="/submissions" element={<Submission />} />
-              <Route path="/mentorship" element={<Mentorship />} />
-
-              <Route path="/profile" element={<Profile />} />
-              <Route path="/" element={<StudentDashboard />} />
-            </Route>
-          </Route> */}
-
-          {/* <Route path="/admin" element={<AdminRoute />}>
-            <Route path="/admin" element={<Main />}>
-              <Route path="admin/sub-menu-2" element={<Blank />} />
-              <Route path="admin/sub-menu-1" element={<SubMenu />} />
-              <Route path="/admin/students" element={<Students />} />
-              <Route path="/admin/admins" element={<Admins />} />
-
-              <Route path="/admin/profile" element={<Profile />} />
-              <Route path="/admin/classroom" element={<Classroom />} />
-              <Route path="/admin/attendance-report" element={<AttendanceStats />} />
-              <Route path="/admin/assignment" element={<Assignment2 />} />
-
-              <Route path="/admin/" element={<Dashboard />} />
-            </Route>
-          </Route> */}
-
-
-        </Routes>
-        <ToastContainer
-          autoClose={3000}
-          draggable={false}
-          position="top-right"
-          hideProgressBar={false}
-          newestOnTop
-          closeOnClick
-          rtl={false}
-          pauseOnHover
-        />
-      </LocalizationProvider>
+      </Routes>
+      <ToastContainer
+        autoClose={3000}
+        draggable={false}
+        position="top-right"
+        hideProgressBar={false}
+        newestOnTop
+        closeOnClick
+        rtl={false}
+        pauseOnHover
+      />
     </>
   );
 };

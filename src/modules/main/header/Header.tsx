@@ -45,26 +45,15 @@ const Header = () => {
           </button>
         </li>
         <li className="nav-item d-none d-sm-inline-block">
-          <Link to={profile.is_admin ? "/admin" : "/"} className="nav-link">
-            {t('header.label.home')}
+          <Link to="/" className="nav-link">
+            {'Student Portal'}
           </Link>
         </li>
 
       </ul>
       <ul className="navbar-nav ml-auto">
-        {/* <MessagesDropdown /> */}
-        {/* <NotificationsDropdown /> */}
-        {/* <LanguagesDropdown /> */}
         <UserDropdown />
-        {/* <li className="nav-item">
-          <button
-            type="button"
-            className="nav-link"
-            onClick={handleToggleControlSidebar}
-          >
-            <i className="fas fa-th-large" />
-          </button>
-        </li> */}
+
       </ul>
     </nav>
   );

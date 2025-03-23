@@ -9,6 +9,7 @@ import * as serviceWorker from './serviceWorker';
 import { BrowserRouter } from 'react-router-dom';
 import ReactGA from 'react-ga4';
 
+
 const { VITE_NODE_ENV, VITE_GA_ID } = import.meta.env;
 
 if (VITE_NODE_ENV === 'production' && VITE_GA_ID) {

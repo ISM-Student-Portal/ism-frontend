@@ -32,21 +32,16 @@ const Login = () => {
     try {
       setAuthLoading(true);
       const response: any = await authLogin(email, password);
-      const authStatus: any = await getAuthStatus();
-      let profile: any = await getProfileStatus();
-
-      if (authStatus) {
-        dispatch(setAuthentication(authStatus));
-        dispatch(setProfile(profile));
-      }
-      // console.log(response);
-
+      console.log(response, 'beforestore');
+      dispatch(setAuthentication(response.authentication));
+      dispatch(setProfile(response.profile));
       toast.success('Login is Successful!');
       setAuthLoading(false);
-      // dispatch(loginUser(token));
-      if (response.profile.first_login === 1) {
-        navigate('/recover-password');
-        window.location.reload();
+      if (response.profile.is_admin) {
+        navigate('/admin');
+
+      } else if (response.profile.is_lecturer) {
+        navigate('/lecturer')
 
       } else {
         if (response.profile.is_admin === 1) {
@@ -55,10 +50,12 @@ const Login = () => {
         } else {
           navigate('/');
         }
-        window.location.reload();
       }
+      window.location.reload();
+
 
     } catch (error: any) {
+      console.log(error, 'error');
       setAuthLoading(false);
       toast.error(error.message || 'Failed');
     }
@@ -198,10 +195,10 @@ const Login = () => {
                     >
                       {t('login.button.signIn.label')}
                     </Button>
-                    
+
                   </div>
                   <div className="col-12">
-                  <ReCAPTCHA
+                    <ReCAPTCHA
                       sitekey="6Ld4lKoqAAAAAJKSGNRE-FL0W1gPnKH_LMQXCpGG"
                       onChange={onChange}
                     />

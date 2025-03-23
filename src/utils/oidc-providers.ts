@@ -104,12 +104,34 @@ export const authLogin = (email: string, password: string) => {
 
 
     }).catch((err: any) => {
-      reject({ message: 'Credentials are wrong!' })
+      console.log(err.response.data)
+      reject({ message: err.response.data.message });
     });
-
+    // return new Promise(async (res, rej) => {
+    //   await sleep(500);
+    //   if (email === 'admin@example.com' && password === 'admin') {
+    //     localStorage.setItem(
+    //       'authentication',
+    //       JSON.stringify({ profile: { email: 'admin@example.com' } })
+    //     );
+    //     return res({ profile: { email: 'admin@example.com' } });
+    //   }
+    //   return rej({ message: 'Credentials are wrong!' });
+    // });
   })
 
 
+  // return new Promise(async (res, rej) => {
+  //   await sleep(500);
+  //   if (email === 'admin@example.com' && password === 'admin') {
+  //     localStorage.setItem(
+  //       'authentication',
+  //       JSON.stringify({ profile: { email: 'admin@example.com' } })
+  //     );
+  //     return res({ profile: { email: 'admin@example.com' } });
+  //   }
+  //   return rej({ message: 'Credentials are wrong!' });
+  // });
 };
 
 export const getAuthStatus = () => {
