@@ -7,7 +7,9 @@ import { usePaystackPayment } from 'react-paystack';
 import CurrencyInput from 'react-currency-input-field'
 import { ColorRing } from 'react-loader-spinner';
 
-
+interface Config {
+    [key: string]: any
+}
 
 const Payment = () => {
     const [student, setStudent] = useState<any>();
@@ -17,15 +19,19 @@ const Payment = () => {
     const [loading, setLoading] = useState(true);
     const { id } = useParams();
 
-    const config = {
+    const config: Config = {
         reference: (new Date()).getTime().toString(),
         email: student?.email,
         currency: student?.country === 'Nigeria' ? 'NGN' : 'USD',
         amount: amount * 100, //Amount is in the country's lowest currency. E.g Kobo, so 20000 kobo = N200
         publicKey: process.env.REACT_APP_PAYSTACK_KEY ?? '',
-        subaccount: process.env.REACT_APP_SPLIT_ACCOUNT ?? ''
     };
 
+    if (student?.country === 'Nigeria') {
+        config.subaccount = process.env.REACT_APP_SPLIT_ACCOUNT ?? ''
+    }
+
+    //@ts-ignore
     const initializePayment = usePaystackPayment(config);
 
     const getStudentInfo = async () => {
@@ -354,7 +360,7 @@ const Payment = () => {
                                             <br></br>
                                             <br></br>
                                             For any difficulty in using the payment method above, kindly make a transfer to any of these account details below.<br></br> <span className='text-danger'>
-                                                Please send your name, email, phone number and payment receipt used for registration to this email address femilazarusschoolofministry@gmail.com<br></br>
+                                                Please send your name, email, phone number, plan and payment receipt used for registration to this email address femilazarusschoolofministry@gmail.com<br></br>
                                                 You will receive a payment confirmation email within three (3) working days.
                                             </span>
 
