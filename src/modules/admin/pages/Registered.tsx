@@ -85,6 +85,8 @@ const Registered = () => {
         );
     }, [filterText, resetPaginationToggle]);
 
+
+
     const handleOpenDelete = () => {
         setOpenDelete(true);
     };
@@ -199,7 +201,7 @@ const Registered = () => {
                                 <Button size='sm' variant='warning' onClick={downloadStudents} className="float-right mx-1" type="button">Download CSV</Button>
 
                             </div>
-                            <DataTable className='table table-striped table-bordered order-column' data={rows} columns={columns} progressPending={pending} responsive keyField='id' striped selectableRows selectableRowsSingle >
+                            <DataTable className='table table-striped table-bordered order-column' data={filteredItems} columns={columns} progressPending={pending} responsive keyField='id' striped subHeader subHeaderComponent={subHeaderComponent} >
 
                             </DataTable></div>
                     ) : (<div className='h-100 d-flex align-items-center justify-content-center'><ColorRing

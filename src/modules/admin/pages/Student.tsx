@@ -72,10 +72,10 @@ const Student = () => {
 
                                         <Card.Body>
                                             <ListGroup variant="flush">
-                                                <ListGroup.Item>First Name: {student?.first_name}</ListGroup.Item>
-                                                <ListGroup.Item>Last Name: {student?.last_name}</ListGroup.Item>
-                                                <ListGroup.Item>Email: {student?.email}</ListGroup.Item>
-                                                <ListGroup.Item>Phone Number: {student?.phone}</ListGroup.Item>
+                                                <ListGroup.Item>First Name: <b>{student?.first_name}</b></ListGroup.Item>
+                                                <ListGroup.Item>Last Name:<b>{student?.last_name}</b> </ListGroup.Item>
+                                                <ListGroup.Item>Email: <b>{student?.email}</b></ListGroup.Item>
+                                                <ListGroup.Item>Phone Number: <b>{student?.phone}</b></ListGroup.Item>
                                             </ListGroup>
                                         </Card.Body>
                                     </Card>
@@ -84,16 +84,17 @@ const Student = () => {
                                     <Card style={{ width: '100%' }}>
                                         <Card.Body>
                                             <ListGroup variant="flush">
-                                                <ListGroup.Item>Subscription Plan: {student?.plan}</ListGroup.Item>
-                                                <ListGroup.Item>Payment Status: {student?.payment_complete ? "Paid Full" : student?.balance ? "Paid Half" : "Not Paid"}</ListGroup.Item>
+                                                <ListGroup.Item>Subscription Plan: <b>{student?.plan}</b></ListGroup.Item>
+                                                <ListGroup.Item>Payment Status: <b>{student?.payment_complete ? "Paid Full" : student?.balance ? "Paid Half" : "Not Paid"}</b></ListGroup.Item>
+                                                <ListGroup.Item>Participation Mode: <b>{student?.participation_mode}</b></ListGroup.Item>
 
                                             </ListGroup>
                                         </Card.Body>
                                         <Card.Body>
                                             <ListGroup variant="flush">
-                                                <ListGroup.Item>Registration Number: {student?.reg_no}</ListGroup.Item>
-                                                <ListGroup.Item>Country: {student?.country}</ListGroup.Item>
-                                                <ListGroup.Item>City: {student?.city}</ListGroup.Item>
+                                                <ListGroup.Item>Registration Number: <b>{student?.matric_no}</b></ListGroup.Item>
+                                                <ListGroup.Item>Country: <b>{student?.country}</b></ListGroup.Item>
+                                                <ListGroup.Item>City: <b>{student?.city}</b></ListGroup.Item>
                                             </ListGroup>
                                         </Card.Body>
 
