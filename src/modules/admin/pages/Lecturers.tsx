@@ -196,7 +196,7 @@ const Lecturers = () => {
             </section>
             <Footer />
 
-            <Modal show={openAdd} onHide={handleCloseAdd} size='sm' centered>
+            <Modal show={openAdd} onHide={handleCloseAdd} size='lg' centered>
                 <Modal.Header closeButton>
                     <Modal.Title>Invite Lecturer</Modal.Title>
                 </Modal.Header>

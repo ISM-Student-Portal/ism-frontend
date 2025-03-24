@@ -194,7 +194,7 @@ const Admins = () => {
         </div>
       </section>
       <Footer />
-      <Modal show={openAdd} onHide={handleCloseAdd} size='sm' centered>
+      <Modal show={openAdd} onHide={handleCloseAdd} size='lg' centered>
         <Modal.Header closeButton>
           <Modal.Title>Invite Admin</Modal.Title>
         </Modal.Header>
