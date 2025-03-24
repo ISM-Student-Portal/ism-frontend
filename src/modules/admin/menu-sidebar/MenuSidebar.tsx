@@ -24,7 +24,11 @@ export const MENU: IMenuItem[] = [
     icon: 'fas fa-users nav-icon',
     path: '/admin/students',
   },
-
+  {
+    name: "All Registrants",
+    icon: 'fas fa-users nav-icon',
+    path: '/admin/registered',
+  },
   {
     name: 'Lecturers',
     icon: 'fas fa-chalkboard-teacher nav-icon',
@@ -42,11 +46,11 @@ export const MENU: IMenuItem[] = [
     icon: 'fas fa-graduation-cap nav-icon',
     path: '/admin/payments',
   },
-  {
-    name: 'Admins',
-    icon: 'fas fa-graduation-cap nav-icon',
-    path: '/admin/admins',
-  },
+  // {
+  //   name: 'Admins',
+  //   icon: 'fas fa-graduation-cap nav-icon',
+  //   path: '/admin/admins',
+  // },
 
 ];
 
@@ -71,6 +75,8 @@ const MenuSidebar = () => {
   const menuItemFlat = useSelector((state: any) => state.ui.menuItemFlat);
   const menuChildIndent = useSelector((state: any) => state.ui.menuChildIndent);
 
+  console.log(profile, 'profile');
+
   return (
     <aside className={`main-sidebar elevation-4 ${sidebarSkin}`}>
       <Link to="/" className="brand-link">
@@ -87,7 +93,7 @@ const MenuSidebar = () => {
         <div className="user-panel mt-3 pb-3 mb-3 d-flex">
           <div className="image">
             <StyledUserImage
-              src={profile?.picture}
+              src={profile?.profile_pix_url}
               fallbackSrc="/img/default-profile.png"
               alt="User"
               width={34}
@@ -114,6 +120,14 @@ const MenuSidebar = () => {
                 menuItem={menuItem}
               />
             ))}
+            {profile?.super_admin && <MenuItem
+              menuItem={{
+                name: 'Admins',
+                icon: 'fas fa-graduation-cap nav-icon',
+                path: '/admin/admins',
+              }}
+            />}
+
           </ul>
         </nav>
       </div>
