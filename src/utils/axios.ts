@@ -38,9 +38,9 @@ instance.interceptors.response.use(
     function (error) {
         if (error.response.status === 401) {
             console.log('got here')
-            // localStorage.removeItem("authentication");
-            // localStorage.removeItem("profile");
-            // window.location.reload();
+            localStorage.removeItem("authentication");
+            localStorage.removeItem("profile");
+            window.location.reload();
 
         }
         else if (error.response.status === 404) {

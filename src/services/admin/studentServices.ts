@@ -11,6 +11,16 @@ export const fetchAllStudents = async () => {
     }
 }
 
+export const fetchAllRegistrants = async () => {
+    try {
+        const students = await axios.get('/admin/registered');
+        return students.data;
+
+    } catch (error: any) {
+        return error.message
+    }
+}
+
 export const fetchAllAdmins = async () => {
     try {
         const admins = await axios.get('/admin/admins');
