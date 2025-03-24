@@ -187,9 +187,9 @@ const Registered = () => {
 
                 <div className="container-fluid">
                     <div>
-                        <h6>No of Students Paid: {stats.total_paid}</h6>
-                        <h6>No of Students Paid Full: {stats.total_paid_full}</h6>
-                        <h6>No of Students Not Paid: {stats.total_unpaid}</h6>
+                        <h6>No of Students Paid: {stats?.total_paid}</h6>
+                        <h6>No of Students Paid Full: {stats?.total_paid_full}</h6>
+                        <h6>No of Students Not Paid: {stats?.total_unpaid}</h6>
                     </div>
                     {rows.length > 0 ? (
                         <div>
