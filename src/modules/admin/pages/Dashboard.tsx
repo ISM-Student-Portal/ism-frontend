@@ -42,6 +42,22 @@ const Dashboard = () => {
                   <div className="inner">
                     <h3>{stats?.students}</h3>
 
+                    <p>Registered</p>
+                  </div>
+                  <div className="icon">
+                    <i className="ion ion-bag" />
+                  </div>
+                  <a href="/admin/registered" className="small-box-footer">
+                    More info <i className="fas fa-arrow-circle-right" />
+                  </a>
+                </div>
+              </div>
+
+              <div className="col-lg-3 col-6">
+                <div className="small-box bg-light">
+                  <div className="inner">
+                    <h3>{stats?.paidStudent}</h3>
+
                     <p>Students</p>
                   </div>
                   <div className="icon">
@@ -52,23 +68,7 @@ const Dashboard = () => {
                   </a>
                 </div>
               </div>
-              <div className="col-lg-3 col-6">
-                <div className="small-box bg-success">
-                  <div className="inner">
-                    <h3>
-                      {stats?.classes}<sup style={{ fontSize: '20px' }}></sup>
-                    </h3>
 
-                    <p>Courses</p>
-                  </div>
-                  <div className="icon">
-                    <i className="ion ion-stats-bars" />
-                  </div>
-                  <a href="/admin/classroom" className="small-box-footer">
-                    More info <i className="fas fa-arrow-circle-right" />
-                  </a>
-                </div>
-              </div>
               <div className="col-lg-3 col-6">
                 <div className="small-box bg-warning">
                   <div className="inner">
@@ -102,20 +102,23 @@ const Dashboard = () => {
             </div>
             <div className="row">
               <div className="col-lg-3 col-6">
-                <div className="small-box bg-light">
+                <div className="small-box bg-success">
                   <div className="inner">
-                    <h3>{stats?.paidStudent}</h3>
+                    <h3>
+                      {stats?.classes}<sup style={{ fontSize: '20px' }}></sup>
+                    </h3>
 
-                    <p>Students Paid</p>
+                    <p>Courses</p>
                   </div>
                   <div className="icon">
-                    <i className="ion ion-bag" />
+                    <i className="ion ion-stats-bars" />
                   </div>
-                  <a href="/admin/payments" className="small-box-footer">
+                  <a href="/admin/classroom" className="small-box-footer">
                     More info <i className="fas fa-arrow-circle-right" />
                   </a>
                 </div>
               </div>
+
               <div className="col-lg-3 col-6">
                 <div className="small-box bg-light">
                   <div className="inner">
@@ -127,7 +130,7 @@ const Dashboard = () => {
                     <i className="ion ion-bag" />
                   </div>
                   <a href="/admin/payments" className="small-box-footer">
-                    More info <i className="fas fa-arrow-circle-right" />
+                    <div className='m-3'></div>
                   </a>
                 </div>
               </div>
