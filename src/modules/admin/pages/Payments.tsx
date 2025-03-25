@@ -75,7 +75,7 @@ const Payments = () => {
                                 }
                             }} data={rows} columns={[{ data: 'student.first_name', title: 'First Name' }, { data: 'student.last_name', title: 'Last Name' }, { data: 'student.email', title: 'Email' }, {
                                 data: 'amount', title: 'Amount', render: function (data, type, row) {
-                                    return data < 100 ? Intl.NumberFormat('USD').format(data) : '₦' + Intl.NumberFormat('NGN').format(data);
+                                    return data < 500 ? '$' + Intl.NumberFormat('USD').format(data) : '₦' + Intl.NumberFormat('NGN').format(data);
                                 },
                             }, { data: 'reference', title: 'Reference' }, { data: 'status', title: 'Status' }, {
                                 data: 'created_at', title: 'Date', render(data, type, row, meta) {

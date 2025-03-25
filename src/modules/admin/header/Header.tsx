@@ -55,7 +55,7 @@ const Header = () => {
       <ul className="navbar-nav ml-auto">
 
         <UserDropdown />
-        <li className="nav-item">
+        {/* <li className="nav-item">
           <button
             type="button"
             className="nav-link"
@@ -63,7 +63,7 @@ const Header = () => {
           >
             <i className="fas fa-th-large" />
           </button>
-        </li>
+        </li> */}
       </ul>
     </nav>
   );
