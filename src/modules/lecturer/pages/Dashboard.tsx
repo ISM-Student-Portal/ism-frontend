@@ -6,7 +6,8 @@ import { ColorRing } from 'react-loader-spinner';
 interface Stats {
   assignments: number,
   courses: number,
-  submissions: number
+  submissions: number,
+  classrooms: number
 
 }
 
@@ -76,6 +77,21 @@ const Dashboard = () => {
                   </div>
                   <div className="icon">
                     <i className="ion ion-person-add" />
+                  </div>
+                  <a href="#" className="small-box-footer">
+                    More info <i className="fas fa-arrow-circle-right" />
+                  </a>
+                </div>
+              </div>
+              <div className="col-lg-3 col-6">
+                <div className="small-box bg-danger">
+                  <div className="inner">
+                    <h3>{stats?.classrooms}</h3>
+
+                    <p>Classes Held</p>
+                  </div>
+                  <div className="icon">
+                    <i className="ion ion-android-film" />
                   </div>
                   <a href="#" className="small-box-footer">
                     More info <i className="fas fa-arrow-circle-right" />

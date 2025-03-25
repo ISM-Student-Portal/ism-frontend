@@ -17,14 +17,24 @@ import { OverlayTrigger, Tooltip, Button } from 'react-bootstrap';
 const Courses = () => {
 
     const [pending, setPending] = React.useState<any>();
+    const [loading, setLoading] = React.useState<any>(false);
     const [rows, setRows] = React.useState([]);
     const navigate = useNavigate();
 
 
     const getCourses = async () => {
-        const courses = await fetchAllCourses();
-        setRows(courses.courses);
-        setPending(false);
+        try {
+            setLoading(true);
+            const courses = await fetchAllCourses();
+            setRows(courses.courses);
+            setPending(false);
+        } catch (error) {
+
+        }
+        finally {
+            setLoading(false);
+        }
+
     }
 
 
@@ -60,7 +70,7 @@ const Courses = () => {
             <section className="content">
 
                 <div className="container-fluid">
-                    {rows.length > 0 ? (
+                    {!loading ? (
                         <div>
 
                             <div></div>

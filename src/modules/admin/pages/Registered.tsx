@@ -146,8 +146,16 @@ const Registered = () => {
 
         { name: 'First Name', selector: (row: any) => row.first_name },
         { name: 'Last Name', selector: (row: any) => row.last_name },
+        { name: 'Country', selector: (row: any) => row.country },
+        { name: 'City', selector: (row: any) => row.city },
+        { name: 'Phone', selector: (row: any) => row.phone },
+        { name: 'Participation Mode', selector: (row: any) => row.participation_mode },
+
+
         { name: 'Plan', selector: (row: any) => row.plan },
         { name: 'Payment Status', selector: (row: any) => row.payment_complete ? 'Paid Full' : row.balance ? 'Partially Paid' : 'Not Paid' },
+        { name: 'Alumni Status', selector: (row: any) => row.is_alumni ? 'Yes' : 'No' },
+
 
 
     ];

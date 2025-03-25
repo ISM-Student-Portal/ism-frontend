@@ -3,7 +3,7 @@ import DataTable from '../../../components/datatable-original/Datatable';
 
 import React, { ChangeEvent, useEffect, useState } from 'react';
 
-
+import GradingIcon from '@mui/icons-material/Grading';
 import VisibilityIcon from '@mui/icons-material/Visibility';
 
 import { toast } from 'react-toastify';
@@ -34,6 +34,8 @@ const Course = () => {
     const [open, setOpen] = useState(false)
     const [openAssignment, setOpenAssignment] = useState(false)
     const [openSubmission, setOpenSubmission] = useState(false)
+    const [openGrade, setOpenGrade] = useState(false)
+    const [openUploadGrade, setOpenUploadGrade] = useState(false)
     const [openAttendance, setOpenAttendance] = useState(false)
 
     const [title, setTitle] = React.useState('');
@@ -41,8 +43,10 @@ const Course = () => {
     const [link, setLink] = React.useState('');
     const [description, setDescription] = React.useState('');
     const [file, setFile] = React.useState<any>();
+    const [gradeFile, setGradeFile] = React.useState<any>();
     const [filename, setFilename] = React.useState("");
     const [selectedAssignment, setSelectedAssignment] = React.useState<any>();
+    const [selectedSubmission, setSelectedSubmission] = React.useState<any>();
     const [selectedAttendance, setSelectedAttendance] = React.useState<any>();
 
     const [expiresOn, setExpiresOn] = React.useState<any>();
@@ -140,6 +144,58 @@ const Course = () => {
         setFilename(name);
     }
 
+    const handleOpenGrade = (data: any) => {
+        console.log(data);
+        setSelectedSubmission(data);
+
+        setOpenGrade(true);
+    }
+
+    const handleCloseGrade = () => { setOpenGrade(false); }
+    const handleOpenUploadGrade = () => {
+
+        setOpenUploadGrade(true);
+    }
+
+    const handleCloseUploadGrade = () => { setOpenUploadGrade(false); }
+
+    const submitGrade = async () => {
+        try {
+            setLoading(true);
+            let res = await axios.put('/submissions/' + selectedSubmission.id, {
+                grade: selectedSubmission.grade
+            });
+            if (res) {
+                toast.success('Grade submitted');
+                handleCloseGrade();
+                getCourse();
+            }
+        } catch (error) {
+
+        }
+        finally {
+            setLoading(false);
+        }
+    }
+
+    const uploadGrade = async () => {
+        try {
+            setLoading(true);
+            let res = await axios.put('/submissions/' + selectedSubmission.id, {
+                grade: selectedSubmission.grade
+            });
+            if (res) {
+                toast.success('Grade submitted');
+                handleCloseGrade();
+                getCourse();
+            }
+        } catch (error) {
+
+        }
+        finally {
+            setLoading(false);
+        }
+    }
 
     const createAssignmentAction = async () => {
         setLoading(true);
@@ -377,16 +433,33 @@ const Course = () => {
                 </Modal.Footer>
             </Modal>
 
-            <Modal show={openSubmission} onHide={handleCloseSubmissions} size='lg' centered>
+            <Modal show={openSubmission} onHide={handleCloseSubmissions} size='xl' centered>
                 <Modal.Header closeButton>
                     <Modal.Title>Submissions</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
-                    <DataTable className='table table-striped table-bordered order-column dt-head-center' options={{
+                    <div className=''>
+                        <Button variant='warning' className='float-right d-inline-block my-3' onClick={() => handleOpenUploadGrade()}>Upload Grades</Button>
+                    </div><br />
+                    <DataTable slots={{
+                        6: (data: any, row: any) => (
+                            <OverlayTrigger placement='top' overlay={<Tooltip id={row.id}>Grade</Tooltip>}>
+                                <Button as="span" variant='outline-light' size='sm' onClick={() => handleOpenGrade(row)}><GradingIcon className='text-success mx-2 pointer' /></Button>
+
+                            </OverlayTrigger>
+
+                        )
+                    }} className='table table-striped table-bordered order-column dt-head-center' options={{
                         buttons: {
                             buttons: ['copy', 'csv']
                         }
                     }} data={selectedAssignment?.submissions} columns={[{ data: 'student.matric_no', title: 'Matric No' },
+                    {
+                        data: 'student.first_name', title: 'Name', render(data, type, row, meta) {
+                            return `${row.student.first_name} ${row.student.last_name}`
+                        }
+                    },
+
                     {
                         data: 'link', title: 'Link', render(data, type, row, meta) {
                             return data ? `<a href=${data} target='_blank'>View</a>` : 'No file'
@@ -395,7 +468,13 @@ const Course = () => {
                         data: 'created_at', title: 'Date Submitted', render(data, type, row, meta) {
                             return new Date(data).toLocaleString()
                         },
-                    }]}>
+
+                    }, {
+                        data: 'grade', title: 'Grade', render(data, type, row, meta) {
+                            return data ? data : 'Not Graded'
+                        },
+
+                    }, { title: 'Action' }]}>
 
                     </DataTable>
                 </Modal.Body>
@@ -427,6 +506,44 @@ const Course = () => {
                     }]}>
 
                     </DataTable>
+                </Modal.Body>
+                <Modal.Footer>
+
+                </Modal.Footer>
+            </Modal>
+
+
+            <Modal show={openGrade} onHide={handleCloseGrade} size='lg' centered>
+                <Modal.Header closeButton>
+                    <Modal.Title>{selectedSubmission?.student.first_name} Grade</Modal.Title>
+                </Modal.Header>
+                <Modal.Body>
+                    <div><h6>{selectedAssignment?.title}</h6></div>
+                    <Form>
+                        <Form.Group controlId='gradeform.grade'>
+                            <Form.Label>Grade %</Form.Label>
+                            <Form.Control type='number' placeholder='Grade' value={selectedSubmission?.grade} onChange={(e) => setSelectedSubmission({ ...selectedSubmission, grade: e.target.value })}></Form.Control>
+                        </Form.Group>
+                        <Button variant='primary' onClick={submitGrade}>Submit</Button>
+                    </Form>
+                </Modal.Body>
+                <Modal.Footer>
+
+                </Modal.Footer>
+            </Modal>
+
+            <Modal show={openUploadGrade} onHide={handleCloseUploadGrade} size='lg' centered>
+                <Modal.Header closeButton>
+                    <Modal.Title>{selectedAssignment?.title} Grade Upload</Modal.Title>
+                </Modal.Header>
+                <Modal.Body>
+                    <Form>
+                        <Form.Group controlId='gradeform.grade'>
+                            <Form.Label>Select File</Form.Label>
+                            <Form.File type='number' placeholder='Select File' value={selectedSubmission?.grade} onChange={(e) => setSelectedSubmission({ ...selectedSubmission, grade: e.target.value })}></Form.File>
+                        </Form.Group>
+                        <Button variant='primary' onClick={uploadGrade}>Submit</Button>
+                    </Form>
                 </Modal.Body>
                 <Modal.Footer>
 

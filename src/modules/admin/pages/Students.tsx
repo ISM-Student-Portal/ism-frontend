@@ -179,7 +179,7 @@ const Students = () => {
 
               </div>
               <DataTable slots={{
-                7: (data: any, row: any) => (
+                8: (data: any, row: any) => (
                   <div className='d-flex '>
                     <OverlayTrigger placement='top' overlay={<Tooltip id={row.id}>View Course</Tooltip>}>
                       <Button as="span" variant='outline-light' size='sm' onClick={() => navigate('/admin/students/' + row.id)}><VisibilityIcon className='text-success mx-2 pointer' /></Button>
@@ -207,7 +207,7 @@ const Students = () => {
                 buttons: {
                   buttons: ['copy', 'csv']
                 }
-              }} data={rows} columns={[{ data: 'first_name', title: 'First Name' }, { data: 'last_name', title: 'Last Name' }, { data: 'email', title: 'Email' }, { data: 'plan', title: 'Plan' }, { data: 'participation_mode', title: 'Participation Mode' }, { data: 'country', title: 'Country' }, { data: 'phone', title: 'Phone' }, { title: 'Action' }]}>
+              }} data={rows} columns={[{ data: 'first_name', title: 'First Name' }, { data: 'last_name', title: 'Last Name' }, { data: 'email', title: 'Email' }, { data: 'phone', title: 'Phone' }, { data: 'plan', title: 'Plan' }, { data: 'participation_mode', title: 'Participation Mode' }, { data: 'country', title: 'Country' }, { data: 'city', title: 'City' }, { title: 'Action' }]}>
 
               </DataTable></div>
           ) : (<div className='h-100 d-flex align-items-center justify-content-center'><ColorRing
