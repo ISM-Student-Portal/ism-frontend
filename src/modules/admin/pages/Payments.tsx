@@ -73,7 +73,7 @@ const Payments = () => {
                                 buttons: {
                                     buttons: ['copy', 'csv']
                                 }
-                            }} data={rows} columns={[{ data: 'student.first_name', title: 'First Name' }, { data: 'student.last_name', title: 'Last Name' }, { data: 'student.email', title: 'Email' }, {
+                            }} data={rows} columns={[{ data: 'student.first_name', title: 'First Name' }, { data: 'student.last_name', title: 'Last Name' }, { data: 'student.email', title: 'Email' }, { data: 'student.plan', title: 'Plan' }, { data: 'student.phone', title: 'Phone' },{
                                 data: 'amount', title: 'Amount', render: function (data, type, row) {
                                     return data < 500 ? '$' + Intl.NumberFormat('USD').format(data) : '₦' + Intl.NumberFormat('NGN').format(data);
                                 },
