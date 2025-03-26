@@ -270,7 +270,7 @@ const Register = () => {
               isAlumni === 'yes' && (
                 <div className="col-md-6">
                   <label className="text-sm">
-                    Alumni Matric No
+                    Alumni Registration No
                     <span
                       style={{ color: "red", fontSize: "20px", fontWeight: "bold" }}
                     >

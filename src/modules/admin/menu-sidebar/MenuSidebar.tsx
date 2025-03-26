@@ -78,16 +78,16 @@ const MenuSidebar = () => {
   console.log(profile, 'profile');
 
   return (
-    <aside className={`main-sidebar elevation-4 ${sidebarSkin}`}>
+    <aside className={`main-sidebar elevation-4`} style={{ backgroundColor: '#2a2f54' }}>
       <Link to="/" className="brand-link">
         <StyledBrandImage
-          src="/img/logo1.png"
+          src="/img/ism_logo_gold.png"
           alt="ISM Logo"
           width={33}
           height={33}
           rounded
         />
-        <span className="brand-text font-weight-light">ISM Portal</span>
+        <span className="brand-text font-weight-bold" style={{ color: '#c28e27' }}>ISM Portal</span>
       </Link>
       <div className="sidebar">
         <div className="user-panel mt-3 pb-3 mb-3 d-flex">
@@ -101,8 +101,8 @@ const MenuSidebar = () => {
               rounded
             />
           </div>
-          <div className="info">
-            <Link to="/profile" className="d-block">
+          <div className="info" >
+            <Link to="/admin/profile" className="d-block" style={{ color: '#c28e27' }}>
               {profile?.email}
             </Link>
           </div>

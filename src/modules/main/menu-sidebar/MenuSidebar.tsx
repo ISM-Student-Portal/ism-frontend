@@ -115,7 +115,7 @@ const MenuSidebar = () => {
   const menuChildIndent = useSelector((state: any) => state.ui.menuChildIndent);
 
   return (
-    <aside className={`main-sidebar elevation-4 ${sidebarSkin}`}>
+    <aside className={`main-sidebar elevation-4`} style={{ backgroundColor: '#2a2f54' }}>
       <Link to={profile.is_admin ? "/admin" : "/"} className="brand-link">
         <StyledBrandImage
           src="/img/logo1.png"
@@ -124,7 +124,7 @@ const MenuSidebar = () => {
           height={33}
           rounded
         />
-        <span className="brand-text font-weight-light">ISM Portal</span>
+        <span className="brand-text font-weight-bold" style={{ color: '#c28e27' }}>ISM Portal</span>
       </Link>
       <div className="sidebar">
         <div className="user-panel mt-3 pb-3 mb-3 d-flex">
@@ -139,7 +139,7 @@ const MenuSidebar = () => {
             />
           </div>
           <div className="info">
-            <Link to={profile.is_admin ? '/admin/profile' : '/profile'} className="d-block">
+            <Link to={profile.is_admin ? '/admin/profile' : '/profile'} className="d-block" style={{ color: '#c28e27' }}>
               {profile?.email}
             </Link>
           </div>

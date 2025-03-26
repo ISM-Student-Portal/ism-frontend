@@ -120,7 +120,7 @@ const Assignments = () => {
                             buttons: {
                                 buttons: ['copy', 'csv']
                             }
-                        }} data={selectedAssignment?.submissions} columns={[{ data: 'student.matric_no', title: 'Matric No' },
+                        }} data={selectedAssignment?.submissions} columns={[{ data: 'student.matric_no', title: 'Registration No' },
                         {
                             data: 'link', title: 'Link', render(data, type, row, meta) {
                                 return data ? `<a href=${data} target='_blank'>View</a>` : 'No file'

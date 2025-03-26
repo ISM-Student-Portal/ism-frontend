@@ -129,7 +129,7 @@ const Classes = () => {
                             buttons: {
                                 buttons: ['copy', 'csv']
                             }
-                        }} data={selectedAttendance?.attendance?.students} columns={[{ data: 'matric_no', title: 'Matric No' }, {
+                        }} data={selectedAttendance?.attendance?.students} columns={[{ data: 'matric_no', title: 'Registration No' }, {
                             data: 'first_name', title: 'Name', render(data, type, row, meta) {
                                 return `${row.first_name} ${row.last_name}`
                             },

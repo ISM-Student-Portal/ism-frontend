@@ -6,7 +6,7 @@ import { addWindowClass, removeWindowClass, sleep } from '@app/utils/helpers';
 import ControlSidebar from '@app/modules/main/control-sidebar/ControlSidebar';
 import Header from '@app/modules/admin/header/Header';
 import MenuSidebar from '@app/modules/admin/menu-sidebar/MenuSidebar';
-import Footer from '@app/modules/main/footer/Footer';
+import Footer from '@app/modules/admin/footer/Footer';
 import { Image } from '@profabric/react-components';
 
 const Main = () => {
@@ -90,7 +90,7 @@ const Main = () => {
             <Outlet />
           </section>
         </div>
-        {/* <Footer /> */}
+        <Footer />
         <ControlSidebar />
         <div
           id="sidebar-overlay"

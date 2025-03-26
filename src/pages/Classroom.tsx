@@ -176,7 +176,7 @@ const Classroom = () => {
     { name: 'First Name', selector: (row: any) => row.profile?.first_name },
     { name: 'Last Name', selector: (row: any) => row.profile?.last_name },
     { name: 'Email', selector: (row: any) => row.email },
-    { name: 'Matric No', selector: (row: any) => row.reg_no },
+    { name: 'Registration No', selector: (row: any) => row.reg_no },
 
     { name: 'Clock-in Time', selector: (row: any) => moment(row.attendance_user?.created_at).toString() }
 

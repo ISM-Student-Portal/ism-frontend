@@ -100,10 +100,10 @@ export const uiSlice = createSlice({
       state.darkMode = !state.darkMode;
       if (state.darkMode) {
         state.navbarVariant = NAVBAR_DARK_VARIANTS[0].value;
-        state.sidebarSkin = SIDEBAR_DARK_SKINS[0].value;
+        state.sidebarSkin = SIDEBAR_DARK_SKINS[3].value;
       } else {
         state.navbarVariant = NAVBAR_LIGHT_VARIANTS[0].value;
-        state.sidebarSkin = SIDEBAR_LIGHT_SKINS[0].value;
+        state.sidebarSkin = SIDEBAR_LIGHT_SKINS[3].value;
       }
       if (state.darkMode) {
         addWindowClass('dark-mode');
@@ -120,9 +120,9 @@ export const uiSlice = createSlice({
     },
     setSidebarSkin: (state, { payload }) => {
       if (state.darkMode) {
-        state.sidebarSkin = payload || SIDEBAR_DARK_SKINS[0].value;
+        state.sidebarSkin = payload || SIDEBAR_DARK_SKINS[3].value;
       } else {
-        state.sidebarSkin = payload || SIDEBAR_LIGHT_SKINS[0].value;
+        state.sidebarSkin = payload || SIDEBAR_LIGHT_SKINS[3].value;
       }
     },
     setWindowSize: (state, { payload }) => {

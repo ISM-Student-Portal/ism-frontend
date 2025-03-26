@@ -104,7 +104,7 @@ const Main = () => {
             <Outlet />
           </section>
         </div>
-        {/* <Footer /> */}
+        <Footer />
         <ControlSidebar />
         <div
           id="sidebar-overlay"

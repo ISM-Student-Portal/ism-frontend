@@ -35,6 +35,10 @@ const Courses = () => {
 
 
     const handleOpenAdd = () => {
+        setEditMode(false);
+        setTitle('');
+        setDescription('');
+        setLecturerId('');
         setOpenAdd(true);
     };
 
@@ -57,7 +61,8 @@ const Courses = () => {
             setLecturerId(row.lecturer_id);
             setSelectedCourse(row);
             setEditMode(true);
-            handleOpenAdd();
+            setOpenAdd(true);
+
         }
         else if (action === 'delete') {
             setSelectedCourse(row);

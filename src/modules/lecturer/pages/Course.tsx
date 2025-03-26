@@ -453,7 +453,7 @@ const Course = () => {
                         buttons: {
                             buttons: ['copy', 'csv']
                         }
-                    }} data={selectedAssignment?.submissions} columns={[{ data: 'student.matric_no', title: 'Matric No' },
+                    }} data={selectedAssignment?.submissions} columns={[{ data: 'student.matric_no', title: 'Registration No' },
                     {
                         data: 'student.first_name', title: 'Name', render(data, type, row, meta) {
                             return `${row.student.first_name} ${row.student.last_name}`
@@ -495,7 +495,7 @@ const Course = () => {
                         buttons: {
                             buttons: ['copy', 'csv']
                         }
-                    }} data={selectedAttendance?.attendance?.students} columns={[{ data: 'matric_no', title: 'Matric No' }, {
+                    }} data={selectedAttendance?.attendance?.students} columns={[{ data: 'matric_no', title: 'Registration No' }, {
                         data: 'first_name', title: 'Name', render(data, type, row, meta) {
                             return `${row.first_name} ${row.last_name}`
                         },
