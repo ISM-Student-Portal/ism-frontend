@@ -19,6 +19,7 @@ const Admins = () => {
   const [pending, setpending] = React.useState(true);
   const [email, setEmail] = React.useState('');
   const [username, setUsername] = React.useState('');
+  const [isSuper, setIsSuper] = React.useState<any>();
   const [phone, setPhone] = React.useState('');
   const [loading, setLoading] = React.useState(false);
   const [openAdd, setOpenAdd] = React.useState(false);
@@ -77,12 +78,12 @@ const Admins = () => {
       setRows(admins.admins);
       setpending(false);
     } catch (error) {
-      
+
     }
-    finally{
+    finally {
       setLoading(false)
     }
-   
+
   }
 
   const deactivateAdminAction = async () => {
@@ -108,6 +109,7 @@ const Admins = () => {
         email: email,
         username: username,
         phone: phone,
+        super_admin: isSuper === 'superadmin'
 
       }
       const student = await inviteAdmin(data);
@@ -153,7 +155,7 @@ const Admins = () => {
               </div>
               <div></div>
               <DataTable slots={{
-                4: (data: any, row: any) => (
+                5: (data: any, row: any) => (
                   row.is_active ? (
                     <OverlayTrigger placement='top' overlay={<Tooltip id={row.id}>Deactivate</Tooltip>}>
                       <Button as="span" variant='outline-light' size='sm' onClick={() => handleButtonClick('delete', row)}><DeleteIcon className='text-danger mx-2 pointer' /></Button>
@@ -172,7 +174,11 @@ const Admins = () => {
                 buttons: {
                   buttons: ['copy', 'csv']
                 }
-              }} data={rows} columns={[{ data: 'email', title: 'Email' }, { data: 'username', title: 'Username' }, { data: 'phone_number', title: 'Phone' }, {
+              }} data={rows} columns={[{ data: 'email', title: 'Email' }, { data: 'username', title: 'Username' }, { data: 'phone_number', title: 'Phone' },{
+                data: 'super_admin', title: 'Admin Type', render(data, type, row, meta) {
+                  return data ? 'Super Admin' : 'Admin'
+                },
+              }, {
                 data: 'is_active', title: 'Status', render(data, type, row, meta) {
                   return data ? 'Active' : 'Inactive'
                 },
@@ -213,6 +219,14 @@ const Admins = () => {
             <Form.Group controlId='classform.link'>
               <Form.Label>Phone number</Form.Label>
               <Form.Control type='text' placeholder='Phone' required value={phone} onChange={(e) => setPhone(e.target.value)}></Form.Control>
+            </Form.Group>
+
+            <Form.Group controlId='classform.admin'>
+              <Form.Label>Admin Type</Form.Label>
+              <Form.Control as={'select'} required value={isSuper} onChange={(e) => setIsSuper(e.target.value)}>
+                <option value='admin'>Admin</option>
+                <option value='superadmin'>Super Admin</option>
+              </Form.Control>
             </Form.Group>
 
           </Form>

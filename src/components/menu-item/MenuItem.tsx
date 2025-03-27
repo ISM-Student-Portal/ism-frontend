@@ -66,7 +66,8 @@ const MenuItem = ({ menuItem }: { menuItem: IMenuItem }) => {
         }`}
         role="link"
         onClick={handleMainMenuAction}
-        style={{ cursor: 'pointer' }}
+        
+        style={{ cursor: 'pointer', color: 'white' }}
       >
         <i className={`${menuItem.icon}`} />
         <p>{t(menuItem.name)}</p>
@@ -79,9 +80,9 @@ const MenuItem = ({ menuItem }: { menuItem: IMenuItem }) => {
         menuItem.children.map((item) => (
           <ul key={item.name} className="nav nav-treeview">
             <li className="nav-item">
-              <NavLink className="nav-link" to={`${item.path}`}>
+              <NavLink className="nav-link" style={{color: 'white'}} to={`${item.path}`}>
                 <i className={`${item.icon}`} />
-                <p>{t(item.name)}</p>
+                <p style={{color: 'white'}}>{t(item.name)}</p>
               </NavLink>
             </li>
           </ul>

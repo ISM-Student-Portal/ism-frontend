@@ -8,6 +8,7 @@ import VisibilityIcon from '@mui/icons-material/Visibility';
 
 import { toast } from 'react-toastify';
 import axios from '../../../utils/axios';
+import EditIcon from '@mui/icons-material/Edit';
 
 
 
@@ -48,6 +49,7 @@ const Course = () => {
     const [selectedAssignment, setSelectedAssignment] = React.useState<any>();
     const [selectedSubmission, setSelectedSubmission] = React.useState<any>();
     const [selectedAttendance, setSelectedAttendance] = React.useState<any>();
+    const [editMode, setEditMode] = React.useState(false);
 
     const [expiresOn, setExpiresOn] = React.useState<any>();
 
@@ -178,6 +180,20 @@ const Course = () => {
         }
     }
 
+    const handleButtonClick = (action: string, row: any) => {
+        if (action === 'edit') {
+            console.log(row);
+            setTitle(row.title);
+            setDescription(row.description);
+            setSelectedAssignment(row);
+            setEditMode(true);
+            setOpenAssignment(true);
+
+        }
+
+    }
+
+
     const uploadGrade = async () => {
         try {
             setLoading(true);
@@ -255,8 +271,8 @@ const Course = () => {
         <div>
             {course ? (
                 <div>
-                    <h1 className='text-center'>{course.title}</h1>
-                    <section className="content">
+                    <h3 className='text-center'>{course.title}</h3>
+                    <section className="content text-center">
                         <p>{course.description}</p>
                     </section>
                     <Tabs>
@@ -275,10 +291,16 @@ const Course = () => {
 
                             <DataTable slots={{
                                 5: (data: any, row: any) => (
-                                    <OverlayTrigger placement='top' overlay={<Tooltip id={row.id}>View Attendance</Tooltip>}>
-                                        <Button disabled={row.attendance?.students.length < 1} as="span" variant='outline-light' size='sm' onClick={() => handleOpenAttendance(row)}><VisibilityIcon className='text-success mx-2 pointer' /></Button>
+                                    <div className='d-flex '>
+                                        <OverlayTrigger placement='top' overlay={<Tooltip id={row.id}>View Attendance</Tooltip>}>
+                                            <Button disabled={row.attendance?.students.length < 1} as="span" variant='outline-light' size='sm' onClick={() => handleOpenAttendance(row)}><VisibilityIcon className='text-success mx-2 pointer' /></Button>
 
-                                    </OverlayTrigger>
+                                        </OverlayTrigger>
+                                        <OverlayTrigger placement='top' overlay={<Tooltip id={row.id}>Edit</Tooltip>}>
+                                            <Button disabled={row.attendance?.students.length < 1} as="span" variant='outline-light' size='sm' onClick={() => handleButtonClick('edit', row)}><EditIcon className='text-warning mx-2 pointer' /></Button>
+
+                                        </OverlayTrigger>
+                                    </div>
 
                                 )
                             }} className='table table-striped table-bordered order-column dt-head-center' options={{
@@ -403,7 +425,13 @@ const Course = () => {
                             <Form.Control type='text' placeholder='Link' value={link} onChange={(e) => setLink(e.target.value)}></Form.Control>
                         </Form.Group>
                         <Form.Group controlId='classform.deadline'>
+                            <Form.Label>Deadline</Form.Label><br></br>
+
                             <DatePicker
+                                format='y-MM-dd'
+                                yearPlaceholder='yyyy'
+                                monthPlaceholder='mm'
+                                dayPlaceholder='dd'
                                 value={expiresOn}
                                 onChange={(newValue) => setExpiresOn(newValue)}></DatePicker>
                         </Form.Group>
@@ -483,7 +511,7 @@ const Course = () => {
                 </Modal.Footer>
             </Modal>
 
-            <Modal show={openAttendance} onHide={handleCloseAttendance} size='lg' centered>
+            <Modal show={openAttendance} onHide={handleCloseAttendance} size='xl' centered>
                 <Modal.Header closeButton>
                     <Modal.Title>Attendance</Modal.Title>
                 </Modal.Header>
