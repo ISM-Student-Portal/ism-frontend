@@ -120,14 +120,14 @@ const Dashboard = () => {
               </div>
 
               <div className="col-lg-3 col-6">
-                <div className="small-box bg-light">
+                <div className="small-box text-white" style={{ backgroundColor: '#2a2f54' }}>
                   <div className="inner">
                     <h3>{stats?.partPaymentStudent}</h3>
 
                     <p>Students Paid Part</p>
                   </div>
                   <div className="icon">
-                    <i className="ion ion-bag" />
+                    <i className="ion ion-cash text-white" />
                   </div>
                   <a href="/admin/payments" className="small-box-footer">
                     <div className='m-3'></div>

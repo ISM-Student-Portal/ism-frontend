@@ -44,7 +44,7 @@ const UserDropdown = () => {
     <UserMenuDropdown isOpen={dropdownOpen} hideArrow>
       <StyledSmallUserImage
         slot="head"
-        src={profile?.picture}
+        src={profile?.profile_pix_url}
         fallbackSrc="/img/default-profile.png"
         alt="User"
         width={25}
@@ -52,16 +52,16 @@ const UserDropdown = () => {
         rounded
       />
       <div slot="body">
-        <UserHeader className=" bg-primary">
+        <UserHeader style={{backgroundColor: '#2a2f54'}}>
           <StyledBigUserImage
-            src={profile?.picture}
+            src={profile?.profile_pix_url}
             fallbackSrc="/img/default-profile.png"
             alt="User"
             width={90}
             height={90}
             rounded
           />
-          <p>
+          <p className='text-white'>
             {profile?.email}
 
           </p>

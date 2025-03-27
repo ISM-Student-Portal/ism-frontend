@@ -62,19 +62,18 @@ const MenuSidebar = () => {
 
   return (
     <aside className={`main-sidebar elevation-4`} style={{ backgroundColor: '#2a2f54', color: 'white' }}>
-      <Link to="/" className="brand-link">
-        <StyledBrandImage
-          src="/img/ism_logo_gold.png"
-
-          alt="ISM Logo"
-          width={33}
-          height={33}
-          rounded
-        />
-        <span className="brand-text font-weight-bold" style={{ color: '#c28e27' }}>ISM Portal</span>
-      </Link>
-      <div className="sidebar">
-        <div className="user-panel mt-3 pb-3 mb-3 d-flex">
+      <Link to={"/lecturer"} className="brand-link d-flex align-items-center ">
+              <StyledBrandImage
+                src="/img/logo11.png"
+                alt="ISM Logo"
+                width={55}
+                height={55}
+                rounded
+              />
+              <span className="brand-text font-weight-bold" style={{ color: 'white' }}>ISM Portal</span>
+            </Link>
+      <div className="sidebar my-5">
+        {/* <div className="user-panel mt-3 pb-3 mb-3 d-flex">
           <div className="image">
             <StyledUserImage
               src={profile?.profile_pix_url}
@@ -90,7 +89,7 @@ const MenuSidebar = () => {
               {profile?.email}
             </Link>
           </div>
-        </div>
+        </div> */}
 
         <nav className="mt-2" style={{ overflowY: 'hidden' }}>
           <ul
