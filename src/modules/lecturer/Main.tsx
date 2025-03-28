@@ -8,6 +8,8 @@ import Header from '@app/modules/lecturer/header/Header';
 import MenuSidebar from '@app/modules/lecturer/menu-sidebar/MenuSidebar';
 import Footer from '@app/modules/lecturer/footer/Footer';
 import { Image } from '@profabric/react-components';
+import useIdle from '../../utils/useIdleTimeout';
+
 
 const Main = () => {
   const dispatch = useDispatch();
@@ -25,6 +27,10 @@ const Main = () => {
     dispatch(toggleSidebarMenu());
   };
 
+  const handleIdle = () => {
+    console.log(true);
+  }
+
   useEffect(() => {
     setIsAppLoaded(Boolean(authentication));
   }, [authentication]);
@@ -41,6 +47,9 @@ const Main = () => {
       removeWindowClass('sidebar-mini');
     };
   }, []);
+
+  const { idleTimer } = useIdle({ onIdle: handleIdle, idleTime: 300 })
+
 
   useEffect(() => {
     removeWindowClass('sidebar-closed');

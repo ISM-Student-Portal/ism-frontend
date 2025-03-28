@@ -8,6 +8,8 @@ import Header from '@app/modules/admin/header/Header';
 import MenuSidebar from '@app/modules/admin/menu-sidebar/MenuSidebar';
 import Footer from '@app/modules/admin/footer/Footer';
 import { Image } from '@profabric/react-components';
+import useIdle from '../../utils/useIdleTimeout';
+
 
 const Main = () => {
   const dispatch = useDispatch();
@@ -24,6 +26,13 @@ const Main = () => {
   const handleToggleMenuSidebar = () => {
     dispatch(toggleSidebarMenu());
   };
+
+  const handleIdle = () => {
+    console.log(true);
+  }
+
+  const { idleTimer } = useIdle({ onIdle: handleIdle, idleTime: 300 })
+
 
   useEffect(() => {
     setIsAppLoaded(Boolean(authentication));

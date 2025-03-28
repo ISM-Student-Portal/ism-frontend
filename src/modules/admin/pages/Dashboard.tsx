@@ -61,7 +61,7 @@ const Dashboard = () => {
                     <p>Students</p>
                   </div>
                   <div className="icon">
-                    <i className="ion ion-bag" />
+                    <i className="fas fa-user-graduate"></i>
                   </div>
                   <a href="/admin/students" className="small-box-footer">
                     More info <i className="fas fa-arrow-circle-right" />
@@ -77,7 +77,8 @@ const Dashboard = () => {
                     <p>Basic Subscription</p>
                   </div>
                   <div className="icon">
-                    <i className="ion ion-person-add" />
+                    <i className="ion ion-pie-graph" />
+
                   </div>
                   <a href="#" className="small-box-footer">
                     More info <i className="fas fa-arrow-circle-right" />

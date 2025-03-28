@@ -79,16 +79,16 @@ const MenuSidebar = () => {
 
   return (
     <aside className={`main-sidebar elevation-4`} style={{ backgroundColor: '#2a2f54' }}>
-     <Link to={"/admin"} className="brand-link d-flex align-items-center ">
-             <StyledBrandImage
-               src="/img/logo11.png"
-               alt="ISM Logo"
-               width={55}
-               height={55}
-               rounded
-             />
-             <span className="brand-text font-weight-bold" style={{ color: 'white' }}>ISM Portal</span>
-           </Link>
+      <Link to={"/admin"} className="brand-link d-flex align-items-center justify-content-around ">
+        <Image
+          src="/img/logo11.png"
+          alt="ISM Logo"
+          width={70}
+          height={95}
+          rounded
+        />
+        <span className="brand-text font-weight-bold" style={{ color: 'white', marginRight: '17px' }}>ISM Portal</span>
+      </Link>
       <div className="sidebar my-5">
         {/* <div className="user-panel mt-3 pb-3 mb-3 d-flex">
           <div className="image">

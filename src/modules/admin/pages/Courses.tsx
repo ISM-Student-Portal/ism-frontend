@@ -14,6 +14,7 @@ import VisibilityIcon from '@mui/icons-material/Visibility';
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
 import { useNavigate } from 'react-router-dom';
+import { useSelector } from 'react-redux';
 
 
 const Courses = () => {
@@ -25,6 +26,8 @@ const Courses = () => {
     const [lecturerId, setLecturerId] = React.useState('');
     const [selectedCourse, setSelectedCourse] = React.useState<any>();
     const [rows, setRows] = React.useState([]);
+    const profile = useSelector((state: any) => state.profile.profile);
+
     const [pending, setpending] = React.useState(true);
     const [loading, setLoading] = React.useState(false);
     const [openAdd, setOpenAdd] = React.useState(false);
@@ -182,10 +185,12 @@ const Courses = () => {
 
                                         </OverlayTrigger>
 
-                                        <OverlayTrigger placement='top' overlay={<Tooltip id={row.id}>Delete</Tooltip>}>
+                                        {profile?.super_admin ? (<OverlayTrigger placement='top' overlay={<Tooltip id={row.id}>Delete</Tooltip>}>
                                             <Button disabled={row.attendance?.students.length < 1} as="span" variant='outline-light' size='sm' onClick={() => handleButtonClick('delete', row)}><DeleteIcon className='text-danger mx-2 pointer' /></Button>
 
-                                        </OverlayTrigger>
+                                        </OverlayTrigger>) : ''}
+
+
 
 
 

@@ -9,6 +9,7 @@ import VisibilityIcon from '@mui/icons-material/Visibility';
 import { toast } from 'react-toastify';
 import axios from '../../../utils/axios';
 import EditIcon from '@mui/icons-material/Edit';
+import moment from 'moment';
 
 
 
@@ -60,6 +61,11 @@ const Course = () => {
 
 
     const handleOpen = () => {
+        setEditMode(false);
+        setTitle('');
+        setDescription('');
+        setLink('');
+        setExpiresOn('');
         setOpen(true);
     }
     const handleClose = () => {
@@ -116,24 +122,42 @@ const Course = () => {
 
     const createClass = async () => {
         setLoading(true);
-        try {
-            let classroom = await createClassroom({
-                title,
-                description,
-                link,
-                course_id: id,
-                expires_on: expiresOn
-            })
-            console.log(classroom)
-            toast.success('Class created');
+        let data = {
+            title,
+            description,
+            link,
+            course_id: id,
+            expires_on: expiresOn
+        };
+        if (editMode) {
+            try {
+                let res = await axios.put('/classrooms/' + selectedAssignment.id, data);
+                if (res) {
+                    toast.success('Class updated');
+                    handleClose();
+                    getCourse();
+                }
+            } catch (error) {
 
-            getCourse();
-        } catch (error) {
+            }
+            finally {
+                setLoading(false);
+            }
+        } else {
+            try {
+                let classroom = await createClassroom(data)
+                console.log(classroom)
+                toast.success('Class created');
 
+                getCourse();
+            } catch (error) {
+
+            }
+            finally {
+                setLoading(false)
+            }
         }
-        finally {
-            setLoading(false)
-        }
+
     }
     const handleFileUpload = async (e: ChangeEvent<HTMLInputElement>) => {
         if (!e.target.files) {
@@ -185,9 +209,12 @@ const Course = () => {
             console.log(row);
             setTitle(row.title);
             setDescription(row.description);
+            setLink(row.link);
+            setExpiresOn(moment(row.expires_on).format('YYYY-MM-DD'));
+            console.log(moment(row.expires_on).format('YYYY-MM-DD'));
             setSelectedAssignment(row);
             setEditMode(true);
-            setOpenAssignment(true);
+            setOpen(true);
 
         }
 
@@ -370,7 +397,7 @@ const Course = () => {
 
             <Modal show={open} onHide={handleClose} size='lg' centered>
                 <Modal.Header closeButton>
-                    <Modal.Title>Create Class</Modal.Title>
+                    <Modal.Title>{editMode ? 'Edit' : 'Create'} Class</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
                     <Form>

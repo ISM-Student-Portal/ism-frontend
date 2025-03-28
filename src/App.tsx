@@ -46,6 +46,8 @@ import Assignment from './pages/student_pages/Assignment';
 import Submission from './pages/student_pages/Submission';
 import Student from './modules/admin/pages/Student';
 import Registered from './modules/admin/pages/Registered';
+import ResetPassword from './modules/reset-password/ResetPassword';
+import SuperAdminRoute from './routes/SuperAdminRoute';
 
 const { VITE_NODE_ENV } = import.meta.env;
 
@@ -125,6 +127,9 @@ const App = () => {
         <Route path="/forgot-password" element={<PublicRoute />}>
           <Route path="/forgot-password" element={<ForgetPassword />} />
         </Route>
+        <Route path="/password/reset" element={<PublicRoute />}>
+          <Route path="/password/reset" element={<ResetPassword />} />
+        </Route>
         <Route path="/recover-password" element={<PublicRoute />}>
           <Route path="/recover-password" element={<RecoverPassword />} />
         </Route>
@@ -150,7 +155,9 @@ const App = () => {
             <Route path='payments' element={<Payments />} />
             <Route path='courses/:id' element={<LecturerCourse />} />
             <Route path='courses' element={<Courses />} />
-            <Route path='admins' element={<Admins />} />
+            <Route path='admins' element={<SuperAdminRoute />}>
+              <Route path='' element={<Admins />} />
+            </Route>
             <Route path='lecturers' element={<Lecturers />} />
             <Route path="profile" element={<Profile />} />
 
