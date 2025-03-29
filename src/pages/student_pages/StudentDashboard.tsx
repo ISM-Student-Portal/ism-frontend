@@ -76,13 +76,13 @@ const StudentDashboard = () => {
                 <div className="icon">
                   <i className="ion ion-person-add" />
                 </div>
-                <a href="/" className="small-box-footer">
+                <a href="/submissions" className="small-box-footer">
                   More info <i className="fas fa-arrow-circle-right" />
                 </a>
               </div>
             </div>
 
-            <div className="col-lg-3 col-6">
+            {/* <div className="col-lg-3 col-6">
               <div className="small-box bg-danger">
                 <div className="inner">
                   <h3>{stats?.aggregate_grade}</h3>
@@ -112,7 +112,7 @@ const StudentDashboard = () => {
                   More info <i className="fas fa-arrow-circle-right" />
                 </a>
               </div>
-            </div>
+            </div> */}
             {/* <div className="col-lg-3 col-6">
               <div className="small-box bg-danger">
                 <div className="inner">

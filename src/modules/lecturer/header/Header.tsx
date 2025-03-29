@@ -55,15 +55,7 @@ const Header = () => {
       <ul className="navbar-nav ml-auto">
 
         <UserDropdown />
-        <li className="nav-item">
-          <button
-            type="button"
-            className="nav-link"
-            onClick={handleToggleControlSidebar}
-          >
-            <i className="fas fa-th-large" />
-          </button>
-        </li>
+       
       </ul>
     </nav>
   );

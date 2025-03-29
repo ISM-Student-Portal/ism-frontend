@@ -46,7 +46,7 @@ const Dashboard = () => {
                   <div className="icon">
                     <i className="ion ion-bag" />
                   </div>
-                  <a href="/admin/students" className="small-box-footer">
+                  <a href="/lecturer/courses" className="small-box-footer">
                     More info <i className="fas fa-arrow-circle-right" />
                   </a>
                 </div>
@@ -63,7 +63,7 @@ const Dashboard = () => {
                   <div className="icon">
                     <i className="ion ion-stats-bars" />
                   </div>
-                  <a href="/admin/classroom" className="small-box-footer">
+                  <a href="/lecturer/assignments" className="small-box-footer">
                     More info <i className="fas fa-arrow-circle-right" />
                   </a>
                 </div>
@@ -78,8 +78,8 @@ const Dashboard = () => {
                   <div className="icon">
                     <i className="ion ion-person-add" />
                   </div>
-                  <a href="#" className="small-box-footer">
-                    More info <i className="fas fa-arrow-circle-right" />
+                  <a href="#" className="small-box-footer py-3">
+                    
                   </a>
                 </div>
               </div>

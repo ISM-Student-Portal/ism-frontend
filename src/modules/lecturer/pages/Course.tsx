@@ -16,7 +16,7 @@ import moment from 'moment';
 
 
 import { ColorRing } from 'react-loader-spinner';
-import { fetchCourseById } from '@app/services/admin/lecturerServices';
+import { fetchAllAssignments, fetchCourseById } from '@app/services/admin/lecturerServices';
 import { useParams } from 'react-router-dom';
 import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
 import 'react-tabs/style/react-tabs.css';
@@ -129,6 +129,16 @@ const Course = () => {
             course_id: id,
             expires_on: expiresOn
         };
+        if (link && !link.startsWith('http')) {
+            toast.error('Link must start with http or https');
+            setLoading(false);
+            return;
+        }
+        if (expiresOn && !moment(expiresOn).isValid()) {
+            toast.error('Invalid date');
+            setLoading(false);
+            return;
+        }
         if (editMode) {
             try {
                 let res = await axios.put('/classrooms/' + selectedAssignment.id, data);
@@ -194,6 +204,14 @@ const Course = () => {
             if (res) {
                 toast.success('Grade submitted');
                 handleCloseGrade();
+                handleCloseSubmissions();
+                const courses = await fetchAllAssignments();
+
+                let updatedAssignment = courses.assignments.find((item: any) => {
+                    return item.id === selectedAssignment.id
+                });
+                console.log(updatedAssignment);
+                handleOpenSubmissions(updatedAssignment);
                 getCourse();
             }
         } catch (error) {
@@ -365,7 +383,11 @@ const Course = () => {
                                 buttons: {
                                     buttons: ['copy', 'csv']
                                 }
-                            }} data={course.assignments} columns={[{ data: 'title', title: 'Title' }, { data: 'link', title: 'Link' }, { data: 'description', title: 'Description' }, { data: 'deadline', title: 'Expiry' }, {
+                            }} data={course.assignments} columns={[{ data: 'title', title: 'Title' }, {
+                                data: 'link', title: 'Link', render(data, type, row, meta) {
+                                    return data ? `<a href=${data} target='_blank'>View</a>` : 'No file'
+                                },
+                            }, { data: 'description', title: 'Description' }, { data: 'deadline', title: 'Expiry' }, {
                                 data: 'file_url', title: 'file', render(data, type, row, meta) {
                                     return data ? `<a href=${data} target='_blank'>View</a>` : 'No file'
                                 },
@@ -493,9 +515,9 @@ const Course = () => {
                     <Modal.Title>Submissions</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
-                    <div className=''>
+                    {/* <div className=''>
                         <Button variant='warning' className='float-right d-inline-block my-3' onClick={() => handleOpenUploadGrade()}>Upload Grades</Button>
-                    </div><br />
+                    </div><br /> */}
                     <DataTable slots={{
                         6: (data: any, row: any) => (
                             <OverlayTrigger placement='top' overlay={<Tooltip id={row.id}>Grade</Tooltip>}>

@@ -36,7 +36,7 @@ const UserDropdown = () => {
   const navigateToProfile = (event: any) => {
     event.preventDefault();
     setDropdownOpen(false);
-    profile.is_admin ? navigate('/admin/profile') : navigate('/profile');
+    navigate('/lecturer/profile');
   };
 
   return (
@@ -52,7 +52,7 @@ const UserDropdown = () => {
         rounded
       />
       <div slot="body">
-        <UserHeader style={{backgroundColor: '#2a2f54'}}>
+        <UserHeader style={{ backgroundColor: '#2a2f54' }}>
           <StyledBigUserImage
             src={profile?.profile_pix_url}
             fallbackSrc="/img/default-profile.png"

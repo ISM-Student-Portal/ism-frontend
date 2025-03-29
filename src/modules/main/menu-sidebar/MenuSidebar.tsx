@@ -120,11 +120,11 @@ const MenuSidebar = () => {
         <Image
           src="/img/logo11.png"
           alt="ISM Logo"
-          width={70}
-          height={95}
+          width={45}
+          height={60}
           rounded
         />
-        <span className="brand-text font-weight-bold" style={{ color: 'white', marginRight: '17px' }}>ISM Portal</span>
+        <span className="brand-text font-weight-bold" style={{ color: 'white', marginRight: '25px' }}>ISM Portal</span>
       </Link>
       <div className="sidebar my-5">
         {/* <div className="user-panel mt-3 pb-3 mb-3 d-flex">

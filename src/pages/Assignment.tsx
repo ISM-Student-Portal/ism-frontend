@@ -267,6 +267,7 @@ const Assignment = () => {
   };
   const columns = memoize(clickHandler => [
     { name: 'Title', selector: (row: any) => row.title },
+    { name: 'Course', selector: (row: any) => row.course.title },
     { name: 'Description', selector: (row: any) => row.description },
     { name: 'Link', selector: (row: any) => (<a target='_blank' href={row.link}>{row.link}</a>) },
     { name: 'Deadline', selector: (row: any) => row.deadline },
