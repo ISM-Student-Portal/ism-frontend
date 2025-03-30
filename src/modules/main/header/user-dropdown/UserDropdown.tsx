@@ -36,7 +36,7 @@ const UserDropdown = () => {
   const navigateToProfile = (event: any) => {
     event.preventDefault();
     setDropdownOpen(false);
-    navigate('/lecturer/profile');
+    navigate('/profile');
   };
 
   return (

@@ -36,11 +36,11 @@ const UserDropdown = () => {
   const navigateToProfile = (event: any) => {
     event.preventDefault();
     setDropdownOpen(false);
-    navigate('/profile');
+    navigate('/admin/profile');
   };
 
   return (
-    
+
     <UserMenuDropdown isOpen={dropdownOpen} hideArrow>
       <StyledSmallUserImage
         slot="head"
@@ -52,7 +52,7 @@ const UserDropdown = () => {
         rounded
       />
       <div slot="body">
-        <UserHeader className=" bg-primary">
+        <UserHeader style={{ backgroundColor: '#2a2f54' }}>
           <StyledBigUserImage
             src={profile?.picture}
             fallbackSrc="/img/default-profile.png"
@@ -71,7 +71,7 @@ const UserDropdown = () => {
             </small>
           </p>
         </UserHeader>
-        <UserBody>
+        {/* <UserBody>
           <div className="row">
             <div className="col-4 text-center">
               <Link to="/">{t('header.user.followers')}</Link>
@@ -83,7 +83,7 @@ const UserDropdown = () => {
               <Link to="/">{t('header.user.friends')}</Link>
             </div>
           </div>
-        </UserBody>
+        </UserBody> */}
         <UserFooter>
           <button
             type="button"

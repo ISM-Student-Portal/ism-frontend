@@ -116,7 +116,7 @@ const MenuSidebar = () => {
 
   return (
     <aside className={`main-sidebar elevation-4`} style={{ backgroundColor: '#2a2f54' }}>
-      <Link to={"/admin"} className="brand-link d-flex align-items-center justify-content-around ">
+      <Link to={"/"} className="brand-link d-flex align-items-center justify-content-around ">
         <Image
           src="/img/logo11.png"
           alt="ISM Logo"

@@ -6,10 +6,8 @@ import {
   toggleControlSidebar,
   toggleSidebarMenu,
 } from '@app/store/reducers/ui';
-import MessagesDropdown from '@app/modules/main/header/messages-dropdown/MessagesDropdown';
-import NotificationsDropdown from '@app/modules/main/header/notifications-dropdown/NotificationsDropdown';
-import LanguagesDropdown from '@app/modules/main/header/languages-dropdown/LanguagesDropdown';
-import UserDropdown from '@app/modules/main/header/user-dropdown/UserDropdown';
+
+import UserDropdown from '@app/modules/lecturer/header/user-dropdown/UserDropdown';
 
 const Header = () => {
   const [t] = useTranslation();

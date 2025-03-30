@@ -238,7 +238,7 @@ const Profile = () => {
                       </span>
 
                     </li>
-                    {profile.is_admin ? (
+                    {profile.is_admin || profile.is_lecturer ? (
                       <div></div>
                     ) : (
                       <li className="nav-item">

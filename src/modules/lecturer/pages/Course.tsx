@@ -267,7 +267,12 @@ const Course = () => {
         }
     }
 
-    const createAssignmentAction = async () => {
+    const createAssignmentAction = async (event: any) => {
+        const form = event.currentTarget;
+        if (form.checkValidity() === false) {
+            event.preventDefault();
+            event.stopPropagation();
+        }
         setLoading(true);
         try {
             setLoading(true);
@@ -479,15 +484,15 @@ const Course = () => {
                     <Modal.Title>Create Assignment</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
-                    <Form>
+                    <Form noValidate validated >
                         <Form.Group controlId='classform.title'>
                             <Form.Label>Title</Form.Label>
-                            <Form.Control type='text' placeholder='Title' value={title} onChange={(e) => setTitle(e.target.value)}></Form.Control>
+                            <Form.Control type='text' placeholder='Title' required value={title} onChange={(e) => setTitle(e.target.value)}></Form.Control>
                         </Form.Group>
 
                         <Form.Group controlId='classform.description'>
                             <Form.Label>Description</Form.Label>
-                            <Form.Control as='textarea' placeholder='Description' value={description} onChange={(e) => setDescription(e.target.value)}></Form.Control>
+                            <Form.Control as='textarea' required placeholder='Description' value={description} onChange={(e) => setDescription(e.target.value)}></Form.Control>
                         </Form.Group>
 
                         <Form.Group controlId='classform.link'>
