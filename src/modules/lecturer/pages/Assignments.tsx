@@ -228,7 +228,11 @@ const Assignments = () => {
                                 buttons: {
                                     buttons: ['copy', 'csv']
                                 }
-                            }} data={rows} columns={[{ data: 'title', title: 'Title' }, { data: 'link', title: 'Link' }, { data: 'course.title', title: 'Course' }, { data: 'description', title: 'Description' }, { data: 'deadline', title: 'Expiry' }, {
+                            }} data={rows} columns={[{ data: 'title', title: 'Title' }, {
+                                data: 'link', title: 'Link', render(data, type, row, meta) {
+                                    return data ? `<a href=${data} target='_blank'>${data}</a>` : 'No Link'
+                                },
+                            }, { data: 'course.title', title: 'Course' }, { data: 'description', title: 'Description' }, { data: 'deadline', title: 'Expiry' }, {
                                 data: 'file_url', title: 'file', render(data, type, row, meta) {
                                     return data ? `<a href=${data} target='_blank'>View</a>` : 'No file'
                                 },
@@ -368,7 +372,7 @@ const Assignments = () => {
                         <Form>
                             <Form.Group controlId='gradeform.grade'>
                                 <Form.Label>Grade %</Form.Label>
-                                <Form.Control type='number' placeholder='Grade' value={selectedSubmission?.grade} onChange={(e) => setSelectedSubmission({ ...selectedSubmission, grade: e.target.value })}></Form.Control>
+                                <Form.Control type='number' placeholder='Grade' value={selectedSubmission?.grade} max={100} min={0} onChange={(e) => setSelectedSubmission({ ...selectedSubmission, grade: e.target.value })}></Form.Control>
                             </Form.Group>
                             <Button variant='primary' onClick={submitGrade}>Submit</Button>
                         </Form>

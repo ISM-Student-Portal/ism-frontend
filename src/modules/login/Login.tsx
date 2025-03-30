@@ -177,15 +177,8 @@ const Login = () => {
                 </div>
 
                 <div className="row">
-                  <div className="col-8">
-                    <div style={{ display: 'flex', alignItems: 'center' }}>
-                      <Checkbox checked={false} />
-                      <label style={{ margin: 0, padding: 0, paddingLeft: '4px' }}>
-                        {t('login.label.rememberMe')}
-                      </label>
-                    </div>
-                  </div>
-                  <div className="col-4 mybutton">
+
+                  <div className="col-12 mybutton ">
                     <Button
                       loading={isAuthLoading}
                       disabled={isFacebookAuthLoading || isGoogleAuthLoading}
@@ -199,6 +192,7 @@ const Login = () => {
                   </div>
                   <div className="col-12">
                     <ReCAPTCHA
+                    className='w-100'
                       sitekey="6Ld4lKoqAAAAAJKSGNRE-FL0W1gPnKH_LMQXCpGG"
                       onChange={onChange}
                     />
