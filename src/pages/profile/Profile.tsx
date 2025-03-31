@@ -239,6 +239,7 @@ const Profile = () => {
                         // type="button"
                         className={`nav-link ${activeTab === 'SETTINGS' ? 'active' : ''
                           }`}
+                          onClick={() => toggle('SETTINGS')}
                       >
                         Edit Profile
                       </span>
@@ -266,6 +267,7 @@ const Profile = () => {
                     <li className="nav-item">
                       <span
                         // type="button"
+                        onClick={() => toggle('PASSWORD')}
                         className={`nav-link ${activeTab === 'PASSWORD' ? 'active' : ''
                           }`}
                       >

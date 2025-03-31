@@ -1,7 +1,12 @@
 import { Image } from '@profabric/react-components';
 import { AnyARecord } from 'node:dns';
+import { useState } from 'react';
+import { Button } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
+import { toast } from 'react-toastify';
+import { changepass } from '@app/services/authServices';
+
 
 const StyledContentImage = styled(Image)`
   display: inline-block;
@@ -12,113 +17,85 @@ const StyledContentImage = styled(Image)`
 `;
 
 const ChangePassword = ({ isActive, profile }: { isActive: boolean, profile: any }) => {
+    const [loading, setLoading] = useState(false);
+    const [password, setPassword] = useState<any>(null);
+    const [repeatPassword, setRepeatPassword] = useState<any>(null);
+
+
+    const editProfile = async () => {
+        if (!password) {
+            toast.error('Password cannot be empty!!')
+            return;
+        }
+        if (password !== repeatPassword) {
+            toast.error('Password does not match!!')
+            return;
+        }
+        setLoading(true);
+
+        try {
+            let res = await changepass({ 'password': password });
+            toast.success('profile updated successfully');
+            setPassword(null);
+            setRepeatPassword(null);
+
+
+        } catch (error) {
+
+        }
+        finally {
+            setLoading(false);
+        }
+
+
+    }
     return (
         <div className={`tab-pane ${isActive ? 'active' : ''}`}>
-            {/* The timeline */}
-            <div className="timeline timeline-inverse">
-                {/* timeline time label */}
-                <div className="time-label">
-                    <span className="bg-danger">10 Feb. 2014</span>
-                </div>
-                {/* /.timeline-label */}
-                {/* timeline item */}
-                <div>
-                    <i className="fas fa-envelope bg-primary" />
-                    <div className="timeline-item">
-                        <span className="time">
-                            <i className="far fa-clock" />
-                            <span> 12:05</span>
-                        </span>
-                        <h3 className="timeline-header">
-                            <Link to="/">Support Team</Link>
-                            <span> sent you an email</span>
-                        </h3>
-                        <div className="timeline-body">
-                            Etsy doostang zoodles disqus groupon greplin oooj voxy zoodles,
-                            weebly ning heekya handango imeem plugg dopplr jibjab, movity
-                            jajah plickers sifteo edmodo ifttt zimbra. Babblely odeo kaboodle
-                            quora plaxo ideeli hulu weebly balihoo...
-                        </div>
-                        <div className="timeline-footer">
-                            <Link to="/" className="btn btn-primary btn-sm">
-                                Read more
-                            </Link>
-                            <Link to="/" className="btn btn-danger btn-sm">
-                                Delete
-                            </Link>
-                        </div>
+            <form className="form-horizontal">
+                <div className="form-group row">
+                    <label htmlFor="inputName" className="col-sm-2 col-form-label">
+                        New Password
+                    </label>
+                    <div className="col-sm-4">
+                        <input
+                            type="password"
+                            value={password}
+                            onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
+                                setPassword(event.target.value);
+                            }}
+                            className="form-control"
+                            id="inputName"
+                            placeholder=""
+                        />
                     </div>
                 </div>
-                {/* END timeline item */}
-                {/* timeline item */}
-                <div>
-                    <i className="fas fa-user bg-info" />
-                    <div className="timeline-item">
-                        <span className="time">
-                            <i className="far fa-clock" />
-                            <span> 5 mins ago</span>
-                        </span>
-                        <h3 className="timeline-header border-0">
-                            <Link to="/">Sarah Young</Link>
-                            <span> accepted your friend request</span>
-                        </h3>
+
+
+
+                <div className="form-group row">
+                    <label htmlFor="inputName" className="col-sm-2 col-form-label">
+                        Repeat Password
+                    </label>
+                    <div className="col-sm-4">
+                        <input
+                            type="password"
+                            className="form-control"
+                            id="inputName"
+                            placeholder=""
+                            value={repeatPassword}
+                            onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
+                                setRepeatPassword(event.target.value);
+                            }}
+                        />
                     </div>
                 </div>
-                {/* END timeline item */}
-                {/* timeline item */}
-                <div>
-                    <i className="fas fa-comments bg-warning" />
-                    <div className="timeline-item">
-                        <span className="time">
-                            <i className="far fa-clock" />
-                            <span> 27 mins ago</span>
-                        </span>
-                        <h3 className="timeline-header">
-                            <Link to="/">Jay White</Link>
-                            <span> commented on your post</span>
-                        </h3>
-                        <div className="timeline-body">
-                            Take me to your leader! Switzerland is small and neutral! We are
-                            more like Germany, ambitious and misunderstood!
-                        </div>
-                        <div className="timeline-footer">
-                            <Link to="/" className="btn btn-warning btn-flat btn-sm">
-                                View comment
-                            </Link>
-                        </div>
+
+                <div className="form-group row">
+                    <div className="offset-sm-2 col-sm-10">
+                        <Button variant="primary" onClick={editProfile} disabled={loading}>Submit</Button>
                     </div>
                 </div>
-                {/* END timeline item */}
-                {/* timeline time label */}
-                <div className="time-label">
-                    <span className="bg-success">3 Jan. 2014</span>
-                </div>
-                {/* /.timeline-label */}
-                {/* timeline item */}
-                <div>
-                    <i className="fas fa-camera bg-purple" />
-                    <div className="timeline-item">
-                        <span className="time">
-                            <i className="far fa-clock" />
-                            <span> 2 days ago</span>
-                        </span>
-                        <h3 className="timeline-header">
-                            <Link to="/">Mina Lee</Link>
-                            <span> uploaded new photos</span>
-                        </h3>
-                        <div className="timeline-body">
-                            <StyledContentImage src="/img/default-profile.png" width={25} />
-                            <StyledContentImage src="/img/default-profile.png" width={25} />
-                            <StyledContentImage src="/img/default-profile.png" width={25} />
-                            <StyledContentImage src="/img/default-profile.png" width={25} />
-                        </div>
-                    </div>
-                </div>
-                {/* END timeline item */}
-                <div>
-                    <i className="far fa-clock bg-gray" />
-                </div>
-            </div>
+            </form>
         </div>
     );
 };

@@ -129,7 +129,7 @@ const SettingsTab = ({ isActive, profile }: { isActive: boolean, profile: any })
               type="text"
               value={username}
               onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
-                setFirstName(event.target.value);
+                setUsername(event.target.value);
               }}
               className="form-control"
               id="inputName"
@@ -180,7 +180,7 @@ const SettingsTab = ({ isActive, profile }: { isActive: boolean, profile: any })
               value={phoneNumber}
               disabled
               //@ts-ignore
-              onChange={setPhone} />
+              onChange={setPhoneNumber} />
           </div>
         </div>}
 
