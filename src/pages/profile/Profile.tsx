@@ -18,6 +18,7 @@ import { toast } from 'react-toastify';
 import { uploadPics } from '@app/services/admin/studentServices';
 import { setProfile } from '@app/store/reducers/profile';
 import { getAdmission } from '@app/services/student/classServices';
+import ChangePassword from './ChangePassword';
 
 const StyledUserImage = styled(Image)`
   --pf-border: 3px solid #adb5bd;
@@ -161,13 +162,13 @@ const Profile = () => {
             <div className="col-md-3">
               <div className="card card-primary card-outline">
                 <div className="card-body box-profile">
-                  <div className="text-center">
+                  <div className="text-center" style={{ cursor: 'pointer' }}>
                     <StyledUserImage
                       onClick={handleUploadOpen}
                       rounded
                       width={100}
                       height={100}
-                      className='ro'
+                      className='cursor'
                       src={profile?.profile_pix_url ? profile?.profile_pix_url : "/img/default-profile.png"}
                       alt="User profile"
                     />
@@ -193,31 +194,36 @@ const Profile = () => {
                   </p>
                   <hr />
 
+                  {profile?.is_student ? <div>
+                    <strong>
+                      <i className="fas fa-book mr-1" />
+                      Subscription
+                    </strong>
+                    <p className="text-muted">
+                      {profile?.plan}
+                    </p>
+                    <hr />
+                  </div> : ''}
 
-                  <strong>
-                    <i className="fas fa-book mr-1" />
-                    Subscription
-                  </strong>
-                  <p className="text-muted">
-                    {profile?.plan}
-                  </p>
-                  <hr />
                   <strong>
                     <i className="fas fa-book mr-1" />
                     Phone
                   </strong>
                   <p className="text-muted">
-                    {profile?.phone}
+                    {profile?.is_student ? profile?.phone : profile?.phone_number}
                   </p>
                   <hr />
 
 
-                  <strong>
-                    <i className="fas fa-map-marker-alt mr-1" />
-                    {t('main.label.location')}
-                  </strong>
-                  <p className="text-muted">{profile?.country}, {profile?.city}</p>
-                  <hr />
+                  {profile?.is_student ? <div>
+                    <strong>
+                      <i className="fas fa-map-marker-alt mr-1" />
+                      {t('main.label.location')}
+                    </strong>
+                    <p className="text-muted">{profile?.country}, {profile?.city}</p>
+                    <hr />
+                  </div> : ''}
+
 
                 </div>
               </div>
@@ -257,6 +263,17 @@ const Profile = () => {
                       </li>
                     )}
 
+                    <li className="nav-item">
+                      <span
+                        // type="button"
+                        className={`nav-link ${activeTab === 'PASSWORD' ? 'active' : ''
+                          }`}
+                      >
+                        Change Password
+                      </span>
+
+                    </li>
+
                   </ul>
                 </div>
                 <div className="card-body">
@@ -264,6 +281,7 @@ const Profile = () => {
                     {/* <ActivityTab isActive={activeTab === 'ACTIVITY'} /> */}
                     {/* <TimelineTab isActive={activeTab === 'TIMELINE'} /> */}
                     <SettingsTab isActive={activeTab === 'SETTINGS'} profile={profile} />
+                    <ChangePassword isActive={activeTab === 'PASSWORD'} profile={profile} />
                   </div>
                 </div>
               </div>

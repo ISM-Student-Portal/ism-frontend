@@ -20,7 +20,9 @@ const SettingsTab = ({ isActive, profile }: { isActive: boolean, profile: any })
   const [firstName, setFirstName] = useState(profile?.first_name);
   const [lastName, setLastName] = useState(profile?.last_name);
   const [phone, setPhone] = useState(profile?.phone);
+  const [phoneNumber, setPhoneNumber] = useState(profile?.phone_number);
   const [nameCert, setNameCert] = useState(profile?.name_on_cert);
+  const [username, setUsername] = useState(profile?.username);
 
   const [email, setEmail] = useState(profile?.email);
   const [loading, setLoading] = useState(false);
@@ -38,15 +40,24 @@ const SettingsTab = ({ isActive, profile }: { isActive: boolean, profile: any })
 
   const editProfile = async () => {
     setLoading(true);
+    let pCh;
     try {
-      let pCh = await updateProfile({
-        first_name: firstName,
-        last_name: lastName,
-        country: country?.label,
-        city: city,
+      if (profile?.is_student) {
+        pCh = await updateProfile({
+          first_name: firstName,
+          last_name: lastName,
+          country: country?.label,
+          city: city,
 
-        name_on_cert: nameCert
-      });
+          name_on_cert: nameCert
+        });
+      }
+      else {
+        pCh = await updateProfile({
+          username: username,
+        });
+      }
+
       if (pCh.status === 'success') {
         toast.success('profile updated successfully');
         dispatch(setProfile(pCh.user_profile));
@@ -71,14 +82,52 @@ const SettingsTab = ({ isActive, profile }: { isActive: boolean, profile: any })
   return (
     <div className={`tab-pane ${isActive ? 'active' : ''}`}>
       <form className="form-horizontal">
-        <div className="form-group row">
+        {profile?.is_student ? <>
+          <div className="form-group row">
+            <label htmlFor="inputName" className="col-sm-2 col-form-label">
+              First Name
+            </label>
+            <div className="col-sm-10">
+              <input
+                type="text"
+                value={firstName}
+                onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
+                  setFirstName(event.target.value);
+                }}
+                className="form-control"
+                id="inputName"
+                placeholder=""
+              />
+            </div>
+          </div>
+
+
+
+          <div className="form-group row">
+            <label htmlFor="inputName" className="col-sm-2 col-form-label">
+              Last Name
+            </label>
+            <div className="col-sm-10">
+              <input
+                type="text"
+                className="form-control"
+                id="inputName"
+                placeholder=""
+                value={lastName}
+                onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
+                  setLastName(event.target.value);
+                }}
+              />
+            </div>
+          </div>
+        </> : <div className="form-group row">
           <label htmlFor="inputName" className="col-sm-2 col-form-label">
-            First Name
+            Username
           </label>
           <div className="col-sm-10">
             <input
               type="text"
-              value={firstName}
+              value={username}
               onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
                 setFirstName(event.target.value);
               }}
@@ -87,27 +136,8 @@ const SettingsTab = ({ isActive, profile }: { isActive: boolean, profile: any })
               placeholder=""
             />
           </div>
-        </div>
+        </div>}
 
-
-
-        <div className="form-group row">
-          <label htmlFor="inputName" className="col-sm-2 col-form-label">
-            Last Name
-          </label>
-          <div className="col-sm-10">
-            <input
-              type="text"
-              className="form-control"
-              id="inputName"
-              placeholder=""
-              value={lastName}
-              onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
-                setLastName(event.target.value);
-              }}
-            />
-          </div>
-        </div>
         <div className="form-group row">
           <label htmlFor="inputEmail" className="col-sm-2 col-form-label">
             Email
@@ -124,8 +154,7 @@ const SettingsTab = ({ isActive, profile }: { isActive: boolean, profile: any })
           </div>
         </div>
 
-
-        <div className="form-group row">
+        {profile?.is_student ? <div className="form-group row">
           <label htmlFor="inputName2" className="col-sm-2 col-form-label">
             Phone
           </label>
@@ -139,10 +168,24 @@ const SettingsTab = ({ isActive, profile }: { isActive: boolean, profile: any })
               //@ts-ignore
               onChange={setPhone} />
           </div>
-        </div>
+        </div> : <div className="form-group row">
+          <label htmlFor="inputName2" className="col-sm-2 col-form-label">
+            Phone
+          </label>
+          <div className="col-sm-10">
+            <PhoneInput
+              className=''
+              initialValueFormat='national'
+              placeholder="Enter phone number"
+              value={phoneNumber}
+              disabled
+              //@ts-ignore
+              onChange={setPhone} />
+          </div>
+        </div>}
 
 
-        <div className="form-group row">
+        {profile?.is_student ? <div className="form-group row">
           <div className=" offset-sm-2 col-sm-3">
 
             {
@@ -162,8 +205,9 @@ const SettingsTab = ({ isActive, profile }: { isActive: boolean, profile: any })
             />
           </div>
 
-        </div>
-        <div className="form-group row">
+        </div> : ''}
+
+        {profile?.is_student ? <div className="form-group row">
           <label htmlFor="inputSkills" className="col-sm-3 col-form-label">
             Name On Certificate
           </label>
@@ -179,7 +223,8 @@ const SettingsTab = ({ isActive, profile }: { isActive: boolean, profile: any })
               }}
             />
           </div>
-        </div>
+        </div> : ''}
+
 
         <div className="form-group row">
           <div className="offset-sm-2 col-sm-10">
