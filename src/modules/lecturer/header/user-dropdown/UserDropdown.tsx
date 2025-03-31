@@ -64,7 +64,7 @@ const UserDropdown = () => {
           <p className='text-white'>
             {profile?.email}
             <small>
-              <span>Member since </span>
+              {/* <span>Member since </span> */}
               <span>
                 {/* {DateTime.fromISO(user.createdAt).toFormat('dd LLL yyyy')} */}
               </span>
