@@ -61,6 +61,11 @@ export const STUDENT_MENU: IMenuItem[] = [
     path: '/',
   },
   {
+    name: 'Courses',
+    icon: 'fas fa-binoculars nav-icon',
+    path: '/courses',
+  },
+  {
     name: 'Assignments',
     icon: 'fas fa-briefcase nav-icon',
     path: '/assignments',
@@ -76,6 +81,8 @@ export const STUDENT_MENU: IMenuItem[] = [
     icon: 'fas fa-plane nav-icon',
     path: '/submissions',
   },
+
+ 
 
   // {
   //   name: i18n.t('menusidebar.label.notifications'),

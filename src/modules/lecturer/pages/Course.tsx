@@ -505,6 +505,14 @@ const Course = () => {
                         </Form.Group>
 
                         <Form.Group controlId='classform.link'>
+                            <Form.Check
+                                type="switch"
+                                id="custom-switch"
+                                label="Use in transcript compute"
+                            />
+                        </Form.Group>
+
+                        <Form.Group controlId='classform.link'>
                             <Form.File
                                 className="position-relative"
                                 required

@@ -28,6 +28,7 @@ import StudentRoute from './routes/StudentRoute';
 import Dashboard from './modules/admin/pages/Dashboard';
 import Payments from './modules/admin/pages/Payments';
 import Courses from './modules/admin/pages/Courses';
+import StudentCourses from './pages/student_pages/Courses'
 import Admins from './modules/admin/pages/Admins';
 import Lecturers from './modules/admin/pages/Lecturers';
 import LecturerCourses from './modules/lecturer/pages/Courses';
@@ -138,6 +139,7 @@ const App = () => {
           <Route path="/" element={<Main />}>
             <Route path='' element={<StudentDashboard />} />
             <Route path="assignments" element={<Assignment />} />
+            <Route path="courses" element={<StudentCourses />} />
             <Route path="classroom" element={<StudentClassroom />} />
             <Route path="profile" element={<Profile />} />
             <Route path="submissions" element={<Submission />} />
