@@ -1,6 +1,10 @@
+import { useSelector } from "react-redux";
 
 
 const ContentHeader = ({ title }: { title: string }) => {
+  const profile = useSelector((state: any) => state.profile.profile);
+  
+
   return (
     <section className="content-header">
       <div className="container-fluid">
@@ -11,7 +15,7 @@ const ContentHeader = ({ title }: { title: string }) => {
           <div className="col-sm-6">
             <ol className="breadcrumb float-sm-right">
               <li className="breadcrumb-item">
-                <a href="/">Home</a>
+                <a href={profile.is_student? '/' : profile.is_admin ? '/admin' : '/lecturer'}>Home</a>
               </li>
               <li className="breadcrumb-item active">{title}</li>
             </ol>
