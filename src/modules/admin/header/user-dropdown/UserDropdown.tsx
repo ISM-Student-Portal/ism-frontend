@@ -61,7 +61,7 @@ const UserDropdown = () => {
             height={90}
             rounded
           />
-          <p>
+          <p className='text-white'>
             {profile?.email}
             <small>
               {/* <span>Member since </span> */}

@@ -20,6 +20,9 @@ export default ({ mode }) => {
     },
     define: {
       'process.env': env
+    },
+    optimizeDeps: {
+      exclude: ['js-big-decimal']
     }
   });
 };
