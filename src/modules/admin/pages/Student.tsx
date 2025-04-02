@@ -121,7 +121,7 @@ const Student = () => {
                                         },
                                     }, { data: 'reference', title: 'Reference' }, {
                                         data: 'amount', title: 'Amount', render: function (data, type, row) {
-                                            return data < 100 ? Intl.NumberFormat('USD').format(data) : '₦' + Intl.NumberFormat('NGN').format(data);
+                                            return data < 500 ? '$' + Intl.NumberFormat('USD').format(data) : '₦' + Intl.NumberFormat('NGN').format(data);
                                         },
                                     }, { data: 'status', title: 'Status' }, { data: 'payment_method', title: 'Payment Method' }]}>
 

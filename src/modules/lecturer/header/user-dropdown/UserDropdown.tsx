@@ -54,7 +54,7 @@ const UserDropdown = () => {
       <div slot="body">
         <UserHeader style={{ backgroundColor: '#2a2f54' }}>
           <StyledBigUserImage
-            src={profile?.picture}
+            src={profile?.profile_pix_url}
             fallbackSrc="/img/default-profile.png"
             alt="User"
             width={90}

@@ -71,7 +71,7 @@ const Profile = () => {
   const UploadPics = async () => {
     setLoading(true);
     let formData = new FormData();
-    let cloudName = 'ded69cslb';
+    let cloudName = 'dkft4gvoy';
     formData.append('upload_preset', 'ml_default');
     formData.append('file', file);
     let url = `https://api.cloudinary.com/v1_1/${cloudName}/upload`;
@@ -239,7 +239,7 @@ const Profile = () => {
                         // type="button"
                         className={`nav-link ${activeTab === 'SETTINGS' ? 'active' : ''
                           }`}
-                          onClick={() => toggle('SETTINGS')}
+                        onClick={() => toggle('SETTINGS')}
                       >
                         Edit Profile
                       </span>

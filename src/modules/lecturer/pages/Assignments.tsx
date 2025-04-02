@@ -144,7 +144,7 @@ const Assignments = () => {
             setLoading(true);
             let formData = new FormData();
 
-            let cloudName = 'ded69cslb';
+            let cloudName = 'dkft4gvoy';
             formData.append('upload_preset', 'ml_default');
             //@ts-ignore
             formData.append("file", file);

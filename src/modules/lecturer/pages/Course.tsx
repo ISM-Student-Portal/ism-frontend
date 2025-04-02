@@ -73,6 +73,11 @@ const Course = () => {
         setOpen(false);
     }
     const handleOpenAssignment = () => {
+        setEditMode(false);
+        setTitle(null);
+        setDescription(null);
+        setLink(null);
+        setExpiresOn(null);
         setOpenAssignment(true);
     }
 
@@ -129,7 +134,6 @@ const Course = () => {
         }
 
         setValidated(true);
-        setLoading(true);
         let data = {
             title,
             description,
@@ -137,6 +141,11 @@ const Course = () => {
             course_id: id,
             expires_on: expiresOn
         };
+        if (!title || !description || !link) {
+            toast.error('Fill required fields');
+
+            return
+        }
         if (link && !link.startsWith('http')) {
             toast.error('Link must start with http or https');
             setLoading(false);
@@ -147,6 +156,8 @@ const Course = () => {
             setLoading(false);
             return;
         }
+        setLoading(true);
+
         if (editMode) {
             try {
                 let res = await axios.put('/classrooms/' + selectedAssignment.id, data);
@@ -232,7 +243,7 @@ const Course = () => {
     }
 
     const handleButtonClick = (action: string, row: any) => {
-        if (action === 'edit') {
+        if (action === 'edit' && row.attendance) {
             console.log(row);
             setTitle(row.title);
             setDescription(row.description);
@@ -243,6 +254,17 @@ const Course = () => {
             setEditMode(true);
             setOpen(true);
 
+        }
+        else {
+            console.log(row);
+            setTitle(row.title);
+            setDescription(row.description);
+            setLink(row.link);
+            setExpiresOn(moment(row.expires_on).format('YYYY-MM-DD'));
+            console.log(moment(row.expires_on).format('YYYY-MM-DD'));
+            setSelectedAssignment(row);
+            setEditMode(true);
+            setOpenAssignment(true);
         }
 
     }
@@ -273,50 +295,113 @@ const Course = () => {
             event.preventDefault();
             event.stopPropagation();
         }
-        setLoading(true);
-        try {
-            setLoading(true);
-            let formData = new FormData();
+        if (!title || !description || !link) {
+            toast.error('Fill required fields');
 
-            let cloudName = 'ded69cslb';
-            formData.append('upload_preset', 'ml_default');
-            //@ts-ignore
-            formData.append("file", file);
-            let url = `https://api.cloudinary.com/v1_1/${cloudName}/upload`;
-            fetch(url, {
-                method: 'POST',
-                body: formData
-            }).then((response) => response.json()).then((data) => {
-                let res = axios.post('/assignments', {
-                    file_url: data.url,
-                    title: title,
-                    link: link,
-                    description: description,
-                    deadline: expiresOn,
-                    course_id: id
-                }).then((res: any) => {
-                    if (res) {
-                        toast.success('Assignment created');
-                    }
-                    setLoading(false);
-                    handleCloseAssignment();
-                    getCourse();
+            return
+        }
+        if (link && !link.startsWith('http')) {
+            toast.error('Link must start with http or https');
+            setLoading(false);
+            return;
+        }
+        if (expiresOn && !moment(expiresOn).isValid()) {
+            toast.error('Invalid date');
+            setLoading(false);
+            return;
+        }
+        setLoading(true);
+        if (editMode) {
+            try {
+                setLoading(true);
+                let formData = new FormData();
+
+                let cloudName = 'dkft4gvoy';
+                formData.append('upload_preset', 'ml_default');
+                //@ts-ignore
+                formData.append("file", file);
+                let url = `https://api.cloudinary.com/v1_1/${cloudName}/upload`;
+                fetch(url, {
+                    method: 'POST',
+                    body: formData
+                }).then((response) => response.json()).then((data) => {
+                    let res = axios.put('/assignments/' + selectedAssignment.id, {
+                        file_url: data.url,
+                        title: title,
+                        link: link,
+                        description: description,
+                        deadline: expiresOn,
+                        course_id: id
+                    }).then((res: any) => {
+                        if (res) {
+                            toast.success('Assignment updated');
+                        }
+                        setLoading(false);
+                        handleCloseAssignment();
+                        getCourse();
+
+                    }).catch((error) => {
+                        toast.error('An error occured')
+                    })
+
+
 
                 }).catch((error) => {
-                    toast.error('An error occured')
+                    toast.error('Error uploading Document')
                 })
+            } catch (error) {
 
-
-
-            }).catch((error) => {
-                toast.error('Error uploading Document')
-            })
-        } catch (error) {
-
+            }
+            finally {
+                setLoading(false)
+            }
         }
-        finally {
-            setLoading(false)
+        else {
+            try {
+                setLoading(true);
+                let formData = new FormData();
+
+                let cloudName = 'dkft4gvoy';
+                formData.append('upload_preset', 'ml_default');
+                //@ts-ignore
+                formData.append("file", file);
+                let url = `https://api.cloudinary.com/v1_1/${cloudName}/upload`;
+                fetch(url, {
+                    method: 'POST',
+                    body: formData
+                }).then((response) => response.json()).then((data) => {
+                    let res = axios.post('/assignments', {
+                        file_url: data.url,
+                        title: title,
+                        link: link,
+                        description: description,
+                        deadline: expiresOn,
+                        course_id: id
+                    }).then((res: any) => {
+                        if (res) {
+                            toast.success('Assignment created');
+                        }
+                        setLoading(false);
+                        handleCloseAssignment();
+                        getCourse();
+
+                    }).catch((error) => {
+                        toast.error('An error occured')
+                    })
+
+
+
+                }).catch((error) => {
+                    toast.error('Error uploading Document')
+                })
+            } catch (error) {
+
+            }
+            finally {
+                setLoading(false)
+            }
         }
+
     }
 
 
@@ -395,10 +480,18 @@ const Course = () => {
 
                             <DataTable slots={{
                                 7: (data: any, row: any) => (
-                                    <OverlayTrigger placement='top' overlay={<Tooltip id={row.id}>View Submissions</Tooltip>}>
-                                        <Button as="span" variant='outline-light' size='sm' onClick={() => handleOpenSubmissions(row)}><VisibilityIcon className='text-success mx-2 pointer' /></Button>
+                                    <div>
+                                        <OverlayTrigger placement='top' overlay={<Tooltip id={row.id}>View Submissions</Tooltip>}>
+                                            <Button as="span" variant='outline-light' size='sm' onClick={() => handleOpenSubmissions(row)}><VisibilityIcon className='text-success mx-2 pointer' /></Button>
 
-                                    </OverlayTrigger>
+                                        </OverlayTrigger>
+
+                                        <OverlayTrigger placement='top' overlay={<Tooltip id={row.id}>Edit</Tooltip>}>
+                                            <Button disabled={row.attendance?.students.length < 1} as="span" variant='outline-light' size='sm' onClick={() => handleButtonClick('edit', row)}><EditIcon className='text-warning mx-2 pointer' /></Button>
+
+                                        </OverlayTrigger>
+                                    </div>
+
 
                                 )
                             }} className='table table-striped table-bordered order-column dt-head-center' options={{
@@ -481,7 +574,7 @@ const Course = () => {
 
             <Modal show={openAssignment} onHide={handleCloseAssignment} size='lg' centered>
                 <Modal.Header closeButton>
-                    <Modal.Title>Create Assignment</Modal.Title>
+                    <Modal.Title>{editMode ? 'Edit' : 'Create'} Assignment</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
                     <Form noValidate validated >

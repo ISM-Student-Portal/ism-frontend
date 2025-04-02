@@ -15,7 +15,7 @@ import { useDispatch } from 'react-redux';
 
 const SettingsTab = ({ isActive, profile }: { isActive: boolean, profile: any }) => {
   const [value, setValue] = useState();
-  const [country, setCountry] = useState(profile?.country);
+  const [country, setCountry] = useState({ label: profile?.country, value: profile?.country });
   const [city, setCity] = useState(profile?.city);
   const [firstName, setFirstName] = useState(profile?.first_name);
   const [lastName, setLastName] = useState(profile?.last_name);
