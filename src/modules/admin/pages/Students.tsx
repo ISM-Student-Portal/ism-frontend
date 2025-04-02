@@ -179,7 +179,7 @@ const Students = () => {
 
               </div>
               <DataTable slots={{
-                10: (data: any, row: any) => (
+                12: (data: any, row: any) => (
                   <div className='d-flex '>
                     <OverlayTrigger placement='top' overlay={<Tooltip id={row.id}>View Course</Tooltip>}>
                       <Button as="span" variant='outline-light' size='sm' onClick={() => navigate('/admin/students/' + row.id)}><VisibilityIcon className='text-success mx-2 pointer' /></Button>
@@ -207,7 +207,14 @@ const Students = () => {
                 buttons: {
                   buttons: ['copy', 'csv']
                 }
-              }} data={rows} columns={[{ data: 'first_name', title: 'First Name' }, { data: 'last_name', title: 'Last Name' }, { data: 'email', title: 'Email' }, { data: 'matric_no', title: 'Reg No' }, { data: 'group_no', title: 'Grp No' }, { data: 'phone', title: 'Phone' }, { data: 'plan', title: 'Plan' }, { data: 'participation_mode', title: 'Participation Mode' }, { data: 'country', title: 'Country' }, { data: 'city', title: 'City' }, { title: 'Action' }]}>
+              }} data={rows} columns={[{ data: 'first_name', title: 'First Name' }, { data: 'last_name', title: 'Last Name' }, { data: 'email', title: 'Email' }, { data: 'matric_no', title: 'Reg No' }, { data: 'group_no', title: 'Grp No' }, { data: 'phone', title: 'Phone' }, { data: 'plan', title: 'Plan' }, {
+                data: 'is_alumni', title: 'Is Alumni', render(data, type, row, meta) {
+                  return data ? 'yes' : 'no';
+                },
+                
+              },{data: 'payment_complete', title: 'Payment Status', render(data, type, row, meta) {
+                return data ? 'full' : 'part'
+              },} ,{ data: 'participation_mode', title: 'Participation Mode' }, { data: 'country', title: 'Country' }, { data: 'city', title: 'City' }, { title: 'Action' }]}>
 
               </DataTable></div>
           ) : (<div className='h-100 d-flex align-items-center justify-content-center'><ColorRing

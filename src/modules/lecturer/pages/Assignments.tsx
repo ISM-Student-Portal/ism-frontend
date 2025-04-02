@@ -5,6 +5,8 @@ import React, { ChangeEvent, useEffect, useState } from 'react';
 
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import GradingIcon from '@mui/icons-material/Grading';
+import EditIcon from '@mui/icons-material/Edit';
+
 
 
 
@@ -16,6 +18,7 @@ import { ColorRing } from 'react-loader-spinner';
 import { fetchAllAssignments, fetchAllClasses, fetchAllCourses } from '@app/services/admin/lecturerServices';
 import { Button, Form, Modal, OverlayTrigger, Tooltip } from 'react-bootstrap';
 import DatePicker from 'react-date-picker';
+import moment from 'moment';
 
 
 const Assignments = () => {
@@ -67,6 +70,7 @@ const Assignments = () => {
     const handleOpenAssignment = () => {
         setEditMode(false);
         setTitle('');
+        setCourseId('');
         setDescription('');
         setLink('');
         setExpiresOn('');
@@ -85,6 +89,22 @@ const Assignments = () => {
         }
         finally {
             setLoading(false);
+        }
+
+    }
+
+    const handleButtonClick = (action: string, row: any) => {
+        if (action === 'edit') {
+            console.log(row);
+            setTitle(row.title);
+            setDescription(row.description);
+            setLink(row.link);
+            setCourseId(row.course_id);
+            setExpiresOn(moment(row.expires_on).format('YYYY-MM-DD'));
+            setSelectedAssignment(row);
+            setEditMode(true);
+            setOpenAssignment(true);
+
         }
 
     }
@@ -140,49 +160,97 @@ const Assignments = () => {
 
     const createAssignmentAction = async () => {
         setLoading(true);
-        try {
-            setLoading(true);
-            let formData = new FormData();
+        if (editMode) {
+            try {
+                setLoading(true);
+                let formData = new FormData();
 
-            let cloudName = 'dkft4gvoy';
-            formData.append('upload_preset', 'ml_default');
-            //@ts-ignore
-            formData.append("file", file);
-            let url = `https://api.cloudinary.com/v1_1/${cloudName}/upload`;
-            fetch(url, {
-                method: 'POST',
-                body: formData
-            }).then((response) => response.json()).then((data) => {
-                let res = axios.post('/assignments', {
-                    file_url: data.url,
-                    title: title,
-                    link: link,
-                    description: description,
-                    deadline: expiresOn,
-                    course_id: courseId
-                }).then((res: any) => {
-                    if (res) {
-                        toast.success('Assignment created');
-                    }
-                    setLoading(false);
-                    handleCloseAssignment();
-                    getClasses();
+                let cloudName = 'dkft4gvoy';
+                formData.append('upload_preset', 'ml_default');
+                //@ts-ignore
+                formData.append("file", file);
+                let url = `https://api.cloudinary.com/v1_1/${cloudName}/upload`;
+                fetch(url, {
+                    method: 'POST',
+                    body: formData
+                }).then((response) => response.json()).then((data) => {
+                    let res = axios.put('/assignments/' + selectedAssignment.id, {
+                        file_url: data.url,
+                        title: title,
+                        link: link,
+                        description: description,
+                        deadline: expiresOn,
+                        course_id: courseId
+                    }).then((res: any) => {
+                        if (res) {
+                            toast.success('Assignment updated');
+                        }
+                        setLoading(false);
+                        handleCloseAssignment();
+                        getClasses();
+
+                    }).catch((error) => {
+                        toast.error('An error occured')
+                    })
+
+
 
                 }).catch((error) => {
-                    toast.error('An error occured')
+                    toast.error('Error uploading Document')
                 })
+            } catch (error) {
 
-
-
-            }).catch((error) => {
-                toast.error('Error uploading Document')
-            })
-        } catch (error) {
-
+            }
+            finally {
+                setLoading(false)
+            }
         }
-        finally {
-            setLoading(false)
+        else {
+            try {
+                setLoading(true);
+                let formData = new FormData();
+
+                let cloudName = 'dkft4gvoy';
+                formData.append('upload_preset', 'ml_default');
+                //@ts-ignore
+                formData.append("file", file);
+                let url = `https://api.cloudinary.com/v1_1/${cloudName}/upload`;
+                fetch(url, {
+                    method: 'POST',
+                    body: formData
+                }).then((response) => response.json()).then((data) => {
+                    let res = axios.post('/assignments', {
+                        file_url: data.url,
+                        title: title,
+                        link: link,
+                        description: description,
+                        deadline: expiresOn,
+                        course_id: courseId
+                    }).then((res: any) => {
+                        if (res) {
+                            toast.success('Assignment created');
+                        }
+                        setLoading(false);
+                        handleCloseAssignment();
+                        getClasses();
+
+                    }).catch((error) => {
+                        toast.error('An error occured')
+                    })
+
+
+
+                }).catch((error) => {
+                    toast.error('Error uploading Document')
+                })
+            } catch (error) {
+
+            }
+            finally {
+                setLoading(false)
+            }
         }
+
     }
     const getClasses = async () => {
         try {
@@ -218,10 +286,16 @@ const Assignments = () => {
 
                             <DataTable slots={{
                                 7: (data: any, row: any) => (
-                                    <OverlayTrigger placement='top' overlay={<Tooltip id={row.id}>View Submissions</Tooltip>}>
-                                        <Button disabled={row.attendance?.students.length < 1} as="span" variant='outline-light' size='sm' onClick={() => handleOpenSubmissions(row)}><VisibilityIcon className='text-success mx-2 pointer' /></Button>
+                                    <div className='d-flex'>
+                                        <OverlayTrigger placement='top' overlay={<Tooltip id={row.id}>View Submissions</Tooltip>}>
+                                            <Button disabled={row.attendance?.students.length < 1} as="span" variant='outline-light' size='sm' onClick={() => handleOpenSubmissions(row)}><VisibilityIcon className='text-success mx-2 pointer' /></Button>
 
-                                    </OverlayTrigger>
+                                        </OverlayTrigger>
+                                        <OverlayTrigger placement='top' overlay={<Tooltip id={row.id}>Edit</Tooltip>}>
+                                            <Button disabled={row.attendance?.students.length < 1} as="span" variant='outline-light' size='sm' onClick={() => handleButtonClick('edit', row)}><EditIcon className='text-warning mx-2 pointer' /></Button>
+
+                                        </OverlayTrigger>
+                                    </div>
 
                                 )
                             }} className='table table-striped table-bordered order-column dt-head-center' options={{
@@ -298,7 +372,7 @@ const Assignments = () => {
 
                 <Modal show={openAssignment} onHide={handleCloseAssignment} size='lg' centered>
                     <Modal.Header closeButton>
-                        <Modal.Title>Create Assignment</Modal.Title>
+                        <Modal.Title>{editMode ? 'Edit' : 'Create'} Assignment</Modal.Title>
                     </Modal.Header>
                     <Modal.Body>
                         <Form>
@@ -325,16 +399,9 @@ const Assignments = () => {
                                 <Form.Label>Link</Form.Label>
                                 <Form.Control type='text' placeholder='Link' value={link} onChange={(e) => setLink(e.target.value)}></Form.Control>
                             </Form.Group>
-                            <Form.Group controlId='classform.deadline'>
-                                <Form.Label>Deadline</Form.Label><br></br>
-
-                                <DatePicker
-                                    format='y-MM-dd'
-                                    yearPlaceholder='yyyy'
-                                    monthPlaceholder='mm'
-                                    dayPlaceholder='dd'
-                                    value={expiresOn}
-                                    onChange={(newValue) => setExpiresOn(newValue)}></DatePicker>
+                            <Form.Group controlId='classform.link'>
+                                <Form.Label>Deadline</Form.Label>
+                                <Form.Control required as={'input'} type="date" placeholder='Link' value={expiresOn} onChange={(e) => setExpiresOn(e.target.value)}></Form.Control>
                             </Form.Group>
 
                             <Form.Group controlId='classform.link'>
