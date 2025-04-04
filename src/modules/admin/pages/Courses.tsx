@@ -99,6 +99,7 @@ const Courses = () => {
             description,
             lecturer_id: lecturerId
         }
+        // if(title )
         if (editMode) {
             let res = await updateCourse(data, selectedCourse.id);
             if (res.message === 'successful') {
