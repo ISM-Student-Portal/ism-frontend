@@ -68,6 +68,10 @@ const Courses = () => {
         <div>
             <ContentHeader title="Courses" />
             <section className="content">
+                <div>
+                    <button className='btn float-right' style={{ backgroundColor: '#2a2f54'}}><a className='text-white' href={'https://res.cloudinary.com/ded69cslb/image/upload/v1743768792/ISM_time_table_p_hixx1t.pdf'} target='_blank' rel='noreferrer'>Get Course Schedule</a></button>
+                </div>
+                <div className='clearfix'></div>
 
                 <div className="container-fluid">
                     {!loading ? (
