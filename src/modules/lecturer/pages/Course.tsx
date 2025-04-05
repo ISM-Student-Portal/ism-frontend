@@ -436,7 +436,7 @@ const Course = () => {
                             </div><br />
 
                             <DataTable slots={{
-                                6: (data: any, row: any) => (
+                                7: (data: any, row: any) => (
                                     <div className='d-flex '>
                                         <OverlayTrigger placement='top' overlay={<Tooltip id={row.id}>View Attendance</Tooltip>}>
                                             <Button disabled={row.attendance?.students.length < 1} as="span" variant='outline-light' size='sm' onClick={() => handleOpenAttendance(row)}><VisibilityIcon className='text-success mx-2 pointer' /></Button>
