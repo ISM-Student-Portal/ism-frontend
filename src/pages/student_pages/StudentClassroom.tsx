@@ -118,7 +118,7 @@ const StudentClassroom = () => {
     }, []);
     return (
         <div>
-            <ContentHeader title="Upcoming Class" />
+            <ContentHeader title="Latest Class" />
 
             <section className="content">
                 <div className="container-fluid">

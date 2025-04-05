@@ -69,7 +69,7 @@ const Courses = () => {
             <ContentHeader title="Courses" />
             <section className="content">
                 <div>
-                    <button className='btn float-right' style={{ backgroundColor: '#2a2f54'}}><a className='text-white' href={'https://res.cloudinary.com/ded69cslb/image/upload/v1743768792/ISM_time_table_p_hixx1t.pdf'} target='_blank' rel='noreferrer'>Get Course Schedule</a></button>
+                    <button className='btn float-right' style={{ backgroundColor: '#2a2f54' }}><a className='text-white' href={'https://res.cloudinary.com/ded69cslb/image/upload/v1743768792/ISM_time_table_p_hixx1t.pdf'} target='_blank' rel='noreferrer'>Get Course Schedule</a></button>
                 </div>
                 <div className='clearfix'></div>
 
@@ -89,9 +89,7 @@ const Courses = () => {
                                             <Card.Text>
                                                 <b>Lecturer: </b>{item.lecturer.username}
                                             </Card.Text>
-                                            <Card.Text>
-                                                <b>Phone: </b>{item.lecturer.phone_number}
-                                            </Card.Text>
+
                                         </Card.Body>
                                     </Card>
                                 ))}

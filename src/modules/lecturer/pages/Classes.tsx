@@ -40,6 +40,7 @@ const Classes = () => {
 
 
     const handleOpenAttendance = (data: any) => {
+        console.log(data)
 
         setSelectedAttendance(data);
 
