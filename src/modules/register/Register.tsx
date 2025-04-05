@@ -16,577 +16,165 @@ import ReCAPTCHA from 'react-google-recaptcha';
 
 
 const Register = () => {
-  const [firstName, setFirstName] = React.useState<string>("");
-  const [lastName, setLastName] = React.useState<string>("");
-  const [phone, setPhone] = React.useState<string>('');
-  const [isAlumni, setIsAlumni] = React.useState<string>('');
-  const [alumniMatric, setAlumniMatric] = React.useState<string>('');
+    const [firstName, setFirstName] = React.useState<string>("");
+    const [lastName, setLastName] = React.useState<string>("");
+    const [phone, setPhone] = React.useState<string>('');
+    const [isAlumni, setIsAlumni] = React.useState<string>('');
+    const [alumniMatric, setAlumniMatric] = React.useState<string>('');
 
-  const [email, setEmail] = React.useState<string>("");
-  const [country, setCountry] = React.useState<{ label: string, value: string }>();
-  const [city, setCity] = React.useState<string>("");
-  const [gender, setGender] = React.useState<string>("");
-  const [education, setEducation] = React.useState<string>("");
-  const [baptized, setBaptized] = React.useState<string>("");
-  const [attended, setAttended] = React.useState<string>("");
-  const [whereAttended, setWhereAttended] = React.useState<string>("");
-  const [participationMode, setParticipationMode] = React.useState<string>("");
-  const [member, setMember] = React.useState<string>("");
-  const [ministryName, setMinistryName] = React.useState<string>("");
-  const [ministryPosition, setMinistryPosition] = React.useState<string>("");
-  const [salvationExperience, setSalvationExperience] = React.useState<string>("");
-  const [expectation, setExpectation] = React.useState<string>("");
-  const [loading, setLoading] = React.useState<boolean>(false);
+    const [email, setEmail] = React.useState<string>("");
+    const [country, setCountry] = React.useState<{ label: string, value: string }>();
+    const [city, setCity] = React.useState<string>("");
+    const [gender, setGender] = React.useState<string>("");
+    const [education, setEducation] = React.useState<string>("");
+    const [baptized, setBaptized] = React.useState<string>("");
+    const [attended, setAttended] = React.useState<string>("");
+    const [whereAttended, setWhereAttended] = React.useState<string>("");
+    const [participationMode, setParticipationMode] = React.useState<string>("");
+    const [member, setMember] = React.useState<string>("");
+    const [ministryName, setMinistryName] = React.useState<string>("");
+    const [ministryPosition, setMinistryPosition] = React.useState<string>("");
+    const [salvationExperience, setSalvationExperience] = React.useState<string>("");
+    const [expectation, setExpectation] = React.useState<string>("");
+    const [loading, setLoading] = React.useState<boolean>(false);
 
-  const options = useMemo(() => countryList().getData(), [])
-  const navigate = useNavigate();
+    const options = useMemo(() => countryList().getData(), [])
+    const navigate = useNavigate();
 
-  const [captchaToken, setCaptchaToken] = useState(null);
-  const captchaRef = useRef(null);
+    const [captchaToken, setCaptchaToken] = useState(null);
+    const captchaRef = useRef(null);
 
 
-  const handleComplete = async () => {
-    console.log("Form completed!");
-    let data = {
-      first_name: firstName,
-      last_name: lastName,
-      email: email,
-      gender: gender,
-      phone: phone,
-      country: country?.label,
-      city: city,
-      alumni_matric_no: alumniMatric,
-      is_alumni: isAlumni === 'yes' ? true : false,
-      education: education,
-      baptized: baptized,
-      attended_som_before: attended,
-      where_attended: whereAttended,
-      participation_mode: participationMode,
-      ln_member: member,
-      ministry: ministryName,
-      ministry_role: ministryPosition,
-      salvation_experience: salvationExperience,
-      expectations: expectation,
-    }
-    let dataToSend: any = {};
-    Object.entries(data).forEach(entry => {
-      const [key, value] = entry;
-      if (value !== '') {
-        dataToSend[key] = value;
-      }
-    });
-
-    try {
-      setLoading(true);
-      // call api to register student
-      let response = await registerStudent(dataToSend) as { student: any };
-      console.log("Data", response);
-      toast.success('Registration was successful');
-      navigate(`/payment/${response.student.id}`);
-    }
-    catch (error: any) {
-      if (error.message === 'Email already exists') {
-        console.log('Error', error);
-        if (error.student.email_verified_at === null) {
-          toast.info('Email already exists but not verified', { autoClose: 10000 });
-          navigate(`/resend-verification?id=${error.student.id}`, { state: error });
+    const handleComplete = async () => {
+        console.log("Form completed!");
+        let data = {
+            first_name: firstName,
+            last_name: lastName,
+            email: email,
+            gender: gender,
+            phone: phone,
+            country: country?.label,
+            city: city,
+            alumni_matric_no: alumniMatric,
+            is_alumni: isAlumni === 'yes' ? true : false,
+            education: education,
+            baptized: baptized,
+            attended_som_before: attended,
+            where_attended: whereAttended,
+            participation_mode: participationMode,
+            ln_member: member,
+            ministry: ministryName,
+            ministry_role: ministryPosition,
+            salvation_experience: salvationExperience,
+            expectations: expectation,
         }
-        else {
-          toast.info('Email already exists and verified', { autoClose: 10000 });
-          navigate(`/payment/${error.student.id}`);
-        }
-      }
-      else {
-        console.log(error)
-        toast.error(error.message, {
-          autoClose: 10000
-        });
-      }
-
-
-    }
-    finally {
-      setLoading(false);
-    }
-
-    // Handle form completion logic here
-  };
-  // check validate tab
-  const onChange = () => {
-    console.log('Key is working')
-  }
-  const verify = () => {
-
-    //@ts-ignore
-    captchaRef.current && captchaRef.current?.getResponse().then(res => {
-      setCaptchaToken(res)
-    })
-
-  }
-  const checkValidateTab = () => {
-    if (
-      firstName === "" ||
-      lastName === "" ||
-      email === "" ||
-      phone === "" ||
-      country === undefined ||
-      city === "" || education === "" || gender === ""
-    ) {
-      return false;
-    }
-    return true;
-  };
-  // error messages
-  const errorMessages = () => {
-    // you can add alert or console.log or any thing you want
-    alert("Please fill in the required fields");
-  };
-
-  const handleChange = (selectedOption: any) => {
-    console.log(selectedOption)
-    setCountry(selectedOption);
-  };
-
-  return (
-    <div className="container my-5 bg-almond" style={{ color: '#2A2F54' }}>
-      <div className="card-header text-center">
-        <span className='px-1'> <Image
-          src={"./img/logo1.png"}
-
-          alt="ISM Logo"
-          height={40}
-          width={30}
-        /></span>
-
-
-        <Link to="/" className="h1">
-
-
-          <b>ISM</b>
-          <span> Portal</span>
-        </Link>
-      </div>
-      {/* {} */}
-
-      {/* <div className="my-3 h3">Registration has closed!!!</div>
-      <div>
-        <a className="btn"style={{background: '#C28E27', color: 'white'}} href={'http://www.femilazarusministries.com'}>Go back</a>
-      </div> */}
-      <FormWizard onComplete={handleComplete} shape="square" stepSize="sm" title="Register" subtitle="Please fill in the form below"
-
-    color="#C28E27">
-
-    <FormWizard.TabContent title="Personal details" icon="ti-user">
-        <div className="row">
-
-            <div className="col">
-                <label className="text-sm">
-                    First Name
-                    <span
-                        style={{ color: "red", fontSize: "20px", fontWeight: "bold" }}
-                    >
-                        *
-                    </span>
-                </label>
-                <br />
-                <input
-                    className="form-control"
-                    type="text"
-                    value={firstName}
-                    onChange={(e) => setFirstName(e.target.value)}
-                />
-            </div>
-
-            <div className="col-md-6">
-                <label className="text-sm">
-                    Last Name
-                    <span
-                        style={{ color: "red", fontSize: "20px", fontWeight: "bold" }}
-                    >
-                        *
-                    </span>
-                </label>
-                <br />
-                <input className="form-control" type="text" value={lastName}
-                    onChange={(e) => setLastName(e.target.value)} />
-            </div>
-        </div>
-
-        <div className="row">
-            <div className="col-md-6">
-                <label className="text-sm">
-                    {isAlumni === 'yes' ? 'Previous ISM Email to enjoy 50% discount' : 'Email'}
-                    <span
-                        style={{ color: "red", fontSize: "20px", fontWeight: "bold" }}
-                    >
-                        *
-                    </span>
-                </label>
-                <br />
-                <input className="form-control" type="email" value={email} onChange={(e) => setEmail(e.target.value)} />
-            </div>
-
-            <div className="col-md-6">
-                <label className="text-sm">
-                    Country of residence
-                    <span
-                        style={{ color: "red", fontSize: "20px", fontWeight: "bold" }}
-                    >
-                        *
-                    </span>
-                </label>
-                <br />
-                <Select
-                    //@ts-ignore 
-                    options={options}
-                    value={country} onChange={handleChange} />
-            </div>
-
-
-        </div>
-
-
-
-
-
-
-
-
-        <div className="row">
-
-            <div className="col-md-6">
-                <label className="text-sm">
-                    Are you an Alumni?
-                    <span
-                        style={{ color: "red", fontSize: "20px", fontWeight: "bold" }}
-                    >
-                        *
-                    </span>
-
-                </label>
-                <br />
-                <select name="" id="" className="form-control" value={isAlumni} onChange={(e) => setIsAlumni(e.currentTarget.value)}>
-                    <option selected>--select--</option>
-                    <option value="yes">Yes</option>
-                    <option value="no">No</option>
-                </select>
-            </div>
-
-            {
-                isAlumni === 'yes' && (
-                    <div className="col-md-6">
-                        <label className="text-sm">
-                            Alumni Registration No
-                            <span
-                                style={{ color: "red", fontSize: "20px", fontWeight: "bold" }}
-                            >
-                                *
-                            </span>
-
-                        </label>
-                        <br />
-                        <input className="form-control" type="text" value={alumniMatric} onChange={(e) => setAlumniMatric(e.target.value)} />
-
-                    </div>
-                )
+        let dataToSend: any = {};
+        Object.entries(data).forEach(entry => {
+            const [key, value] = entry;
+            if (value !== '') {
+                dataToSend[key] = value;
             }
-        </div>
+        });
+
+        try {
+            setLoading(true);
+            // call api to register student
+            let response = await registerStudent(dataToSend) as { student: any };
+            console.log("Data", response);
+            toast.success('Registration was successful');
+            navigate(`/payment/${response.student.id}`);
+        }
+        catch (error: any) {
+            if (error.message === 'Email already exists') {
+                console.log('Error', error);
+                if (error.student.email_verified_at === null) {
+                    toast.info('Email already exists but not verified', { autoClose: 10000 });
+                    navigate(`/resend-verification?id=${error.student.id}`, { state: error });
+                }
+                else {
+                    toast.info('Email already exists and verified', { autoClose: 10000 });
+                    navigate(`/payment/${error.student.id}`);
+                }
+            }
+            else {
+                console.log(error)
+                toast.error(error.message, {
+                    autoClose: 10000
+                });
+            }
 
 
-
-
-
-        <div className="row">
-            <div className="col-md-6">
-                <label className="text-sm">
-                    Phone
-                    <span
-                        style={{ color: "red", fontSize: "20px", fontWeight: "bold" }}
-                    >
-                        *
-                    </span>
-                </label>
-                <br />
-                <PhoneInput
-                    international
-                    countryCallingCodeEditable={true}
-                    placeholder="Enter phone number"
-                    value={phone}
-                    //@ts-ignore
-
-                    defaultCountry={country?.value}
-                    //@ts-ignore
-                    onChange={setPhone} />
-
-            </div>
-
-            <div className="col-md-6">
-                <label className="text-sm">
-                    City of residence
-                    <span
-                        style={{ color: "red", fontSize: "20px", fontWeight: "bold" }}
-                    >
-                        *
-                    </span>
-                </label>
-                <br />
-                <input className="form-control" type="text" value={city} onChange={(e) => setCity(e.target.value)} />
-
-
-            </div>
-        </div>
-
-        <div className="row">
-            <div className="col-md-6">
-                <label className="text-sm">
-                    Gender
-                    <span
-                        style={{ color: "red", fontSize: "20px", fontWeight: "bold" }}
-                    >
-                        *
-                    </span>
-                </label>
-                <br />
-                <select name="" id="" className="form-control" value={gender} onChange={(e) => setGender(e.currentTarget.value)}>
-                    <option selected>--Gender--</option>
-                    <option value="male">Male</option>
-                    <option value="female">Female</option>
-                </select>
-            </div>
-
-            <div className="col-md-6">
-                <label className="text-sm">
-                    Level of Education
-                    <span
-                        style={{ color: "red", fontSize: "20px", fontWeight: "bold" }}
-                    >
-                        *
-                    </span>
-                </label>
-                <br />
-                <select name="" id="" className="form-control" value={education} onChange={(e) => setEducation(e.currentTarget.value)} required>
-                    <option selected>--Education--</option>
-
-                    <option value="bsc">BSc</option>
-                    <option value="msc">MSc</option>
-                    <option value="phd">PHD</option>
-                    <option value="others">Others</option>
-                </select>
-
-
-            </div>
-        </div>
-
-
-
-
-
-
-    </FormWizard.TabContent>
-    {/* Tabs should be validated */}
-    <FormWizard.TabContent
-        title="Additional Info"
-        icon="ti-settings"
-        isValid={checkValidateTab()}
-        validationError={errorMessages}
-    >
-        <div className="row gap-20">
-
-            <div className="col-md-6">
-                <label className="text-sm">
-                    Are You baptized in the Holy Ghost with the evidence of speaking in tongues?
-                    <span
-                        style={{ color: "red", fontSize: "20px", fontWeight: "bold" }}
-                    >
-                        *
-                    </span>
-
-                </label>
-                <br />
-                <select name="" id="" className="form-control" value={baptized} onChange={(e) => setBaptized(e.currentTarget.value)}>
-                    <option selected>--select--</option>
-
-                    <option value="yes">Yes</option>
-                    <option value="no">No</option>
-                </select>
-            </div>
-
-            <div className="col-md-6">
-                <label className="text-sm">
-                    Have you attended any school of ministry before?
-                    <span
-                        style={{ color: "red", fontSize: "20px", fontWeight: "bold" }}
-                    >
-                        *
-                    </span>
-
-                </label>
-                <br />
-                <select name="" id="" className="form-control" value={attended} onChange={(e) => setAttended(e.currentTarget.value)}>
-                    <option selected>--select--</option>
-
-                    <option value="yes">Yes</option>
-                    <option value="no">No</option>
-                </select>
-            </div>
-        </div>
-
-
-        {
-            attended === 'yes' && (
-                <div className="row">
-                    <label className="text-sm">
-                        Tell us where
-                        <span
-                            style={{ color: "red", fontSize: "20px", fontWeight: "bold" }}
-                        >
-                            *
-                        </span>
-
-                    </label>
-                    <br />
-                    <textarea name="" id="" cols={30} rows={5} className="form-control" value={whereAttended} onChange={(e) => setWhereAttended(e.target.value)}></textarea>
-                </div>
-            )
+        }
+        finally {
+            setLoading(false);
         }
 
+        // Handle form completion logic here
+    };
+    // check validate tab
+    const onChange = () => {
+        console.log('Key is working')
+    }
+    const verify = () => {
+
+        //@ts-ignore
+        captchaRef.current && captchaRef.current?.getResponse().then(res => {
+            setCaptchaToken(res)
+        })
+
+    }
+    const checkValidateTab = () => {
+        if (
+            firstName === "" ||
+            lastName === "" ||
+            email === "" ||
+            phone === "" ||
+            country === undefined ||
+            city === "" || education === "" || gender === ""
+        ) {
+            return false;
+        }
+        return true;
+    };
+    // error messages
+    const errorMessages = () => {
+        // you can add alert or console.log or any thing you want
+        alert("Please fill in the required fields");
+    };
+
+    const handleChange = (selectedOption: any) => {
+        console.log(selectedOption)
+        setCountry(selectedOption);
+    };
+
+    return (
+        <div className="container my-5 bg-almond" style={{ color: '#2A2F54' }}>
+            <div className="card-header text-center">
+                <span className='px-1'> <Image
+                    src={"./img/logo1.png"}
+
+                    alt="ISM Logo"
+                    height={40}
+                    width={30}
+                /></span>
 
 
-        <div className="row">
+                <Link to="/" className="h1">
 
-            <div className="col-md-6">
-                <label className="text-sm">
-                    Mode of Participation
-                    <span
-                        style={{ color: "red", fontSize: "20px", fontWeight: "bold" }}
-                    >
-                        *
-                    </span>
 
-                </label>
-                <br />
-                <select name="" id="" className="form-control" value={participationMode} onChange={(e) => setParticipationMode(e.currentTarget.value)}>
-                    <option selected>--select--</option>
-                    <option value="online">Online</option>
-                    <option value="onsite">On-site</option>
-                </select>
+                    <b>ISM</b>
+                    <span> Portal</span>
+                </Link>
+            </div>
+            {/* {} */}
+
+            <div className="my-3 h3">Registration has closed!!!</div>
+            <div>
+                <a className="btn" style={{ background: '#C28E27', color: 'white' }} href={'http://www.femilazarusministries.com'}>Go back</a>
             </div>
 
-            <div className="col-md-6">
-                <label className="text-sm">
-                    Are you a minister?
-                    <span
-                        style={{ color: "red", fontSize: "20px", fontWeight: "bold" }}
-                    >
-                        *
-                    </span>
-
-                </label>
-                <br />
-                <select name="" id="" className="form-control" value={member} onChange={(e) => setMember(e.currentTarget.value)}>
-                    <option selected>--select--</option>
-                    <option value="yes">Yes</option>
-                    <option value="no">No</option>
-                </select>
-            </div>
-        </div>
-
-        {member === 'yes' && (
-            <div className="row">
-
-                <div className="col-md-6">
-                    <label className="text-sm">
-                        Name of Ministry
-
-                        <span
-                            style={{ color: "red", fontSize: "20px", fontWeight: "bold" }}
-                        >
-                            *
-                        </span>
-
-                    </label>
-                    <br />
-                    <input
-                        className="form-control"
-                        type="text"
-                        value={ministryName}
-                        onChange={(e) => setMinistryName(e.target.value)}
-                    />
-                </div>
-
-                <div className="col-md-6">
-                    <label className="text-sm">
-                        Position in Ministry
-                        <span
-                            style={{ color: "red", fontSize: "20px", fontWeight: "bold" }}
-                        >
-                            *
-                        </span>
-
-                    </label>
-                    <br />
-                    <input className="form-control" type="text" value={ministryPosition} onChange={(e) => setMinistryPosition(e.target.value)} />
-                </div>
-            </div>
-        )}
-
-
-
-
-
-    </FormWizard.TabContent>
-    <FormWizard.TabContent title="Last step" icon="ti-check">
-        <div>
-            Please note that this program will cost
-            <ul>
-                <li>
-                    <b>$150 (₦225,000) for Basic plan: Three month training</b>
-                </li>
-                <li>
-                    <b>$250 (₦375,000) for Premium plan: Basic Training  plus weekly Mentorship Sessions with the Principal</b>
-                </li>
-            </ul>
-            <p>Submit your registration to get the payment link in your email and you can proceed to make payment on or before 31st March, 2025</p>
-        </div>
-        <div className="row">
-            <label className="text-sm">
-                Tell us about your salvation experience
-
-                <span
-                    style={{ color: "red", fontSize: "20px", fontWeight: "bold" }}
-                >
-                    *
-                </span>
-
-            </label>
-            <br />
-            <textarea name="" id="" cols={30} rows={5} className="form-control" value={salvationExperience} onChange={(e) => setSalvationExperience(e.target.value)}></textarea>
-        </div>
-        <div className="row">
-            <label className="text-sm">
-                What are your expectations?
-
-                <span
-                    style={{ color: "red", fontSize: "20px", fontWeight: "bold" }}
-                >
-                    *
-                </span>
-
-            </label>
-            <br />
-            <textarea name="" id="" cols={30} rows={5} className="form-control" value={expectation} onChange={(e) => setExpectation(e.target.value)}></textarea>
-        </div>
-
-        <div className="my-3">
-            <ReCAPTCHA
-                sitekey="6Ld4lKoqAAAAAJKSGNRE-FL0W1gPnKH_LMQXCpGG"
-                onChange={onChange}
-            />
-        </div>
-    </FormWizard.TabContent>
-</FormWizard>
-      {/* add style */}
-      <style>{`
+            {/* add style */}
+            <style>{`
         @import url("https://cdn.jsdelivr.net/gh/lykmapipo/themify-icons@0.1.2/css/themify-icons.css");
         .form-control {
             height: 36px;
@@ -636,8 +224,8 @@ const Register = () => {
         
 
       `}</style>
-    </div >
-  );
+        </div >
+    );
 };
 
 export default Register;

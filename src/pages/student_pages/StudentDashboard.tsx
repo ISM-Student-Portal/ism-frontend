@@ -129,6 +129,25 @@ const StudentDashboard = () => {
               </div>
             </div> */}
           </div>
+          <div className='row'>
+            <div className="col-lg-3 col-6">
+              <a href={'https://res.cloudinary.com/ded69cslb/image/upload/v1743768792/ISM_time_table_p_hixx1t.pdf'} target='_blank' rel='noreferrer'>
+                <div className="small-box bg-red">
+                  <div className="inner">
+
+                    <h4>Course Schedule</h4>
+                    <p>Get course schedule</p>
+                  </div>
+                  <div className="icon">
+                    <i className="ion ion-arrow-right-c" />
+                  </div>
+                  <a href={'https://res.cloudinary.com/ded69cslb/image/upload/v1743768792/ISM_time_table_p_hixx1t.pdf'} target='_blank' rel='noreferrer' className="small-box-footer">
+                    More info <i className="fas fa-arrow-circle-right" />
+                  </a>
+                </div>
+              </a>
+            </div>
+          </div>
         </div>
       </section>
     </div>
