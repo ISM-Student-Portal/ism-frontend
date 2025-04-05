@@ -44,6 +44,7 @@ const Course = () => {
     const [title, setTitle] = React.useState<any>(null);
     const [errors, setErrors] = React.useState<any>('');
     const [link, setLink] = React.useState<any>(null);
+    const [transcript, setTranscript] = React.useState<boolean>(false);
     const [description, setDescription] = React.useState<any>(null);
     const [file, setFile] = React.useState<any>();
     const [gradeFile, setGradeFile] = React.useState<any>();
@@ -80,6 +81,8 @@ const Course = () => {
         setLink(null);
         setExpiresOn(null);
         setOpenAssignment(true);
+        setTranscript(false);
+
     }
 
     const downloadAttendance = async () => {
@@ -262,6 +265,7 @@ const Course = () => {
             setTitle(row.title);
             setDescription(row.description);
             setLink(row.link);
+            setTranscript(row.use_for_transcript);
             setExpiresOn(moment(row.expires_on).format('YYYY-MM-DD'));
             console.log(moment(row.expires_on).format('YYYY-MM-DD'));
             setSelectedAssignment(row);
@@ -297,9 +301,13 @@ const Course = () => {
             event.preventDefault();
             event.stopPropagation();
         }
-        if (!title || !description || !link) {
+        if (!title || !description) {
             toast.error('Fill required fields');
 
+            return
+        }
+        if (!file && !link) {
+            toast.error('File or Link is required');
             return
         }
         if (link && !link.startsWith('http')) {
@@ -333,7 +341,8 @@ const Course = () => {
                         link: link,
                         description: description,
                         deadline: expiresOn,
-                        course_id: id
+                        course_id: id,
+                        use_for_transcript: transcript
                     }).then((res: any) => {
                         if (res) {
                             toast.success('Assignment updated');
@@ -378,7 +387,8 @@ const Course = () => {
                         link: link,
                         description: description,
                         deadline: expiresOn,
-                        course_id: id
+                        course_id: id,
+                        use_for_transcript: transcript
                     }).then((res: any) => {
                         if (res) {
                             toast.success('Assignment created');
@@ -615,6 +625,8 @@ const Course = () => {
                                 type="switch"
                                 id="custom-switch"
                                 label="Use in transcript compute"
+                                checked={transcript}
+                                onChange={(e) => setTranscript(e.target.checked)}
                             />
                         </Form.Group>
 
