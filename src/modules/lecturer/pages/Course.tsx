@@ -32,6 +32,7 @@ const Course = () => {
 
     const { id } = useParams();
     const [pending, setPending] = useState(false)
+    const [resource, setResource] = useState<any>(null)
     const [loading, setLoading] = useState(false)
     const [open, setOpen] = useState(false)
     const [openAssignment, setOpenAssignment] = useState(false)
@@ -138,6 +139,7 @@ const Course = () => {
             title,
             description,
             link,
+            resource,
             course_id: id,
             expires_on: expiresOn
         };
@@ -160,7 +162,7 @@ const Course = () => {
 
         if (editMode) {
             try {
-                let res = await axios.put('/classrooms/' + selectedAssignment.id, data);
+                let res = await axios.put('/classroom/' + selectedAssignment.id, data);
                 if (res) {
                     toast.success('Class updated');
                     handleClose();
@@ -455,6 +457,10 @@ const Course = () => {
                                 data: 'link', title: 'Link', render(data, type, row, meta) {
                                     return data ? `<a href=${data} target='_blank'>View</a>` : 'No link'
                                 },
+                            }, {
+                                data: 'resource', title: 'Resource Link', render(data, type, row, meta) {
+                                    return data ? `<a href=${data} target='_blank'>View</a>` : 'No link'
+                                },
                             }, { data: 'description', title: 'Description' }, {
                                 data: 'attendance', title: 'No. Attendances', render(data, type, row, meta) {
                                     return data ? data?.students.length : 0
@@ -552,9 +558,16 @@ const Course = () => {
                             <Form.Control required as='textarea' placeholder='Description' value={description} onChange={(e) => setDescription(e.target.value)}></Form.Control>
                         </Form.Group>
 
+
+
                         <Form.Group controlId='classform.link'>
-                            <Form.Label>Link</Form.Label>
+                            <Form.Label>Class Link</Form.Label>
                             <Form.Control required type='text' placeholder='Link' value={link} onChange={(e) => setLink(e.target.value)}></Form.Control>
+                        </Form.Group>
+
+                        <Form.Group controlId='classform.link'>
+                            <Form.Label>Resource Link</Form.Label>
+                            <Form.Control type='text' placeholder='Resource' value={resource} onChange={(e) => setResource(e.target.value)}></Form.Control>
                         </Form.Group>
                         <Form.Group controlId='classform.link'>
                             <Form.Label>Expiry</Form.Label>

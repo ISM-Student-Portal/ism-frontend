@@ -234,7 +234,7 @@ const Courses = () => {
 
                         <Form.Group controlId='classform.description'>
                             <Form.Label>Description</Form.Label>
-                            <Form.Control as={'textarea'} placeholder='username' required value={description} onChange={(e) => setDescription(e.target.value)}></Form.Control>
+                            <Form.Control as={'textarea'} placeholder='Description' required value={description} onChange={(e) => setDescription(e.target.value)}></Form.Control>
                         </Form.Group>
 
                         <Form.Group controlId='classform.link'>

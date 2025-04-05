@@ -23,6 +23,7 @@ const Classes = () => {
 
     const [openAttendance, setOpenAttendance] = useState(false)
     const [courses, setCourses] = useState([]);
+    const [resource, setResource] = useState<any>();
     const [rows, setRows] = React.useState([]);
     const [selectedAttendance, setSelectedAttendance] = React.useState<any>();
     const [pending, setpending] = React.useState(true);
@@ -126,6 +127,7 @@ const Classes = () => {
             title,
             description,
             link,
+            resource,
             course_id: courseId,
             expires_on: expiresOn
         };
@@ -211,6 +213,10 @@ const Classes = () => {
                                     return data ? `<a href=${data} target='_blank'>View</a>` : 'No file'
                                 },
                             }, {
+                                data: 'resource', title: 'Resource Link', render(data, type, row, meta) {
+                                    return data ? `<a href=${data} target='_blank'>View</a>` : 'No file'
+                                },
+                            }, {
                                 data: 'created_at', title: 'Date', render(data, type, row, meta) {
                                     return new Date(data).toLocaleString()
                                 },
@@ -291,6 +297,11 @@ const Classes = () => {
                             <Form.Group controlId='classform.link'>
                                 <Form.Label>Link</Form.Label>
                                 <Form.Control type='text' placeholder='Link' value={link} onChange={(e) => setLink(e.target.value)}></Form.Control>
+                            </Form.Group>
+
+                            <Form.Group controlId='classform.link'>
+                                <Form.Label>Resource</Form.Label>
+                                <Form.Control type='text' placeholder='Resource Link' value={resource} onChange={(e) => setResource(e.target.value)}></Form.Control>
                             </Form.Group>
                             <Form.Group controlId='classform.link'>
                                 <Form.Label>Expiry</Form.Label>
