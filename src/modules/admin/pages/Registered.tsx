@@ -163,11 +163,11 @@ const Registered = () => {
 
     const downloadStudents = async () => {
         setLoading(true)
-        await axios.get('/admin/students/export', { responseType: 'blob' }).then((res: any) => {
+        await axios.get('/admin/registered/export', { responseType: 'blob' }).then((res: any) => {
             const url = window.URL.createObjectURL(new Blob([res.data]));
             const link = document.createElement('a');
             link.href = url;
-            link.setAttribute('download', 'Students.xlsx'); //or any other extension
+            link.setAttribute('download', 'Registered.xlsx'); //or any other extension
             document.body.appendChild(link);
             link.click();
             toast.success("Request was successful");

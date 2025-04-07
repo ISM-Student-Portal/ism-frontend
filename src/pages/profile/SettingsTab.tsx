@@ -208,10 +208,10 @@ const SettingsTab = ({ isActive, profile }: { isActive: boolean, profile: any })
         </div> : ''}
 
         {profile?.is_student ? <div className="form-group row">
-          <label htmlFor="inputSkills" className="col-sm-3 col-form-label">
+          <label htmlFor="inputSkills" className="col-sm-2 col-form-label">
             Name On Certificate
           </label>
-          <div className="col-sm-9">
+          <div className="col-sm-10">
             <input
               type="text"
               className="form-control"

@@ -123,7 +123,7 @@ const Students = () => {
 
     const student = await deactivateStudent(selectedStudent.id);
     if (student.message === 'successful') {
-      student.lecturer.is_active ? toast.success('Student Activated Successfully!') : toast.success('Student Deactivated Successfully!');
+      student.student.is_active ? toast.success('Student Activated Successfully!') : toast.success('Student Deactivated Successfully!');
       handleCloseDelete();
       getStudents();
       setLoading(false);
@@ -211,10 +211,12 @@ const Students = () => {
                 data: 'is_alumni', title: 'Is Alumni', render(data, type, row, meta) {
                   return data ? 'yes' : 'no';
                 },
-                
-              },{data: 'payment_complete', title: 'Payment Status', render(data, type, row, meta) {
-                return data ? 'full' : 'part'
-              },} ,{ data: 'participation_mode', title: 'Participation Mode' }, { data: 'country', title: 'Country' }, { data: 'city', title: 'City' }, { title: 'Action' }]}>
+
+              }, {
+                data: 'payment_complete', title: 'Payment Status', render(data, type, row, meta) {
+                  return data ? 'full' : 'part'
+                },
+              }, { data: 'participation_mode', title: 'Participation Mode' }, { data: 'country', title: 'Country' }, { data: 'city', title: 'City' }, { title: 'Action' }]}>
 
               </DataTable></div>
           ) : (<div className='h-100 d-flex align-items-center justify-content-center'><ColorRing
