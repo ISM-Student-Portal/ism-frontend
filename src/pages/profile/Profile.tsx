@@ -197,14 +197,31 @@ const Profile = () => {
                   {profile?.is_student ? <div>
                     <strong>
                       <i className="fas fa-book mr-1" />
-                      Subscription
+                      Plan
                     </strong>
                     <p className="text-muted">
                       {profile?.plan}
                     </p>
                     <hr />
                   </div> : ''}
-
+                  {profile?.is_student ? <div>
+                    <strong>
+                      <i className="fas fa-book mr-1" />
+                      Reg Number
+                    </strong>
+                    <p className="text-muted">
+                      {profile?.matric_no}
+                    </p>
+                    <hr /></div> : ''}
+                  {profile?.is_student ? <div>
+                    <strong>
+                      <i className="fas fa-book mr-1" />
+                      Group
+                    </strong>
+                    <p className="text-muted">
+                      Group {profile?.group_no}
+                    </p>
+                    <hr /></div> : ''}
                   <strong>
                     <i className="fas fa-book mr-1" />
                     Phone
