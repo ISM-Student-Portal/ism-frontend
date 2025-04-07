@@ -327,7 +327,7 @@ const Course = () => {
                 let formData = new FormData();
 
                 let cloudName = 'dkft4gvoy';
-                formData.append('upload_preset', 'ml_default');
+                formData.append('upload_preset', 'ISM2025');
                 //@ts-ignore
                 formData.append("file", file);
                 let url = `https://api.cloudinary.com/v1_1/${cloudName}/upload`;
@@ -373,7 +373,7 @@ const Course = () => {
                 let formData = new FormData();
 
                 let cloudName = 'dkft4gvoy';
-                formData.append('upload_preset', 'ml_default');
+                formData.append('upload_preset', 'ISM2025');
                 //@ts-ignore
                 formData.append("file", file);
                 let url = `https://api.cloudinary.com/v1_1/${cloudName}/upload`;
