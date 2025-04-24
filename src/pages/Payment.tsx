@@ -177,7 +177,7 @@ const Payment = () => {
                 ariaLabel="color-ring-loading"
                 wrapperStyle={{}}
                 wrapperClass="color-ring-wrapper"
-                colors={['#e15b64', '#f47e60', '#f8b26a', '#abbd81', '#849b87']}
+                colors={['#e15b64', '#f47e60', '#f8b26a', '#abbd81', '#849b87']} 
 
             />Loading... Please wait </div> : (
                 <div className="container" style={{ color: '#2A2F54' }}>
@@ -317,7 +317,7 @@ const Payment = () => {
                                         <div className="col-md-6">
                                             <div className="form-group">
                                                 <label>Payment Plan</label>
-                                                <select className="form-control" value={paymentPlan} onChange={selectPaymentPlan} disabled={plan === null}>
+                                                <select className="form-control" value={paymentPlan} onChange={selectPaymentPlan} disabled={plan === null || outstanding}>
                                                     <option value="">--Payment-Plan--</option>
                                                     <option value="full">Full Payment</option>
                                                     <option value="part">50% Initial Deposit Installment Plan - Balance MUST be made on or before 5th of May, 2025 to avoid removal from the school.</option>
