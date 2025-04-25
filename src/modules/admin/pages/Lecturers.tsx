@@ -115,7 +115,6 @@ const Lecturers = () => {
             const data = {
                 email: email,
                 username: username,
-                phone: phone,
 
             }
             const student = await inviteLecturer(data);
