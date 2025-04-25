@@ -159,7 +159,7 @@ const Lecturers = () => {
                             </div>
                             <div></div>
                             <DataTable slots={{
-                                3: (data: any, row: any) => (
+                                2: (data: any, row: any) => (
                                     row.is_active ? (
                                         <OverlayTrigger placement='top' overlay={<Tooltip id={row.id}>Deactivate</Tooltip>}>
                                             <Button as="span" variant='outline-light' size='sm' onClick={() => handleButtonClick('delete', row)}><DeleteIcon className='text-danger mx-2 pointer' /></Button>
@@ -177,7 +177,7 @@ const Lecturers = () => {
                                 buttons: {
                                     buttons: ['copy', 'csv']
                                 }
-                            }} data={rows} columns={[{ data: 'email', title: 'Email' }, { data: 'username', title: 'Username' }, { data: 'phone_number', title: 'Phone' }, { title: 'Action' }]}>
+                            }} data={rows} columns={[{ data: 'email', title: 'Email' }, { data: 'username', title: 'Username' }, { title: 'Action' }]}>
 
                             </DataTable></div>
                     ) : (<div className='h-100 d-flex align-items-center justify-content-center'><ColorRing
@@ -212,10 +212,7 @@ const Lecturers = () => {
                             <Form.Control placeholder='username' required value={username} onChange={(e) => setUsername(e.target.value)}></Form.Control>
                         </Form.Group>
 
-                        <Form.Group controlId='classform.link'>
-                            <Form.Label>Phone number</Form.Label>
-                            <Form.Control type='text' placeholder='Phone' required value={phone} onChange={(e) => setPhone(e.target.value)}></Form.Control>
-                        </Form.Group>
+                       
 
                     </Form>
                 </Modal.Body>
