@@ -87,7 +87,7 @@ const Classes = () => {
             setLoading(false);
         }
 
-        setpending(false);
+        // setpending(false);
     }
     const getCourses = async () => {
         try {
@@ -98,7 +98,7 @@ const Classes = () => {
 
         }
         finally {
-            setLoading(false);
+            // setLoading(false);
         }
 
     }
