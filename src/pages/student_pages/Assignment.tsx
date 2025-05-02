@@ -153,9 +153,9 @@ const Assignment = () => {
     { name: 'Description', selector: (row: any) => row.description },
     { name: 'Date Created', selector: (row: any) => new Date(row.created_at).toDateString() },
     { name: 'Deadline', selector: (row: any) => new Date(row.deadline).toDateString() },
-    { name: 'Link', selector: (row: any) => (<a target='_blank' href={row.link}>{row.link}</a>) },
-    { name: 'Submission Link', selector: (row: any) => (<a target='_blank' href={row.submissions[0]?.link}>{row.submissions[0]?.link}</a>) },
-    { name: 'Grade', selector: (row: any) => row.submissions[0]?.grade },
+    { name: 'Link', selector: (row: any) => (<a target='_blank' rel='noreferrer' href={row.link}>{row.link}</a>) },
+    { name: 'Submission Link', selector: (row: any) => (<a target='_blank' rel='noreferrer' href={row.submissions[0]?.link}>{row.submissions[0]?.link}</a>) },
+    // { name: 'Grade', selector: (row: any) => row.submissions[0]?.grade },
 
 
   ]
