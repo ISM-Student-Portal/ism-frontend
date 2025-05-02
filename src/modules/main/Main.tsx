@@ -33,7 +33,7 @@ const Main = () => {
   const authentication = useSelector((state: any) => state.auth.authentication);
   const [isAppLoaded, setIsAppLoaded] = useState(false);
 
-  const { idleTimer } = useIdle({ onIdle: handleIdle, idleTime: 300 })
+  const { idleTimer } = useIdle({ onIdle: handleIdle, idleTime: 3600 })
 
   const handleToggleMenuSidebar = () => {
     dispatch(toggleSidebarMenu());

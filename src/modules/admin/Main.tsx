@@ -31,7 +31,7 @@ const Main = () => {
     console.log(true);
   }
 
-  const { idleTimer } = useIdle({ onIdle: handleIdle, idleTime: 300 })
+  const { idleTimer } = useIdle({ onIdle: handleIdle, idleTime: 3600 })
 
 
   useEffect(() => {
