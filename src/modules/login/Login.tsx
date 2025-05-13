@@ -23,8 +23,10 @@ const Login = () => {
   const [isGoogleAuthLoading, setGoogleAuthLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   const [isFacebookAuthLoading, setFacebookAuthLoading] = useState(false);
+    const [isAppLoading, setIsAppLoading] = useState(true);
+  
   const dispatch = useDispatch();
-
+ 
   const navigate = useNavigate();
   const [t] = useTranslation();
 
@@ -37,6 +39,7 @@ const Login = () => {
       dispatch(setProfile(response.profile));
       toast.success('Login is Successful!');
       setAuthLoading(false);
+      await checkSession();
       if (response.profile.is_admin) {
         navigate('/admin');
 
@@ -51,7 +54,7 @@ const Login = () => {
           navigate('/');
         }
       }
-      window.location.reload();
+      // window.location.reload();
 
 
     } catch (error: any) {
@@ -64,6 +67,27 @@ const Login = () => {
   const onChange = () => {
     console.log('Key is working')
   }
+
+  const checkSession = async () => {
+    try {
+      let responses: any = await Promise.all([
+        getAuthStatus(),
+      ]);
+      let profile: any = await getProfileStatus();
+      console.log(profile, 'entry')
+
+      responses = responses.filter((r: any) => Boolean(r));
+
+      if (responses && responses.length > 0) {
+        dispatch(setAuthentication(responses[0]));
+        dispatch(setProfile(profile));
+      }
+    } catch (error: any) {
+      console.log('error', error);
+    }
+    setIsAppLoading(false);
+  };
+
 
 
 
