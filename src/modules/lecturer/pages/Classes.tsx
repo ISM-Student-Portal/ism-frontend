@@ -26,7 +26,6 @@ const Classes = () => {
     const [resource, setResource] = useState<any>();
     const [rows, setRows] = React.useState([]);
     const [selectedAttendance, setSelectedAttendance] = React.useState<any>();
-    const [pending, setpending] = React.useState(true);
     const [loading, setLoading] = React.useState(false);
     const [open, setOpen] = React.useState(false);
     const [editMode, setEditMode] = React.useState(false);

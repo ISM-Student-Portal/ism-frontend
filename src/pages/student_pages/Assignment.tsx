@@ -9,14 +9,13 @@ import Chip from '@mui/material/Chip';
 import Stack from '@mui/material/Stack';
 import Divider from '@mui/material/Divider';
 import Typography from '@mui/material/Typography';
-import { useSelector } from 'react-redux';
 import DataTable from '../../components/data-table/DataTableBase';
 import { toast } from 'react-toastify';
 
 
 
 
-interface Assignment {
+interface IAssignment {
   id: number
   title: string,
   description: string,
@@ -26,8 +25,7 @@ interface Assignment {
 }
 
 const Assignment = () => {
-  const profile = useSelector((state: any) => state.profile.profile);
-  const [classroom, setClassroom] = useState<Assignment>();
+  const [classroom, setClassroom] = useState<IAssignment>();
   const [classroomList, setClassroomList] = useState([]);
   const [pending, setPending] = useState(true);
   const [openPrompt, setOpenPrompt] = useState(false);
@@ -185,11 +183,11 @@ const Assignment = () => {
                 </Typography>
 
                 <Typography color="text.secondary" variant="h6">
-                  <a href={classroom?.link} target='_blank'> {classroom?.link}</a>
+                  <a href={classroom?.link} target='_blank' rel='noreferrer'> {classroom?.link}</a>
                 </Typography>
 
                 {classroom.file_url ? (
-                  <a href={classroom.file_url} target='_blank' className='text-success pointer-cursor bold'> <b>Download Assignment File</b></a>
+                  <a href={classroom.file_url} target='_blank' rel='noreferrer' className='text-success pointer-cursor bold'> <b>Download Assignment File</b></a>
                 ) : (<div></div>)}
 
               </Box>

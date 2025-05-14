@@ -1,6 +1,6 @@
 import { getUpcoming, markAttendance } from '@app/services/student/classServices';
 import { ContentHeader } from '@components';
-import { Button, Container, ownerDocument } from '@mui/material';
+import { Button } from '@mui/material';
 import { useEffect, useState } from 'react';
 import moment from 'moment';
 import Card from '@mui/material/Card';
@@ -9,7 +9,6 @@ import Chip from '@mui/material/Chip';
 import Stack from '@mui/material/Stack';
 import Divider from '@mui/material/Divider';
 import Typography from '@mui/material/Typography';
-import { useSelector } from 'react-redux';
 import DataTable from '../../components/data-table/DataTableBase';
 import { toast } from 'react-toastify';
 
@@ -24,7 +23,6 @@ interface Classroom {
 }
 
 const StudentClassroom = () => {
-    const profile = useSelector((state: any) => state.profile.profile);
     const [classroom, setClassroom] = useState<Classroom>();
     const [classroomList, setClassroomList] = useState([]);
     const [pending, setPending] = useState(true);
@@ -33,7 +31,6 @@ const StudentClassroom = () => {
     const [attendanceMarked, setAttendanceMarked] = useState(false);
     const [attendanceExpired, setAttendanceExpired] = useState(false);
 
-    const [loading, setLoading] = useState(false);
 
 
 
@@ -71,14 +68,12 @@ const StudentClassroom = () => {
     }
 
     const getClassLink = async () => {
-        setLoading(true)
         let result = await markAttendance(classroom?.id);
         if (result.status === 'Success') {
             setAttendanceMarked(true);
             toast.success('Attendance marked successfully');
             getUpcomingClass();
         }
-        setLoading(false);
     }
     const columns = [
         { name: 'Course', selector: (row: any) => row.course.title },
@@ -139,7 +134,7 @@ const StudentClassroom = () => {
                                 </Typography>
 
                                 <Typography color="text.secondary" variant="h6">
-                                    <a href={classroom?.link} target='_blank'> {classroom?.link}</a>
+                                    <a href={classroom?.link} target='_blank' rel='noreferrer'> {classroom?.link}</a>
                                 </Typography>
 
                             </Box>
