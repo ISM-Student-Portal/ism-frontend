@@ -45,7 +45,7 @@ const Courses = () => {
 
                             <div className='row gap-2'>
                                 {rows.length > 0 && rows.map((item: any) => (
-                                    <Card className='col-lg-2 mx-2 align-items-center'>
+                                    <Card className='col-lg-2 mx-2 '>
                                         <Card.Img variant="top" src={item?.lecturer.profile_pix_url ? item?.lecturer.profile_pix_url : "/img/default-profile.png"} />
                                         <Card.Body>
                                             <Card.Title><b>Title: </b>{item.title}</Card.Title>
