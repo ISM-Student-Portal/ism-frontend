@@ -6,11 +6,10 @@ import { useFormik } from 'formik';
 import { useTranslation } from 'react-i18next';
 import { setAuthentication } from '@store/reducers/auth';
 import { setWindowClass } from '@app/utils/helpers';
-import { Checkbox } from '@profabric/react-components';
 import * as Yup from 'yup';
 
 import { authLogin, getAuthStatus, getProfileStatus } from '@app/utils/oidc-providers';
-import { Form, InputGroup, ToggleButton } from 'react-bootstrap';
+import { Form, InputGroup } from 'react-bootstrap';
 import { Button } from '@app/styles/common';
 import { Image } from '@profabric/react-components';
 import { setProfile } from '@app/store/reducers/profile';
@@ -20,13 +19,10 @@ import ReCAPTCHA from 'react-google-recaptcha';
 
 const Login = () => {
   const [isAuthLoading, setAuthLoading] = useState(false);
-  const [isGoogleAuthLoading, setGoogleAuthLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
-  const [isFacebookAuthLoading, setFacebookAuthLoading] = useState(false);
-    const [isAppLoading, setIsAppLoading] = useState(true);
-  
+
   const dispatch = useDispatch();
- 
+
   const navigate = useNavigate();
   const [t] = useTranslation();
 
@@ -85,7 +81,6 @@ const Login = () => {
     } catch (error: any) {
       console.log('error', error);
     }
-    setIsAppLoading(false);
   };
 
 
@@ -205,7 +200,6 @@ const Login = () => {
                   <div className="col-12 mybutton ">
                     <Button
                       loading={isAuthLoading}
-                      disabled={isFacebookAuthLoading || isGoogleAuthLoading}
                       onClick={handleSubmit as any}
                       variant='warning'
 
@@ -216,7 +210,7 @@ const Login = () => {
                   </div>
                   <div className="col-12">
                     <ReCAPTCHA
-                    className='w-100'
+                      className='w-100'
                       sitekey="6Ld4lKoqAAAAAJKSGNRE-FL0W1gPnKH_LMQXCpGG"
                       onChange={onChange}
                     />
