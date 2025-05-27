@@ -19,6 +19,8 @@ import { fetchAllAssignments, fetchAllClasses, fetchAllCourses } from '@app/serv
 import { Button, Form, Modal, OverlayTrigger, Tooltip } from 'react-bootstrap';
 import DatePicker from 'react-date-picker';
 import moment from 'moment';
+import { useSelector } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
 
 
 const Assignments = () => {
@@ -43,14 +45,14 @@ const Assignments = () => {
     const [selectedSubmission, setSelectedSubmission] = useState<any>(null);
 
 
+    const navigate = useNavigate();
+
+    const profile = useSelector((state: any) => state.profile.profile);
 
 
 
     const handleOpenSubmissions = (data: any) => {
-
-        setSelectedAssignment(data);
-
-        setOpenSubmission(true);
+        navigate(`${profile.is_admin ? '/admin' : '/lecturer'}/assignments/${data.id}`, { state: { assignment: data } });
     }
 
     const handleOpenGrade = (data: any) => {
