@@ -9,7 +9,6 @@ const ResendMail = () => {
     const [searchParams, setSearchParams] = useSearchParams();
     const id = searchParams.get('id');
     const [timer, setTimer] = useState(60000);
-    console.log('id', location.state);
     const resendNotification = async () => {
         try {
             let res = await resendVerification(id);

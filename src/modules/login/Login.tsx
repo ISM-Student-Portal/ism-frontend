@@ -30,7 +30,6 @@ const Login = () => {
     try {
       setAuthLoading(true);
       const response: any = await authLogin(email, password);
-      console.log(response, 'beforestore');
       dispatch(setAuthentication(response.authentication));
       dispatch(setProfile(response.profile));
       toast.success('Login is Successful!');
@@ -44,7 +43,6 @@ const Login = () => {
 
       } else {
         if (response.profile.is_admin === 1) {
-          console.log('here')
           navigate('/admin');
         } else {
           navigate('/');
@@ -54,14 +52,12 @@ const Login = () => {
 
 
     } catch (error: any) {
-      console.log(error, 'error');
       setAuthLoading(false);
       toast.error(error.message || 'Failed');
     }
   };
 
   const onChange = () => {
-    console.log('Key is working')
   }
 
   const checkSession = async () => {
@@ -70,7 +66,6 @@ const Login = () => {
         getAuthStatus(),
       ]);
       let profile: any = await getProfileStatus();
-      console.log(profile, 'entry')
 
       responses = responses.filter((r: any) => Boolean(r));
 
@@ -79,7 +74,6 @@ const Login = () => {
         dispatch(setProfile(profile));
       }
     } catch (error: any) {
-      console.log('error', error);
     }
   };
 

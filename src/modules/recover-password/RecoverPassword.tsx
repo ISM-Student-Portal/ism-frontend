@@ -44,7 +44,6 @@ const RecoverPassword = () => {
 
   }
   const onChange = () => {
-    console.log('Key is working')
   }
 
   const { handleChange, values, handleSubmit, touched, errors } = useFormik({
@@ -64,7 +63,6 @@ const RecoverPassword = () => {
     }),
     onSubmit: (values) => {
       changePassword(values.password);
-      console.log('values', values);
     },
   });
 

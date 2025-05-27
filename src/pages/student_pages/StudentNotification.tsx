@@ -20,7 +20,6 @@ const StudentNotification = () => {
 
     }
     catch(error: any){
-      console.log(error);
     }
   }
 

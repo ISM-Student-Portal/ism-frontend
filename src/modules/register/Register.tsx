@@ -1,15 +1,11 @@
 import React, { useMemo, useRef, useState } from "react";
-import FormWizard from "react-form-wizard-component";
 import "react-form-wizard-component/dist/style.css";
-import PhoneInput from 'react-phone-number-input'
 import 'react-phone-number-input/style.css';
 import countryList from "react-select-country-list";
-import Select from 'react-select'
 import { Link, useNavigate } from "react-router-dom";
 import { Image } from "@profabric/react-components";
 import { registerStudent } from "@app/utils/oidc-providers";
 import { toast } from 'react-toastify';
-import ReCAPTCHA from 'react-google-recaptcha';
 
 
 
@@ -46,7 +42,6 @@ const Register = () => {
 
 
     const handleComplete = async () => {
-        console.log("Form completed!");
         let data = {
             first_name: firstName,
             last_name: lastName,
@@ -80,13 +75,11 @@ const Register = () => {
             setLoading(true);
             // call api to register student
             let response = await registerStudent(dataToSend) as { student: any };
-            console.log("Data", response);
             toast.success('Registration was successful');
             navigate(`/payment/${response.student.id}`);
         }
         catch (error: any) {
             if (error.message === 'Email already exists') {
-                console.log('Error', error);
                 if (error.student.email_verified_at === null) {
                     toast.info('Email already exists but not verified', { autoClose: 10000 });
                     navigate(`/resend-verification?id=${error.student.id}`, { state: error });
@@ -97,7 +90,6 @@ const Register = () => {
                 }
             }
             else {
-                console.log(error)
                 toast.error(error.message, {
                     autoClose: 10000
                 });
@@ -112,40 +104,10 @@ const Register = () => {
         // Handle form completion logic here
     };
     // check validate tab
-    const onChange = () => {
-        console.log('Key is working')
-    }
-    const verify = () => {
 
-        //@ts-ignore
-        captchaRef.current && captchaRef.current?.getResponse().then(res => {
-            setCaptchaToken(res)
-        })
 
-    }
-    const checkValidateTab = () => {
-        if (
-            firstName === "" ||
-            lastName === "" ||
-            email === "" ||
-            phone === "" ||
-            country === undefined ||
-            city === "" || education === "" || gender === ""
-        ) {
-            return false;
-        }
-        return true;
-    };
     // error messages
-    const errorMessages = () => {
-        // you can add alert or console.log or any thing you want
-        alert("Please fill in the required fields");
-    };
 
-    const handleChange = (selectedOption: any) => {
-        console.log(selectedOption)
-        setCountry(selectedOption);
-    };
 
     return (
         <div className="container my-5 bg-almond" style={{ color: '#2A2F54' }}>
@@ -172,7 +134,7 @@ const Register = () => {
             <div>
                 <a className="btn" style={{ background: '#C28E27', color: 'white' }} href={'http://www.femilazarusministries.com'}>Go back</a>
             </div>
-           
+
 
             {/* add style */}
             <style>{`

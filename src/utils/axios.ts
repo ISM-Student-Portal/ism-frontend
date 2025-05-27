@@ -1,6 +1,5 @@
 import axios from 'axios';
 const authentication = localStorage.getItem('authentication');
-console.log(authentication, 'auth')
 let token: any = null;
 if (authentication) {
     token = JSON.parse(authentication).plainTextToken;
@@ -37,7 +36,6 @@ instance.interceptors.response.use(
     },
     function (error) {
         if (error.response.status === 401) {
-            console.log('got here')
             localStorage.removeItem("authentication");
             localStorage.removeItem("profile");
             window.location.reload();

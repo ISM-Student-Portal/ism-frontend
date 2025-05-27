@@ -28,7 +28,6 @@ const Main = () => {
   };
 
   const handleIdle = () => {
-    console.log(true);
   }
 
   useEffect(() => {

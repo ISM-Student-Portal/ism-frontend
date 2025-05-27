@@ -95,7 +95,6 @@ const Assignments = () => {
 
     const handleButtonClick = (action: string, row: any) => {
         if (action === 'edit') {
-            console.log(row);
             setTitle(row.title);
             setDescription(row.description);
             setLink(row.link);
@@ -115,7 +114,6 @@ const Assignments = () => {
                 grade: selectedSubmission.grade
             });
             if (res) {
-                console.log(res);
                 toast.success('Grade submitted');
 
                 handleCloseGrade();
@@ -125,7 +123,6 @@ const Assignments = () => {
                 let updatedAssignment = courses.assignments.find((item: any) => {
                     return item.id === selectedAssignment.id
                 });
-                console.log(updatedAssignment);
                 handleOpenSubmissions(updatedAssignment);
 
                 // setOpenSubmission(true);

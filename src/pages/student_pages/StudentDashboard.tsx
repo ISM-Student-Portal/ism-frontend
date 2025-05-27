@@ -21,7 +21,6 @@ const StudentDashboard = () => {
 
     }
     catch (error: any) {
-      console.log(error);
     }
   }
 

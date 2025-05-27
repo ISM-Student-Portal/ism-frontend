@@ -52,11 +52,9 @@ const ForgotPassword = () => {
     }),
     onSubmit: (values) => {
       forgotPass(values.email);
-      console.log('values', values);
     },
   });
   const onChange = () => {
-    console.log('Key is working')
   }
 
   setWindowClass('hold-transition login-page');

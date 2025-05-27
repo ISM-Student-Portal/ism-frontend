@@ -34,7 +34,6 @@ export const facebookLogin = () => {
             }
           );
         } else {
-          console.log('User cancelled login or did not fully authorize.');
           rej(undefined);
         }
       },
@@ -104,7 +103,6 @@ export const authLogin = (email: string, password: string) => {
 
 
     }).catch((err: any) => {
-      console.log(err.response.data)
       reject({ message: err.response.data.message });
     });
     // return new Promise(async (res, rej) => {

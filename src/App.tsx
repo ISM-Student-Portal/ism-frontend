@@ -66,7 +66,6 @@ const App = () => {
         getAuthStatus(),
       ]);
       let profile: any = await getProfileStatus();
-      console.log(profile, 'entry')
 
       responses = responses.filter((r: any) => Boolean(r));
 
@@ -75,7 +74,6 @@ const App = () => {
         dispatch(setProfile(profile));
       }
     } catch (error: any) {
-      console.log('error', error);
     }
     setIsAppLoading(false);
   };
@@ -156,6 +154,7 @@ const App = () => {
             <Route path='students/:id' element={<Student />} />
             <Route path='payments' element={<Payments />} />
             <Route path='courses/:id' element={<LecturerCourse />} />
+            <Route path='assignments/:id' element={<LecturerAssignment />} />
             <Route path='courses' element={<Courses />} />
             <Route path='admins' element={<SuperAdminRoute />}>
               <Route path='' element={<Admins />} />
@@ -175,7 +174,7 @@ const App = () => {
             <Route path='classes' element={<LecturerClasses />} />
             <Route path='class/:id' element={<LecturerClass />} />
             <Route path='assignments' element={<LecturerAssignments />} />
-            <Route path='assignment/:id' element={<LecturerAssignment />} />
+            <Route path='assignments/:id' element={<LecturerAssignment />} />
             <Route path="profile" element={<Profile />} />
           </Route>
         </Route>

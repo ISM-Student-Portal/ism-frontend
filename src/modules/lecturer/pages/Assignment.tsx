@@ -1,194 +1,137 @@
 import Footer from '@app/modules/main/footer/Footer';
 import { ContentHeader } from '@components';
 import DataTable from '../../../components/datatable-original/Datatable';
-import Button from '@mui/material/Button';
-import Modal from '@mui/material/Modal';
-import React, { useEffect, useMemo } from 'react';
-import Box from '@mui/material/Box';
-import Container from '@mui/material/Container'
-import TextField from '@mui/material/TextField';
-import AddIcon from '@mui/icons-material/Add'
-import UploadIcon from '@mui/icons-material/Upload'
-import VisibilityIcon from '@mui/icons-material/Visibility';
-import EditIcon from '@mui/icons-material/Edit';
-import DeleteIcon from '@mui/icons-material/Delete';
+
+import { useState } from 'react';
+
+
+import GradingIcon from '@mui/icons-material/Grading';
+
 
 import { toast } from 'react-toastify';
 
-import { createStudent, updateStudentStatus, deleteStudent } from '@app/services/admin/studentServices';
-import { Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, FormControlLabel, FormGroup, Switch } from '@mui/material';
-import FilterComponent from '@app/components/data-table/FilterComponent';
 import { ColorRing } from 'react-loader-spinner';
-import { fetchAllLecturers } from '@app/services/admin/lecturerServices';
-import { fetchAllCourses } from '@app/services/admin/lecturerServices';
 
+
+import { useLocation } from 'react-router-dom';
+import { Button, Form, Modal, OverlayTrigger, Tooltip } from 'react-bootstrap';
+import axios from '../../../utils/axios';
+import { useQuery, useQueryClient } from '@tanstack/react-query';
 
 const Assignment = () => {
-    const [open, setOpen] = React.useState(false);
-    const [pending, setpending] = React.useState(true);
-    const [loading, setLoading] = React.useState(false);
-    const [openAdd, setOpenAdd] = React.useState(false);
-    const [openEdit, setOpenEdit] = React.useState(false);
-    const [openDelete, setOpenDelete] = React.useState(false);
-    const [editStudentStatus, setEditStudentStatus] = React.useState(false);
-    const [editStudentSub, setEditStudentSub] = React.useState(false);
-   
-    const [selectedStudent, setSelectedStudent] = React.useState<any>();
-    const [file, setFile] = React.useState(null);
-    const [email, setEmail] = React.useState('');
-    const [firstName, setFirstName] = React.useState('');
-    const [lastName, setLastName] = React.useState('');
-    const [regNo, setRegNo] = React.useState('');
-    const [phoneNumber, setPhoneNumber] = React.useState('');
-    const [rows, setRows] = React.useState([]);
+    const [openGrade, setOpenGrade] = useState(false);
+    const [loading, setLoading] = useState(false);
+    const [selectedAssignment] = useState<any>();
+    const [selectedSubmission, setSelectedSubmission] = useState<any>();
 
-    const handleOpen = () => {
-        setOpen(true);
-    };
-    const handleClose = () => {
-        setOpen(false);
-    };
-
-    const handleOpenEdit = () => {
-        setOpenEdit(true);
-    };
-    const handleCloseEdit = () => {
-        setOpenEdit(false);
-    };
+    const assignment = useLocation().state.assignment;
+    const queryClient = useQueryClient();
 
 
-
-
-
-    const handleOpenDelete = () => {
-        setOpenDelete(true);
-    };
-    const handleCloseDelete = () => {
-        setOpenDelete(false);
-    };
-    const handleOpenAdd = () => {
-        setOpenAdd(true);
-    }
-
-    const handleCloseAdd = () => {
-        setOpenAdd(false);
-    }
-    const handleButtonClick = (type: any, student: any) => {
-        setSelectedStudent(student);
-        if (type === 'edit') {
-            // await changeStudentPass(student.id);
-            // toast.success('Student updated Successfully!');
-
-            setEditStudentStatus(student.is_admin);
-            setEditStudentSub(student.profile.subscription === 'premium')
-            handleOpenEdit();
+    const submitGrade = async () => {
+        if (selectedSubmission.grade === undefined || selectedSubmission.grade === null || selectedSubmission.grade === '' || selectedSubmission.grade < 0 || selectedSubmission.grade > 100) {
+            toast.error('Please enter a valid grade between 0 and 100');
+            return;
         } else {
-            handleOpenDelete();
-        }
-    }
+            try {
+                setLoading(true);
+                let res = await axios.put('/submissions/' + selectedSubmission.id, {
+                    grade: parseInt(selectedSubmission.grade)
+                });
+                if (res) {
+                    toast.success('Grade submitted');
+                    handleCloseGrade();
+                }
+                queryClient.invalidateQueries({ queryKey: ['assignmentData'] });
+            } catch (error) {
 
-    const performActionEdit = async () => {
-        setLoading(true);
-        const res = await updateStudentStatus(selectedStudent?.id, { is_admin: editStudentStatus, subscription: editStudentSub ? 'premium' : 'basic' });
-        if (res.status === 'success') {
-            toast.success('Student updated Successfully!');
-            handleCloseEdit();
-            getCourses();
-        }
-        setLoading(false);
-    }
-
-    const performActionDelete = async () => {
-        setLoading(true);
-        const res = await deleteStudent(selectedStudent?.id, selectedStudent?.is_active);
-        if (res.status === 'success') {
-            toast.success('Student Deleted Successfully!');
-            handleCloseDelete();
-            getCourses();
-        }
-        setLoading(false);
-    }
-
-    const getCourses = async () => {
-        const courses = await fetchAllCourses();
-        setRows(courses.courses);
-        setpending(false);
-    }
-
-    const createStudentAction = async () => {
-        setLoading(true);
-        const data = {
-            first_name: firstName,
-            last_name: lastName,
-            email: email,
-            phone_number: phoneNumber,
-            reg_no: regNo
-        }
-        const student = await createStudent(data);
-        if (student.message === 'successful') {
-            toast.success('Student Created Successfully!');
-            handleCloseAdd();
-            getCourses();
-            setLoading(false);
-        }
-        else {
-            toast.error('Something went wrong!');
+            }
+            finally {
+                setLoading(false);
+            }
         }
 
     }
 
+    const getSubmissions = () => {
+        return axios.get('/assignments/' + assignment.id)
+    }
+    const {
+        isLoading,
+        error,
+        data: assignmentData
+    } = useQuery({
+        queryKey: ['assignmentData'],
+        queryFn: getSubmissions
+    })
 
-    const handleChangeSub = (event: React.ChangeEvent<HTMLInputElement>) => {
-        setEditStudentSub(event.target.checked);
-    };
+    const handleOpenGrade = (data: any) => {
+        setSelectedSubmission(data);
+
+        setOpenGrade(true);
+    }
+
+    if (error) {
+        toast.error('Error fetching assignment data');
+        return <div className=''>Error fetching assignment data</div>;
+    }
 
 
 
+    const handleCloseGrade = () => { setOpenGrade(false); }
 
-    const style = {
-        position: 'absolute' as 'absolute',
-        top: '50%',
-        left: '50%',
-        transform: 'translate(-50%, -50%)',
-        width: 600,
-        bgcolor: 'background.paper',
-        border: '2px solid #000',
-        boxShadow: 24,
-        pt: 2,
-        px: 4,
-        pb: 3,
-    };
-
-
-
-
-    useEffect(() => {
-        getCourses();
-    }, [])
     return (
         <div>
-            <ContentHeader title="Courses" />
+            <ContentHeader title="Assignment" />
+            <section className="content-header">
+                <div className="container-fluid h5">
+                    Title: {assignment?.title} <br />
+                    Description: {assignment?.description} <br />
+                    Deadline: {new Date(assignment?.deadline).toDateString()} <br />
+                </div>
+            </section>
             <section className="content">
 
                 <div className="container-fluid">
-                    {rows.length > 0 ? (
+                    {!isLoading ? (
                         <div>
 
                             <div></div>
                             <DataTable slots={{
-                                2: (data: any, row: any) => (
-                                    <div className='d-flex justify-content-center'>
-                                        <span onClick={() => handleButtonClick('edit', row)} ><VisibilityIcon className='text-success mx-2 cursor-pointer' /></span>
-                                        <EditIcon onClick={() => handleButtonClick('edit', row)} className='text-warning mx-2 cursor-pointer' />
-                                        <DeleteIcon onClick={() => handleButtonClick('delete', row)} className='text-danger mx-2 cursor-pointer' />
-                                    </div>
+                                6: (data: any, row: any) => (
+                                    <OverlayTrigger placement='top' overlay={<Tooltip id={row.id}>Grade</Tooltip>}>
+                                        <Button as="span" variant='outline-light' size='sm' onClick={() => handleOpenGrade(row)}><GradingIcon className='text-success mx-2 pointer' /></Button>
+
+                                    </OverlayTrigger>
 
                                 )
                             }} className='table table-striped table-bordered order-column dt-head-center' options={{
                                 buttons: {
                                     buttons: ['copy', 'csv']
                                 }
-                            }} data={rows} columns={[{ data: 'title', title: 'Title' }, { data: 'description', title: 'Description' }, { title: 'Action' }]}>
+                            }} data={assignmentData?.data?.assignment?.submissions} columns={[{
+                                data: 'student', title: 'Name', render(data, type, row, meta) {
+                                    return `${data.first_name} ${data.last_name}`;
+                                },
+                            }, {
+                                data: 'student', title: 'Reg No', render(data, type, row, meta) {
+                                    return data.matric_no;
+                                },
+                            }, {
+                                data: 'link', title: 'Link', render(data, type, row, meta) {
+                                    return data ? `<a href=${data} target='_blank'>View</a>` : 'No file'
+                                }
+                            }, { data: 'feedbacks', title: 'Feedback' }, {
+                                data: 'created_at', title: 'Date Submitted', render(data, type, row, meta) {
+                                    return new Date(data).toLocaleString()
+                                },
+
+                            }, {
+                                data: 'grade', title: 'Grade', render(data, type, row, meta) {
+                                    return data ? data : 'Not Graded'
+                                },
+
+                            }, { title: 'Action' }]}>
 
                             </DataTable></div>
                     ) : (<div className='h-100 d-flex align-items-center justify-content-center'><ColorRing
@@ -207,175 +150,24 @@ const Assignment = () => {
             </section>
             <Footer />
 
+            <Modal show={openGrade} onHide={handleCloseGrade} size='lg' centered>
+                <Modal.Header closeButton>
+                    <Modal.Title>{selectedSubmission?.student.first_name} Grade</Modal.Title>
+                </Modal.Header>
+                <Modal.Body>
+                    <div><h6>{selectedAssignment?.title}</h6></div>
+                    <Form>
+                        <Form.Group controlId='gradeform.grade'>
+                            <Form.Label>Grade %</Form.Label>
+                            <Form.Control type='number' placeholder='Grade' value={selectedSubmission?.grade} onChange={(e) => setSelectedSubmission({ ...selectedSubmission, grade: e.target.value })}></Form.Control>
+                        </Form.Group>
+                        <Button variant='primary' onClick={submitGrade} disabled={loading}>Submit</Button>
+                    </Form>
+                </Modal.Body>
+                <Modal.Footer>
 
-            <Modal
-                open={openAdd}
-                onClose={handleCloseAdd}
-                aria-labelledby="child-modal-title"
-                aria-describedby="child-modal-description">
-                <Container sx={{
-                    ...style, borderRadius: '5px', paddingY: '1.5rem'
-                }} maxWidth="lg" component="form" noValidate>
-                    <h5 id="child-modal-title" className='text-center my-3'>Create Student Form</h5>
-                    <Container
-                        sx={{ marginTop: '1rem', marginBottom: '1rem', display: 'flex' }}>
-
-                        <TextField
-                            id="outlined-controlled"
-                            size='small'
-                            label="Email"
-                            value={email}
-                            sx={{ marginRight: '1rem' }}
-                            onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
-                                setEmail(event.target.value);
-                            }}
-                        />
-                        <TextField
-                            id="outlined-controlled"
-                            label="First Name"
-                            size='small'
-
-                            value={firstName}
-                            onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
-                                setFirstName(event.target.value);
-                            }}
-                        />
-                    </Container>
-
-                    <Container
-                        sx={{ marginTop: '1rem', marginBottom: '1rem', display: 'flex' }}>
-
-                        <TextField
-                            id="outlined-controlled"
-                            label="Last Name"
-                            size='small'
-                            sx={{ marginRight: '1rem' }}
-
-
-                            value={lastName}
-                            onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
-                                setLastName(event.target.value);
-                            }}
-                        />
-                        <TextField
-                            id="outlined-controlled"
-                            label="Phone Number"
-                            size='small'
-
-                            value={phoneNumber}
-                            onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
-                                setPhoneNumber(event.target.value);
-                            }}
-                        />
-                    </Container>
-
-                    <Container
-                        sx={{ marginTop: '1rem', marginBottom: '1rem', display: 'flex' }}>
-
-                        <TextField
-                            id="outlined-controlled"
-                            label="Reg No"
-                            size='small'
-                            sx={{ marginRight: '1rem' }}
-
-
-                            value={regNo}
-                            onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
-                                setRegNo(event.target.value);
-                            }}
-                        />
-
-                    </Container>
-
-
-                    <br />
-                    <Box sx={{
-                        marginRight: "1rem",
-                        float: 'right'
-                    }}>
-                        <Button variant='outlined' size='small' sx={{
-                            marginRight: ".2rem"
-                        }} onClick={handleCloseAdd}>Cancel</Button>
-                        <Button variant='contained' size='small' onClick={createStudentAction} disabled={loading}>Submit</Button>
-                    </Box>
-
-                    {/* <Button variant="outlined" onClick={handleClose}>Close Child Modal</Button> */}
-                </Container>
+                </Modal.Footer>
             </Modal>
-
-
-            <Modal
-                open={openEdit}
-                onClose={handleCloseEdit}
-                aria-labelledby="child-modal-title"
-                aria-describedby="child-modal-description">
-                <Container sx={{
-                    ...style, borderRadius: '5px', paddingY: '1.5rem'
-                }} maxWidth="lg" component="form" noValidate>
-                    <h5 id="child-modal-title" className='text-center my-3'>Edit Student Status</h5>
-                    <Container
-                        sx={{ marginTop: '1rem', marginBottom: '1rem', display: 'flex' }}>
-
-                        <TextField
-                            id="outlined-controlled"
-                            size='small'
-                            label="Email"
-                            value={selectedStudent?.email}
-                            sx={{ marginRight: '1rem' }}
-                            onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
-                                setEmail(event.target.value);
-                            }}
-                            disabled
-                        />
-
-                    </Container>
-
-                    <Container
-                        sx={{ marginTop: '1rem', marginBottom: '1rem', display: 'flex' }}>
-
-                        <FormGroup>
-                            {/* <FormControlLabel control={<Switch inputProps={{ 'aria-label': 'controlled' }} onChange={handleChangeStat} checked={editStudentStatus} />} label="Admin Status" /> */}
-                            <FormControlLabel control={<Switch inputProps={{ 'aria-label': 'controlled' }} onChange={handleChangeSub} checked={editStudentSub} />} label="Premium Subscription" />
-                        </FormGroup>
-                    </Container>
-
-
-                    <br />
-                    <Box sx={{
-                        marginRight: "1rem",
-                        float: 'right'
-                    }}>
-                        <Button variant='outlined' size='small' sx={{
-                            marginRight: ".2rem"
-                        }} onClick={handleCloseEdit}>Cancel</Button>
-                        <Button variant='contained' size='small' onClick={performActionEdit} disabled={loading}>Submit</Button>
-                    </Box>
-
-                    {/* <Button variant="outlined" onClick={handleClose}>Close Child Modal</Button> */}
-                </Container>
-            </Modal>
-
-
-
-
-            <Dialog
-                open={openDelete}
-                onClose={handleCloseDelete}
-                aria-labelledby="child-modal-title"
-                aria-describedby="child-modal-description">
-
-                <DialogTitle align='center' variant='h5'>Set Student Inactive</DialogTitle>
-                <DialogContent>
-                    <DialogContentText>Are you sure you want to <b>{selectedStudent?.is_active ? 'deactivate' : 'reactivate'}</b> student <b>{selectedStudent?.profile?.first_name}</b>?</DialogContentText>
-                </DialogContent>
-
-                <DialogActions>
-                    <Button variant='outlined' size='small' sx={{
-                        marginRight: ".2rem"
-                    }} onClick={handleCloseDelete}>Cancel</Button>
-                    <Button variant='contained' size='small' color='error' onClick={performActionDelete} disabled={loading}>Submit</Button>
-                </DialogActions>
-            </Dialog>
         </div>
     );
 };

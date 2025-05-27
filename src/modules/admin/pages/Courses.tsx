@@ -58,7 +58,6 @@ const Courses = () => {
 
     const handleButtonClick = (action: string, row: any) => {
         if (action === 'edit') {
-            console.log(row);
             setTitle(row.title);
             setDescription(row.description);
             setLecturerId(row.lecturer_id);

@@ -47,7 +47,6 @@ const Profile = () => {
     setUploadOpen(false);
   };
   const dispatch = useDispatch();
-  console.log(profile)
 
 
   const style = {

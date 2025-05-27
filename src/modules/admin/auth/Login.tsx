@@ -50,7 +50,6 @@ const Login = () => {
 
       } else {
         if (response.profile.is_admin === 1) {
-          console.log('here')
           navigate('/admin');
         } else {
           navigate('/');
@@ -65,7 +64,6 @@ const Login = () => {
   };
 
   const onChange = () => {
-    console.log('Key is working')
   }
 
 
@@ -198,10 +196,10 @@ const Login = () => {
                     >
                       {t('login.button.signIn.label')}
                     </Button>
-                    
+
                   </div>
                   <div className="col-12">
-                  <ReCAPTCHA
+                    <ReCAPTCHA
                       sitekey="6Ld4lKoqAAAAAJKSGNRE-FL0W1gPnKH_LMQXCpGG"
                       onChange={onChange}
                     />

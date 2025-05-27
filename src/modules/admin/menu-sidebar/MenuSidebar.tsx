@@ -75,7 +75,6 @@ const MenuSidebar = () => {
   const menuItemFlat = useSelector((state: any) => state.ui.menuItemFlat);
   const menuChildIndent = useSelector((state: any) => state.ui.menuChildIndent);
 
-  console.log(profile, 'profile');
 
   return (
     <aside className={`main-sidebar elevation-4`} style={{ backgroundColor: '#2a2f54' }}>

@@ -10,6 +10,8 @@ import { toast } from 'react-toastify';
 import axios from '../../../utils/axios';
 import EditIcon from '@mui/icons-material/Edit';
 import moment from 'moment';
+import { useSelector } from 'react-redux';
+
 
 
 
@@ -17,7 +19,7 @@ import moment from 'moment';
 
 import { ColorRing } from 'react-loader-spinner';
 import { fetchAllAssignments, fetchCourseById } from '@app/services/admin/lecturerServices';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
 import 'react-tabs/style/react-tabs.css';
 import { Button, Form, Modal, OverlayTrigger, Tooltip } from 'react-bootstrap';
@@ -47,7 +49,6 @@ const Course = () => {
     const [transcript, setTranscript] = React.useState<boolean>(false);
     const [description, setDescription] = React.useState<any>(null);
     const [file, setFile] = React.useState<any>();
-    const [gradeFile, setGradeFile] = React.useState<any>();
     const [filename, setFilename] = React.useState("");
     const [selectedAssignment, setSelectedAssignment] = React.useState<any>();
     const [selectedSubmission, setSelectedSubmission] = React.useState<any>();
@@ -59,6 +60,9 @@ const Course = () => {
 
 
     const [course, setCourse] = React.useState<any>();
+    const navigate = useNavigate();
+
+    const profile = useSelector((state: any) => state.profile.profile);
 
 
 
@@ -102,10 +106,10 @@ const Course = () => {
     }
 
     const handleOpenSubmissions = (data: any) => {
-        console.log(data, 'here')
+        navigate(`${profile.is_admin ? '/admin' : '/lecturer'}/assignments/${data.id}`, { state: { assignment: data } });
 
-        setOpenSubmission(true);
-        setSelectedAssignment(data);
+        // setOpenSubmission(true);
+        // setSelectedAssignment(data);
     }
     const handleCloseSubmissions = () => {
         setOpenSubmission(false);
@@ -115,7 +119,6 @@ const Course = () => {
     }
 
     const handleOpenAttendance = (data: any) => {
-        console.log(data)
         setSelectedAttendance(data);
 
         setOpenAttendance(true);
@@ -179,8 +182,7 @@ const Course = () => {
             }
         } else {
             try {
-                let classroom = await createClassroom(data)
-                console.log(classroom)
+                await createClassroom(data)
                 toast.success('Class created');
                 handleClose();
 
@@ -206,17 +208,13 @@ const Course = () => {
     }
 
     const handleOpenGrade = (data: any) => {
-        console.log(data);
         setSelectedSubmission(data);
 
         setOpenGrade(true);
     }
 
     const handleCloseGrade = () => { setOpenGrade(false); }
-    const handleOpenUploadGrade = () => {
 
-        setOpenUploadGrade(true);
-    }
 
     const handleCloseUploadGrade = () => { setOpenUploadGrade(false); }
 
@@ -235,7 +233,6 @@ const Course = () => {
                 let updatedAssignment = courses.assignments.find((item: any) => {
                     return item.id === selectedAssignment.id
                 });
-                console.log(updatedAssignment);
                 handleOpenSubmissions(updatedAssignment);
                 getCourse();
             }
@@ -249,25 +246,21 @@ const Course = () => {
 
     const handleButtonClick = (action: string, row: any) => {
         if (action === 'edit' && row.attendance) {
-            console.log(row);
             setTitle(row.title);
             setDescription(row.description);
             setLink(row.link);
             setExpiresOn(moment(row.expires_on).format('YYYY-MM-DD'));
-            console.log(moment(row.expires_on).format('YYYY-MM-DD'));
             setSelectedAssignment(row);
             setEditMode(true);
             setOpen(true);
 
         }
         else {
-            console.log(row);
             setTitle(row.title);
             setDescription(row.description);
             setLink(row.link);
             setTranscript(row.use_for_transcript);
             setExpiresOn(moment(row.expires_on).format('YYYY-MM-DD'));
-            console.log(moment(row.expires_on).format('YYYY-MM-DD'));
             setSelectedAssignment(row);
             setEditMode(true);
             setOpenAssignment(true);
@@ -335,7 +328,7 @@ const Course = () => {
                     method: 'POST',
                     body: formData
                 }).then((response) => response.json()).then((data) => {
-                    let res = axios.put('/assignments/' + selectedAssignment.id, {
+                    axios.put('/assignments/' + selectedAssignment.id, {
                         file_url: data.url,
                         title: title,
                         link: link,
@@ -381,7 +374,7 @@ const Course = () => {
                     method: 'POST',
                     body: formData
                 }).then((response) => response.json()).then((data) => {
-                    let res = axios.post('/assignments', {
+                    axios.post('/assignments', {
                         file_url: data.url,
                         title: title,
                         link: link,

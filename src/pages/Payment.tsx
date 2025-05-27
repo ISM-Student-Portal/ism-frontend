@@ -39,7 +39,6 @@ const Payment = () => {
         try {
             setLoading(true);
             let res = await fetchStudent(id);
-            console.log(res)
             if (res.student.balance > 0) {
                 setOutstanding(true);
                 setAmount(res.student.balance);
@@ -66,7 +65,6 @@ const Payment = () => {
             if (response.status === "success") {
                 toast.success("Payment Successful");
                 getStudentInfo();
-                console.log(response);
             }
 
         } catch (error) {
@@ -81,7 +79,6 @@ const Payment = () => {
     // you can call this function anything
     const onClose = () => {
         // implementation for  whatever you want to do when the Paystack dialog closed.
-        console.log('closed')
     }
 
     const selectPlan = (e: any) => {
@@ -114,7 +111,6 @@ const Payment = () => {
     }
 
     const selectPaymentPlan = (e: any) => {
-        console.log(e.target.value);
         setPaymentPlan(e.target.value);
         if (e.target.value === 'part') {
             if (plan === "basic") {

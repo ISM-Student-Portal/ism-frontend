@@ -88,7 +88,6 @@ const Assignment = () => {
 
   const handleDownload = async (assignment: any) => {
     setLoading(true)
-    console.log('got here')
     axios.get(assignment?.file_url, { responseType: 'blob' }).then((res: any) => {
       const url = window.URL.createObjectURL(new Blob([res.data]));
       const link = document.createElement('a');

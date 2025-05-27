@@ -99,7 +99,6 @@ const Assignment = () => {
 
     }
     catch (error: any) {
-      console.log(error);
     }
     setPending(false);
 

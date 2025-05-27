@@ -25,7 +25,6 @@ export const changepass = async (data: any) => {
 
 export const forgotPasswordAction = async (data: any) => {
     try {
-        console.log(data)
         const reset = await axios.post('/forgot-password', data);
         return reset.data;
 

@@ -57,7 +57,6 @@ const Submission = () => {
 
     }
     catch (error: any) {
-      console.log(error);
     }
     setPending(false);
   }

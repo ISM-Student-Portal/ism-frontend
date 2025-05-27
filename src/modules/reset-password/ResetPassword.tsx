@@ -64,7 +64,6 @@ const ResetPassword = () => {
     }),
     onSubmit: (values) => {
       resetPass(values.password);
-      console.log('values', values);
     },
   });
 

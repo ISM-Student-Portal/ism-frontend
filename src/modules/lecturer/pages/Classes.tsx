@@ -39,7 +39,6 @@ const Classes = () => {
 
 
     const handleOpenAttendance = (data: any) => {
-        console.log(data)
 
         setSelectedAttendance(data);
 
@@ -104,13 +103,11 @@ const Classes = () => {
 
     const handleButtonClick = (action: string, row: any) => {
         if (action === 'edit') {
-            console.log(row);
             setTitle(row.title);
             setDescription(row.description);
             setLink(row.link);
             setCourseId(row.course_id);
             setExpiresOn(moment(row.expires_on).format('YYYY-MM-DD'));
-            console.log(moment(row.expires_on).format('YYYY-MM-DD'));
             setSelectedClass(row);
             setEditMode(true);
             setOpen(true);
@@ -158,7 +155,6 @@ const Classes = () => {
         } else {
             try {
                 let classroom = await createClassroom(data)
-                console.log(classroom)
                 toast.success('Class created');
                 handleClose();
 

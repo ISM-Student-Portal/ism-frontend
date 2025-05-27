@@ -8,6 +8,7 @@ import './index.css';
 import * as serviceWorker from './serviceWorker';
 import { BrowserRouter } from 'react-router-dom';
 import ReactGA from 'react-ga4';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 
 
 const { VITE_NODE_ENV, VITE_GA_ID } = import.meta.env;
@@ -16,13 +17,17 @@ if (VITE_NODE_ENV === 'production' && VITE_GA_ID) {
   ReactGA.initialize(VITE_GA_ID);
 }
 
+const queryClient = new QueryClient();
+
 
 const container: any = document.getElementById('root');
 const root = createRoot(container);
 root.render(
   <Provider store={store}>
     <BrowserRouter>
+    <QueryClientProvider client={queryClient}>
       <App />
+    </QueryClientProvider>
     </BrowserRouter>
   </Provider>
 );
