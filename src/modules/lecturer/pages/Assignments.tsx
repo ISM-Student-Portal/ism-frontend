@@ -15,9 +15,8 @@ import { toast } from 'react-toastify';
 import axios from '../../../utils/axios';
 
 import { ColorRing } from 'react-loader-spinner';
-import { fetchAllAssignments, fetchAllClasses, fetchAllCourses } from '@app/services/admin/lecturerServices';
+import { fetchAllAssignments, fetchAllCourses } from '@app/services/admin/lecturerServices';
 import { Button, Form, Modal, OverlayTrigger, Tooltip } from 'react-bootstrap';
-import DatePicker from 'react-date-picker';
 import moment from 'moment';
 import { useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
@@ -28,7 +27,6 @@ const Assignments = () => {
     const [openSubmission, setOpenSubmission] = useState(false)
     const [rows, setRows] = React.useState([]);
     const [selectedAssignment, setSelectedAssignment] = React.useState<any>();
-    const [pending, setpending] = React.useState(true);
     const [openAssignment, setOpenAssignment] = React.useState(false);
     const [loading, setLoading] = React.useState(false);
     const [title, setTitle] = useState('');
@@ -141,22 +139,6 @@ const Assignments = () => {
 
     const handleCloseGrade = () => { setOpenGrade(false); }
 
-    const downloadAttendance = async () => {
-        setLoading(true)
-        axios.get('/attendance-export/' + selectedAssignment.id, { responseType: 'blob' }).then((res: any) => {
-            const url = window.URL.createObjectURL(new Blob([res.data]));
-            const link = document.createElement('a');
-            link.href = url;
-            link.setAttribute('download', 'Attendance.xlsx'); //or any other extension
-            document.body.appendChild(link);
-            link.click();
-            toast.success("Request was successful");
-
-        }).finally(() => {
-            setLoading(false);
-        })
-    }
-
     const createAssignmentAction = async () => {
         setLoading(true);
         if (editMode) {
@@ -173,7 +155,7 @@ const Assignments = () => {
                     method: 'POST',
                     body: formData
                 }).then((response) => response.json()).then((data) => {
-                    let res = axios.put('/assignments/' + selectedAssignment.id, {
+                    axios.put('/assignments/' + selectedAssignment.id, {
                         file_url: data.url,
                         title: title,
                         link: link,
@@ -218,7 +200,7 @@ const Assignments = () => {
                     method: 'POST',
                     body: formData
                 }).then((response) => response.json()).then((data) => {
-                    let res = axios.post('/assignments', {
+                    axios.post('/assignments', {
                         file_url: data.url,
                         title: title,
                         link: link,
