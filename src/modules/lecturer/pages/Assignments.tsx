@@ -1,7 +1,7 @@
 import Footer from '@app/modules/main/footer/Footer';
 import { ContentHeader } from '@components';
 import DataTable from '../../../components/datatable-original/Datatable';
-import React, { ChangeEvent, useEffect, useState } from 'react';
+import React, { ChangeEvent, useState } from 'react';
 
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import GradingIcon from '@mui/icons-material/Grading';
@@ -20,6 +20,7 @@ import { Button, Form, Modal, OverlayTrigger, Tooltip } from 'react-bootstrap';
 import moment from 'moment';
 import { useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
+import { useQuery, useQueryClient } from '@tanstack/react-query';
 
 
 const Assignments = () => {
@@ -33,12 +34,13 @@ const Assignments = () => {
     const [description, setDescription] = useState('');
     const [link, setLink] = useState('');
     const [expiresOn, setExpiresOn] = useState<any>(new Date());
+    const [transcript, setTranscript] = React.useState<boolean>(false);
+
     const [file, setFile] = useState<any>(null);
     const [editMode, setEditMode] = useState(false);
     const [errors, setErrors] = useState<any>({});
     const [filename, setFilename] = useState('');
     const [courseId, setCourseId] = React.useState('');
-    const [courses, setCourses] = useState([]);
     const [openGrade, setOpenGrade] = useState(false);
     const [selectedSubmission, setSelectedSubmission] = useState<any>(null);
 
@@ -46,6 +48,19 @@ const Assignments = () => {
     const navigate = useNavigate();
 
     const profile = useSelector((state: any) => state.profile.profile);
+
+    const { isLoading, data: assignments } = useQuery({
+        queryKey: ['assignments'],
+        queryFn: fetchAllAssignments
+    })
+
+    const queryClient = useQueryClient();
+
+
+    const courses = useQuery({
+        queryKey: ['courses'],
+        queryFn: fetchAllCourses
+    })
 
 
 
@@ -78,19 +93,6 @@ const Assignments = () => {
     }
     const handleCloseAssignment = () => {
         setOpenAssignment(false);
-    }
-    const getCourses = async () => {
-        try {
-            setLoading(true);
-            const courses = await fetchAllCourses();
-            setCourses(courses.courses);
-        } catch (error) {
-
-        }
-        finally {
-            setLoading(false);
-        }
-
     }
 
     const handleButtonClick = (action: string, row: any) => {
@@ -161,14 +163,15 @@ const Assignments = () => {
                         link: link,
                         description: description,
                         deadline: expiresOn,
-                        course_id: courseId
+                        course_id: courseId,
+                        use_for_transcript: transcript
+
                     }).then((res: any) => {
                         if (res) {
                             toast.success('Assignment updated');
                         }
                         setLoading(false);
                         handleCloseAssignment();
-                        getClasses();
 
                     }).catch((error) => {
                         toast.error('An error occured')
@@ -206,14 +209,18 @@ const Assignments = () => {
                         link: link,
                         description: description,
                         deadline: expiresOn,
-                        course_id: courseId
+                        course_id: courseId,
+                        use_for_transcript: transcript
+
                     }).then((res: any) => {
                         if (res) {
                             toast.success('Assignment created');
                         }
+                        queryClient.invalidateQueries({ queryKey: ['assignments'] });
+
                         setLoading(false);
                         handleCloseAssignment();
-                        getClasses();
+                        // getClasses();
 
                     }).catch((error) => {
                         toast.error('An error occured')
@@ -228,38 +235,27 @@ const Assignments = () => {
 
             }
             finally {
+
                 setLoading(false)
             }
         }
 
     }
-    const getClasses = async () => {
-        try {
-            setLoading(true);
-            const courses = await fetchAllAssignments();
-            setRows(courses.assignments);
-        }
-        catch (error) { }
-        finally {
-            setLoading(false);
-        }
 
-    }
+
+
     const handleCloseSubmissions = () => {
         setOpenSubmission(false);
     }
 
-    useEffect(() => {
-        getClasses();
-        getCourses();
-    }, [])
+
     return (
         <div>
             <ContentHeader title="Assignments" />
             <section className="content">
 
                 <div className="container-fluid">
-                    {!loading ? (
+                    {!isLoading ? (
                         <div>
 
                             <div></div>
@@ -283,7 +279,7 @@ const Assignments = () => {
                                 buttons: {
                                     buttons: ['copy', 'csv']
                                 }
-                            }} data={rows} columns={[{ data: 'title', title: 'Title' }, {
+                            }} data={assignments?.assignments} columns={[{ data: 'title', title: 'Title' }, {
                                 data: 'link', title: 'Link', render(data, type, row, meta) {
                                     return data ? `<a href=${data} target='_blank'>${data}</a>` : 'No Link'
                                 },
@@ -361,7 +357,7 @@ const Assignments = () => {
                                 <Form.Label>Course</Form.Label>
                                 <Form.Control as={'select'} value={courseId} onChange={(e) => setCourseId(e.target.value)}>
                                     <option value=''>Select Course</option>
-                                    {courses.map((course: any) => (
+                                    {courses?.data?.courses.map((course: any) => (
                                         <option key={course.id} value={course.id}>{course.title}</option>
                                     ))}
                                 </Form.Control>
@@ -379,6 +375,16 @@ const Assignments = () => {
                             <Form.Group controlId='classform.link'>
                                 <Form.Label>Link</Form.Label>
                                 <Form.Control type='text' placeholder='Link' value={link} onChange={(e) => setLink(e.target.value)}></Form.Control>
+                            </Form.Group>
+
+                            <Form.Group controlId='classform.link'>
+                                <Form.Check
+                                    type="switch"
+                                    id="custom-switch"
+                                    label="Use in transcript compute"
+                                    checked={transcript}
+                                    onChange={(e) => setTranscript(e.target.checked)}
+                                />
                             </Form.Group>
                             <Form.Group controlId='classform.link'>
                                 <Form.Label>Deadline</Form.Label>
