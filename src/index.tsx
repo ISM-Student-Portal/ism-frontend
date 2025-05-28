@@ -25,9 +25,9 @@ const root = createRoot(container);
 root.render(
   <Provider store={store}>
     <BrowserRouter>
-    <QueryClientProvider client={queryClient}>
-      <App />
-    </QueryClientProvider>
+      <QueryClientProvider client={queryClient}>
+        <App />
+      </QueryClientProvider>
     </BrowserRouter>
   </Provider>
 );

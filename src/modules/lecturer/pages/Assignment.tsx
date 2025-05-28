@@ -17,6 +17,7 @@ import { useLocation } from 'react-router-dom';
 import { Button, Form, Modal, OverlayTrigger, Tooltip } from 'react-bootstrap';
 import axios from '../../../utils/axios';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
+import BackButton from '@app/components/common/BackButton';
 
 const Assignment = () => {
     const [openGrade, setOpenGrade] = useState(false);
@@ -26,7 +27,6 @@ const Assignment = () => {
 
     const assignment = useLocation().state.assignment;
     const queryClient = useQueryClient();
-
 
     const submitGrade = async () => {
         if (selectedSubmission.grade === undefined || selectedSubmission.grade === null || selectedSubmission.grade === '' || selectedSubmission.grade < 0 || selectedSubmission.grade > 100) {
@@ -82,6 +82,10 @@ const Assignment = () => {
 
     return (
         <div>
+            <div className='d-flex justify-content-between align-items-center p-3 bg-light'>
+                <BackButton />
+
+            </div>
             <ContentHeader title="Assignment" />
             <section className="content-header">
                 <div className="container-fluid h5">
