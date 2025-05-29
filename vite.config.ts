@@ -18,6 +18,9 @@ export default ({ mode }) => {
         '@pages': path.resolve(__dirname, './src/pages'),
       },
     },
+    server: {
+      host: '127.0.0.1',
+    },
     define: {
       'process.env': env
     },

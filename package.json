@@ -8,6 +8,7 @@
     "build": "vite build",
     "preview": "vite preview",
     "format": "prettier-eslint $PWD/'src/**/*.{js,json}' --write",
+    "test": "react-scripts test --watchAll=false",
     "lint": "eslint src/**/*.js",
     "store-version": "echo '{\"version\" : '$(cat package.json | jq .version )'}' > public/version.json && git add public/version.json && git commit -m \"version upgrade \"",
     "release:patch": "standard-version --release-as patch && npm run store-version",

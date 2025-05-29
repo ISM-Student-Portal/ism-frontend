@@ -146,6 +146,24 @@ const StudentDashboard = () => {
                 </div>
               </a>
             </div>
+
+            <div className="col-lg-3 col-6">
+              <a href={'https://res.cloudinary.com/ded69cslb/image/upload/v1748518583/ISM_Exam_timetable_2025_mvbxw7.pdf'} target='_blank' rel='noreferrer'>
+                <div className="small-box bg-indigo">
+                  <div className="inner">
+
+                    <h4>Exam Timetable</h4>
+                    <p>Get exam timetable</p>
+                  </div>
+                  <div className="icon">
+                    <i className="ion ion-arrow-right-c" />
+                  </div>
+                  <a href={'https://res.cloudinary.com/ded69cslb/image/upload/v1748518583/ISM_Exam_timetable_2025_mvbxw7.pdf'} target='_blank' rel='noreferrer' className="small-box-footer">
+                    More info <i className="fas fa-arrow-circle-right" />
+                  </a>
+                </div>
+              </a>
+            </div>
           </div>
         </div>
       </section>
