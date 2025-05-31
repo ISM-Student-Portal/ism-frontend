@@ -138,6 +138,7 @@ const Assignment = () => {
     if (result.message === 'Success') {
       setAttendanceMarked(true);
       toast.success('Submission made successfully');
+      window.location.reload();
     }
     setLoading(false);
     handleClosePrompt();
