@@ -100,7 +100,7 @@ const Submission = () => {
   const columns = [
     { name: 'Assignment title', selector: (row: any) => row?.assignment?.title },
     { name: 'Submission Link', selector: (row: any) => (<a href={row.link}>{row.link}</a>) },
-    { name: 'Grade', selector: (row: any) => row.grade },
+    // { name: 'Grade', selector: (row: any) => row.grade },
     { name: 'Date Submitted', selector: (row: any) => moment(row.created_at).toString() },
 
   ]
