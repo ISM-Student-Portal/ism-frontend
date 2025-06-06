@@ -17,8 +17,8 @@ import { Box, Modal } from '@mui/material';
 import { toast } from 'react-toastify';
 import { uploadPics } from '@app/services/admin/studentServices';
 import { setProfile } from '@app/store/reducers/profile';
-import { getAdmission } from '@app/services/student/classServices';
 import ChangePassword from './ChangePassword';
+import SendIcon from '@mui/icons-material/Send';
 
 const StyledUserImage = styled(Image)`
   --pf-border: 3px solid #adb5bd;
@@ -68,37 +68,42 @@ const Profile = () => {
   };
 
   const UploadPics = async () => {
-    setLoading(true);
-    let formData = new FormData();
-    let cloudName = 'dkft4gvoy';
-    formData.append('upload_preset', 'ISM2025');
-    formData.append('file', file);
-    let url = `https://api.cloudinary.com/v1_1/${cloudName}/upload`;
-    fetch(url, {
-      method: 'POST',
-      body: formData
-    }).then((response) => response.json()).then((data) => {
-      let res = uploadPics({ profile_pix_url: data.url });
-      res.then((res) => {
-        toast.success("Uploaded Successfully");
-        dispatch(setProfile(res.user_profile));
-        localStorage.setItem(
-          'profile',
-          JSON.stringify({ ...res.user_profile })
-        );
-        handleUploadClose();
+    try {
+      setLoading(true);
+      let formData = new FormData();
+      let cloudName = 'dkft4gvoy';
+      formData.append('upload_preset', 'ISM2025');
+      formData.append('file', file);
+      let url = `https://api.cloudinary.com/v1_1/${cloudName}/upload`;
+      await fetch(url, {
+        method: 'POST',
+        body: formData
+      }).then((response) => response.json()).then((data) => {
+        let res = uploadPics({ profile_pix_url: data.url });
+        res.then((res) => {
+          toast.success("Uploaded Successfully");
+          dispatch(setProfile(res.user_profile));
+          localStorage.setItem(
+            'profile',
+            JSON.stringify({ ...res.user_profile })
+          );
+        })
+
+
+      }).catch((error) => {
+        toast.error('Error uploading picture')
       })
-
-
-    }).catch((error) => {
+    }
+    catch (error) {
       toast.error('Error uploading picture')
-    })
+    }
+    finally {
+      //@ts-ignore
+      console.log('got here');
+      setLoading(false);
+      handleUploadClose();
+    }
 
-
-    //@ts-ignore
-
-    setLoading(false);
-    handleUploadClose();
 
 
   }
@@ -307,6 +312,9 @@ const Profile = () => {
           </div>
         </div>
       </section>
+
+      
+
       <Modal
         open={uploadOpen}
         onClose={handleUploadClose}
@@ -314,7 +322,7 @@ const Profile = () => {
         aria-describedby="child-modal-description">
         <Box sx={{ ...style, width: '50%', borderRadius: '5px', marginX: 'auto' }}>
           <h4 id="child-modal-title" className='text-center text-'>Upload profile picture</h4>
-          <span className='w-75 mx-auto'>{preview ? (<img width={100} height={100} src={preview} alt="pix" />) : (<img width={100} height={100} src="/img/default-profile.png" />)}</span>
+          <span className='w-75 mx-auto'>{preview ? (<img width={100} height={100} src={preview} alt="pix" />) : (<img width={100} height={100} alt='profile-pix' src="/img/default-profile.png" />)}</span>
 
           <Button
             component="label"
@@ -337,7 +345,7 @@ const Profile = () => {
             <Button variant='outlined' size='small' sx={{
               marginRight: ".2rem"
             }} onClick={handleUploadClose}>Cancel</Button>
-            <Button variant='contained' size='small' onClick={UploadPics}>Submit</Button>
+            <Button variant='contained' size='small' onClick={UploadPics} disabled={loading} endIcon={<SendIcon/>}>Submit</Button>
           </div>
         </Box>
       </Modal>
