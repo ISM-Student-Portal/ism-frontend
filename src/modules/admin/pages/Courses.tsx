@@ -15,6 +15,7 @@ import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
 import { useNavigate } from 'react-router-dom';
 import { useSelector } from 'react-redux';
+import { useQuery } from '@tanstack/react-query';
 
 
 const Courses = () => {
@@ -25,7 +26,6 @@ const Courses = () => {
     const [description, setDescription] = React.useState('');
     const [lecturerId, setLecturerId] = React.useState('');
     const [selectedCourse, setSelectedCourse] = React.useState<any>();
-    const [rows, setRows] = React.useState([]);
     const profile = useSelector((state: any) => state.profile.profile);
 
     const [pending, setpending] = React.useState(true);
@@ -73,23 +73,28 @@ const Courses = () => {
         }
     }
 
+    const courses = useQuery({
+        queryKey: ['courses'],
+        queryFn: fetchAllCourses
+    })
 
 
 
-    const getCourses = async () => {
-        try {
 
-            setLoading(true);
-            const courses = await fetchAllCourses();
-            setRows(courses.courses);
-            setpending(false);
-        } catch (error) {
+    // const getCourses = async () => {
+    //     try {
 
-        }
-        finally {
-            setLoading(false);
-        }
-    }
+    //         setLoading(true);
+    //         const courses = await fetchAllCourses();
+    //         setRows(courses.courses);
+    //         setpending(false);
+    //     } catch (error) {
+
+    //     }
+    //     finally {
+    //         setLoading(false);
+    //     }
+    // }
 
     const createCourseAction = async () => {
         setLoading(true);
@@ -104,7 +109,7 @@ const Courses = () => {
             if (res.message === 'successful') {
                 toast.success('Course Updated Successfully!');
                 handleCloseAdd();
-                getCourses();
+                // getCourses();
                 setLoading(false);
             }
             else {
@@ -115,7 +120,7 @@ const Courses = () => {
             if (student.message === 'successful') {
                 toast.success('Student Created Successfully!');
                 handleCloseAdd();
-                getCourses();
+                // getCourses();
                 setLoading(false);
             }
             else {
@@ -133,7 +138,7 @@ const Courses = () => {
         if (res.message === 'successful') {
             toast.success('Course Deleted Successfully!');
             handleCloseDelete();
-            getCourses();
+            // getCourses();
         }
         setLoading(false);
     }
@@ -143,21 +148,8 @@ const Courses = () => {
         setLecturers(lecturers.lecturers);
         setpending(false);
     }
-
-
-
-
-
-
-
-
-
-
-
-
-
     useEffect(() => {
-        getCourses();
+        // getCourses();
         getLecturers();
     }, [])
     return (
@@ -201,7 +193,7 @@ const Courses = () => {
                                 buttons: {
                                     buttons: ['copy', 'csv']
                                 }
-                            }} data={rows} columns={[{ data: 'title', title: 'Title' }, { data: 'description', title: 'Description' }, { data: 'lecturer.username', title: 'Lecturer' }, { title: 'Action' }]}>
+                            }} data={courses.data?.courses} columns={[{ data: 'title', title: 'Title' }, { data: 'description', title: 'Description' }, { data: 'lecturer.username', title: 'Lecturer' }, { title: 'Action' }]}>
 
                             </DataTable></div>
                     ) : (<div className='h-100 d-flex align-items-center justify-content-center'><ColorRing

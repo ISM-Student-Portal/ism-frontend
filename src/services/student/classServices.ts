@@ -33,6 +33,16 @@ export const getAssignment = async() => {
         }
 }
 
+export const getTranscript = async() => {
+    try{
+        const transcript = await axios.get('/get-transcript');
+        return transcript.data;
+    
+        }catch (error: any){
+            return error.message
+        }
+}
+
 export const getSubmissionList = async() => {
     try{
         const submissions = await axios.get('/submissions');

@@ -132,6 +132,52 @@ const Profile = () => {
 
   }
 
+  const getCertificate = async () => {
+    // let res = getAdmission().then((res: any) => {
+    //   console.log(res)
+    //   const url = window.URL.createObjectURL(new Blob([res.data]));
+    //   const link = document.createElement('a');
+    //   link.href = url;
+    //   link.setAttribute('download', 'admission_letter.pdf'); //or any other extension
+    //   document.body.appendChild(link);
+    //   link.click();
+    // })
+
+    axios.get('get-certificate', { responseType: 'blob' }).then((res: any) => {
+      const url = window.URL.createObjectURL(new Blob([res.data]));
+      const link = document.createElement('a');
+      link.href = url;
+      link.setAttribute('download', 'certificate.pdf'); //or any other extension
+      document.body.appendChild(link);
+      link.click();
+    })
+    toast.success("Request was successful");
+
+  }
+
+  const getOruCertificate = async () => {
+    // let res = getAdmission().then((res: any) => {
+    //   console.log(res)
+    //   const url = window.URL.createObjectURL(new Blob([res.data]));
+    //   const link = document.createElement('a');
+    //   link.href = url;
+    //   link.setAttribute('download', 'admission_letter.pdf'); //or any other extension
+    //   document.body.appendChild(link);
+    //   link.click();
+    // })
+
+    axios.get('get-certificate-oru', { responseType: 'blob' }).then((res: any) => {
+      const url = window.URL.createObjectURL(new Blob([res.data]));
+      const link = document.createElement('a');
+      link.href = url;
+      link.setAttribute('download', 'oru_certificate.pdf'); //or any other extension
+      document.body.appendChild(link);
+      link.click();
+    })
+    toast.success("Request was successful");
+
+  }
+
   const handleFileUpload = async (e: ChangeEvent<HTMLInputElement>) => {
     if (!e.target.files) {
       return;
@@ -285,6 +331,44 @@ const Profile = () => {
                       </li>
                     )}
 
+                    {profile.is_admin || profile.is_lecturer ? (
+                      <div></div>
+                    ) : (
+                      <li className="nav-item">
+                        <span
+                          // type="button"
+                          className={`nav-link`}
+                          style={{
+                            cursor: "pointer"
+                          }}
+                          onClick={getCertificate}
+
+                        >
+                          Get Certificate
+                        </span>
+
+                      </li>
+                    )}
+
+                     {profile.is_admin || profile.is_lecturer ? (
+                      <div></div>
+                    ) : (
+                      <li className="nav-item">
+                        <span
+                          // type="button"
+                          className={`nav-link`}
+                          style={{
+                            cursor: "pointer"
+                          }}
+                          onClick={getOruCertificate}
+
+                        >
+                          Get ORU Certificate
+                        </span>
+
+                      </li>
+                    )}
+
                     <li className="nav-item">
                       <span
                         // type="button"
@@ -313,7 +397,7 @@ const Profile = () => {
         </div>
       </section>
 
-      
+
 
       <Modal
         open={uploadOpen}
@@ -345,7 +429,7 @@ const Profile = () => {
             <Button variant='outlined' size='small' sx={{
               marginRight: ".2rem"
             }} onClick={handleUploadClose}>Cancel</Button>
-            <Button variant='contained' size='small' onClick={UploadPics} disabled={loading} endIcon={<SendIcon/>}>Submit</Button>
+            <Button variant='contained' size='small' onClick={UploadPics} disabled={loading} endIcon={<SendIcon />}>Submit</Button>
           </div>
         </Box>
       </Modal>

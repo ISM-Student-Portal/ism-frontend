@@ -82,7 +82,13 @@ export const STUDENT_MENU: IMenuItem[] = [
     path: '/submissions',
   },
 
- 
+  {
+    name: 'Transcripts',
+    icon: 'fas fa-scroll nav-icon',
+    path: '/transcripts',
+  },
+
+
 
   // {
   //   name: i18n.t('menusidebar.label.notifications'),

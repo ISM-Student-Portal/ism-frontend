@@ -49,6 +49,8 @@ import Student from './modules/admin/pages/Student';
 import Registered from './modules/admin/pages/Registered';
 import ResetPassword from './modules/reset-password/ResetPassword';
 import SuperAdminRoute from './routes/SuperAdminRoute';
+import Transcripts from './pages/student_pages/Transcripts';
+import CourseTranscript from './modules/lecturer/pages/CourseTranscript';
 
 const { VITE_NODE_ENV } = import.meta.env;
 
@@ -141,6 +143,7 @@ const App = () => {
             <Route path="classroom" element={<StudentClassroom />} />
             <Route path="profile" element={<Profile />} />
             <Route path="submissions" element={<Submission />} />
+            <Route path="transcripts" element={<Transcripts />} />
 
 
           </Route>
@@ -154,6 +157,8 @@ const App = () => {
             <Route path='students/:id' element={<Student />} />
             <Route path='payments' element={<Payments />} />
             <Route path='courses/:id' element={<LecturerCourse />} />
+            <Route path='courses/:id/transcript' element={<LecturerCourse />} />
+
             <Route path='assignments/:id' element={<LecturerAssignment />} />
             <Route path='courses' element={<Courses />} />
             <Route path='admins' element={<SuperAdminRoute />}>
@@ -173,6 +178,8 @@ const App = () => {
             <Route path='courses/:id' element={<LecturerCourse />} />
             <Route path='classes' element={<LecturerClasses />} />
             <Route path='class/:id' element={<LecturerClass />} />
+            <Route path='courses/:id/transcript' element={<CourseTranscript />} />
+
             <Route path='assignments' element={<LecturerAssignments />} />
             <Route path='assignments/:id' element={<LecturerAssignment />} />
             <Route path="profile" element={<Profile />} />

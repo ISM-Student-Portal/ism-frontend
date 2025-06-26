@@ -83,3 +83,13 @@ export const fetchCourseById = async (id: any) => {
         return error.message
     }
 }
+
+export const fetchCourseTranscript = async (id: any) => {
+    try {
+        const course = await axios.get('/lecturer/courses/' + id + '/get-transcript');
+        return course.data;
+
+    } catch (error: any) {
+        return error.message
+    }
+}

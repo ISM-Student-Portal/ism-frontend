@@ -2,71 +2,45 @@ import Footer from '@app/modules/main/footer/Footer';
 import { ContentHeader } from '@components';
 // import DataTable from '../../../components/datatable-original/Datatable';
 
-import DataTable from '../../../components/data-table/DataTableBase';
+import DataTable from '../../../components/datatable-original/Datatable';
+
 
 
 import { toast } from 'react-toastify';
 import axios from '../../../utils/axios';
-import React, { useEffect, useMemo } from 'react';
+import React, { useMemo } from 'react';
 
-import { fetchAllStudents, createStudent, updateStudentStatus, deleteStudent, deactivateStudent, fetchAllRegistrants } from '@app/services/admin/studentServices';
+import { deactivateStudent, fetchAllRegistrants } from '@app/services/admin/studentServices';
 import FilterComponent from '@app/components/data-table/FilterComponent';
 import { ColorRing } from 'react-loader-spinner';
-import { Button, Modal, OverlayTrigger, Tooltip } from 'react-bootstrap';
-import { useNavigate } from 'react-router-dom';
-import VisibilityIcon from '@mui/icons-material/Visibility';
-import DeleteIcon from '@mui/icons-material/Delete';
-import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
+import { Button, Modal } from 'react-bootstrap';
+
+import { useQuery } from '@tanstack/react-query';
 
 
 
 const Registered = () => {
-    const [open, setOpen] = React.useState(false);
     const [pending, setpending] = React.useState(true);
     const [loading, setLoading] = React.useState(false);
-    const [openAdd, setOpenAdd] = React.useState(false);
-    const [openEdit, setOpenEdit] = React.useState(false);
+
     const [openDelete, setOpenDelete] = React.useState(false);
-    const [editStudentStatus, setEditStudentStatus] = React.useState(false);
-    const [editStudentSub, setEditStudentSub] = React.useState(false);
+
     const [filterText, setFilterText] = React.useState("");
     const [resetPaginationToggle, setResetPaginationToggle] = React.useState(
         false
     );
     const [selectedStudent, setSelectedStudent] = React.useState<any>();
-    const [filename, setFilename] = React.useState("");
-    const [file, setFile] = React.useState(null);
-    const [email, setEmail] = React.useState('');
-    const [firstName, setFirstName] = React.useState('');
-    const [lastName, setLastName] = React.useState('');
-    const [regNo, setRegNo] = React.useState('');
-    const [phoneNumber, setPhoneNumber] = React.useState('');
+    // const { isLoading, error, data: students } = useQuery({
+    //     queryKey: ['students'],
+    //     queryFn: fetchAllRegistrants,
+    // });
+    // console.log('students', students);
 
     const [rows, setRows] = React.useState([]);
-    const [stats, setStats] = React.useState<any>();
-    const navigate = useNavigate();
 
 
-    const handleOpen = () => {
-        setOpen(true);
-    };
-    const handleClose = () => {
-        setOpen(false);
-    };
 
-    const handleOpenEdit = () => {
-        setOpenEdit(true);
-    };
-    const handleCloseEdit = () => {
-        setOpenEdit(false);
-    };
 
-    const filteredItems = rows.filter(
-        (item: any) =>
-            JSON.stringify(item)
-                .toLowerCase()
-                .indexOf(filterText.toLowerCase()) !== -1
-    );
 
     const subHeaderComponent = useMemo(() => {
         const handleClear = () => {
@@ -85,45 +59,14 @@ const Registered = () => {
         );
     }, [filterText, resetPaginationToggle]);
 
-
-
-    const handleOpenDelete = () => {
-        setOpenDelete(true);
-    };
     const handleCloseDelete = () => {
         setOpenDelete(false);
     };
-    const handleOpenAdd = () => {
-        setOpenAdd(true);
-    }
-
-    const handleCloseAdd = () => {
-        setOpenAdd(false);
-    }
-    const handleButtonClick = (type: any, student: any) => {
-        setSelectedStudent(student);
-        if (type === 'edit') {
-            // await changeStudentPass(student.id);
-            // toast.success('Student updated Successfully!');
-
-            setEditStudentStatus(student.is_admin);
-            setEditStudentSub(student.profile.subscription === 'premium')
-            handleOpenEdit();
-        } else if (type === 'delete') {
-            setSelectedStudent(student);
-            handleOpenDelete();
-        }
-    }
 
 
 
 
-    const getStudents = async () => {
-        const students = await fetchAllRegistrants();
-        setRows(students.students);
-        setStats(students.stats);
-        setpending(false);
-    }
+
 
     const deactivateStudentAction = async () => {
         setLoading(true);
@@ -132,7 +75,6 @@ const Registered = () => {
         if (student.message === 'successful') {
             student.lecturer.is_active ? toast.success('Student Activated Successfully!') : toast.success('Student Deactivated Successfully!');
             handleCloseDelete();
-            getStudents();
             setLoading(false);
         }
         else {
@@ -178,17 +120,6 @@ const Registered = () => {
 
     }
 
-
-
-
-
-
-
-
-
-    useEffect(() => {
-        getStudents();
-    }, [])
     return (
         <div>
             <ContentHeader title="All Registered" />
@@ -196,12 +127,12 @@ const Registered = () => {
 
 
                 <div className="container-fluid">
-                    <div>
-                        <h6>No of Students Paid: {stats?.total_paid}</h6>
-                        <h6>No of Students Paid Full: {stats?.total_paid_full}</h6>
-                        <h6>No of Students Not Paid: {stats?.total_unpaid}</h6>
-                    </div>
-                    {rows.length > 0 ? (
+                    {/* <div>
+                        <h6>No of Students Paid: {students?.stats?.total_paid}</h6>
+                        <h6>No of Students Paid Full: {students?.stats?.total_paid_full}</h6>
+                        <h6>No of Students Not Paid: {students?.stats?.total_unpaid}</h6>
+                    </div> */}
+                    {true ? (
                         <div>
                             <div className="d-grid gap-2 d-md-block py-2">
                             </div>
@@ -209,7 +140,16 @@ const Registered = () => {
                                 <Button size='sm' variant='warning' onClick={downloadStudents} className="float-right mx-1" type="button">Download CSV</Button>
 
                             </div>
-                            <DataTable className='table table-striped table-bordered order-column' data={filteredItems} columns={columns} progressPending={pending} responsive keyField='id' striped subHeader subHeaderComponent={subHeaderComponent} >
+                            <DataTable className='table table-striped table-bordered order-column' ajax={'http://127.0.0.1:8000/api/admin/registered'} columns={[{ data: 'email', title: 'Email' }, { data: 'first_name', title: 'First Name' }, { data: 'last_name', title: 'Last Name' }, { data: 'country', title: 'Country' }, { data: 'city', title: 'City' }, { data: 'phone', title: 'Phone' }, { data: 'participation_mode', title: 'Participation Mode' }, { data: 'plan', title: 'Plan' }, {
+                                data: 'is_alumni', title: 'Is Alumni', render(data, type, row, meta) {
+                                    return data ? 'yes' : 'no';
+                                },
+
+                            }, {
+                                data: 'payment_complete', title: 'Payment Status', render(data, type, row, meta) {
+                                    return data ? 'full' : 'part'
+                                },
+                            }]} >
 
                             </DataTable></div>
                     ) : (<div className='h-100 d-flex align-items-center justify-content-center'><ColorRing

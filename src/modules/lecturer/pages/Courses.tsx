@@ -4,10 +4,9 @@ import DataTable from '../../../components/datatable-original/Datatable';
 import React, { useEffect } from 'react';
 
 import VisibilityIcon from '@mui/icons-material/Visibility';
+import DescriptionIcon from '@mui/icons-material/Description';
 
-import { toast } from 'react-toastify';
 
-import { createStudent, updateStudentStatus, deleteStudent } from '@app/services/admin/studentServices';
 import { ColorRing } from 'react-loader-spinner';
 import { fetchAllCourses } from '@app/services/admin/lecturerServices';
 import { useNavigate } from 'react-router-dom';
@@ -76,10 +75,18 @@ const Courses = () => {
                             <div></div>
                             <DataTable slots={{
                                 4: (data: any, row: any) => (
-                                    <OverlayTrigger placement='top' overlay={<Tooltip id={row.id}>View Course</Tooltip>}>
-                                        <Button as="span" variant='outline-light' size='sm' onClick={() => navigate('/lecturer/courses/' + row.id)}><VisibilityIcon className='text-success mx-2 pointer' /></Button>
+                                    <div className='d-flex justify-content-center align-items-center gap-2'>
+                                        <OverlayTrigger placement='top' overlay={<Tooltip id={row.id}>View Course</Tooltip>}>
+                                            <Button as="span" variant='outline-light' size='sm' onClick={() => navigate('/lecturer/courses/' + row.id)}><VisibilityIcon className='text-success mx-2 pointer' /></Button>
 
-                                    </OverlayTrigger>
+                                        </OverlayTrigger>
+
+                                        <OverlayTrigger placement='top' overlay={<Tooltip id={row.id}>View Transcript</Tooltip>}>
+                                            <Button as="span" variant='outline-light' size='sm' onClick={() => navigate('/lecturer/courses/' + row.id + '/transcript')}><DescriptionIcon className='text-primary mx-2 pointer' /></Button>
+
+                                        </OverlayTrigger>
+                                    </div>
+
 
                                 )
                             }} className='table table-striped table-bordered order-column dt-head-center' options={{
