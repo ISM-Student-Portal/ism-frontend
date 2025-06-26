@@ -331,7 +331,7 @@ const Profile = () => {
                       </li>
                     )}
 
-                    {profile.is_admin || profile.is_lecturer ? (
+                    {/* {profile.is_admin || profile.is_lecturer ? (
                       <div></div>
                     ) : (
                       <li className="nav-item">
@@ -367,7 +367,7 @@ const Profile = () => {
                         </span>
 
                       </li>
-                    )}
+                    )} */}
 
                     <li className="nav-item">
                       <span
