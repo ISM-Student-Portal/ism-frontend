@@ -331,7 +331,7 @@ const Profile = () => {
                       </li>
                     )}
 
-                    {/* {profile.is_admin || profile.is_lecturer ? (
+                    {!profile.is_cert_enabled ? (
                       <div></div>
                     ) : (
                       <li className="nav-item">
@@ -350,7 +350,7 @@ const Profile = () => {
                       </li>
                     )}
 
-                     {profile.is_admin || profile.is_lecturer ? (
+                    {!profile.is_cert_enabled ? (
                       <div></div>
                     ) : (
                       <li className="nav-item">
@@ -367,7 +367,7 @@ const Profile = () => {
                         </span>
 
                       </li>
-                    )} */}
+                    )}
 
                     <li className="nav-item">
                       <span

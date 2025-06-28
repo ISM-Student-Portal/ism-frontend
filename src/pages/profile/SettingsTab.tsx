@@ -214,6 +214,7 @@ const SettingsTab = ({ isActive, profile }: { isActive: boolean, profile: any })
           <div className="col-sm-10">
             <input
               type="text"
+              disabled
               className="form-control"
               id="inputNameCert"
               placeholder="How you want it to appear on your certificate"
