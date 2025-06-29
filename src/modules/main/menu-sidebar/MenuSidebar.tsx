@@ -82,11 +82,7 @@ export const STUDENT_MENU: IMenuItem[] = [
     path: '/submissions',
   },
 
-  {
-    name: 'Transcripts',
-    icon: 'fas fa-scroll nav-icon',
-    path: '/transcripts',
-  },
+
 
 
 
